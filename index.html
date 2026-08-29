@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oii Chat</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f5f5;
+      color: #222;
+    }
+
+    .app {
+      max-width: 480px;
+      margin: auto;
+      min-height: 100vh;
+      background: white;
+    }
+
+    .header {
+      padding: 18px;
+      font-size: 26px;
+      font-weight: bold;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .welcome {
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 55px;
+      margin-bottom: 15px;
+    }
+
+    .welcome h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .welcome p {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(480px, 100%);
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 5px;
+      background: white;
+      border-top: 1px solid #ddd;
+    }
+
+    .nav button {
+      border: none;
+      background: none;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .nav span {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+
+    <div class="header">
+      Oii Chat
+    </div>
+
+    <div class="welcome">
+      <div class="logo">💬</div>
+
+      <h1>வணக்கம் 👋</h1>
+
+      <p>
+        Oii Chat-க்கு வரவேற்கிறோம் ❤️<br>
+        தமிழை மையமாகக் கொண்ட<br>
+        நம்முடைய Chat App.
+      </p>
+    </div>
+
+    <div class="nav">
+      <button>
+        <span>💬</span>
+        Chat
+      </button>
+
+      <button>
+        <span>📖</span>
+        Story
+      </button>
+
+      <button>
+        <span>📞</span>
+        Call
+      </button>
+
+      <button>
+        <span>👤</span>
+        Profile
+      </button>
+    </div>
+
+  </div>
+
+</body>
+</html>
