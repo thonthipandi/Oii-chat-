@@ -4,136 +4,825 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Oii Chat</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body { background: #050515; color: #fff; display: flex; justify-content: center; min-height: 100vh; }
-    .app-container { width: 100%; max-width: 450px; background: #080820; min-height: 100vh; position: relative; padding-bottom: 70px; border-left: 1px solid rgba(0,212,255,0.2); border-right: 1px solid rgba(0,212,255,0.2); }
-    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #050515;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    /* LOGIN SCREEN */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at top, rgba(0,212,255,.18), transparent 35%),
+        radial-gradient(circle at bottom, rgba(255,0,127,.15), transparent 35%),
+        #050515;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 380px;
+      padding: 35px 25px;
+      text-align: center;
+      background: rgba(15,15,45,.85);
+      border: 1px solid rgba(0,212,255,.25);
+      border-radius: 25px;
+      box-shadow: 0 0 35px rgba(0,212,255,.12);
+      backdrop-filter: blur(15px);
+    }
+
+    .login-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 18px;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      background: linear-gradient(45deg,#00d4ff,#ff007f);
+      box-shadow: 0 0 25px rgba(0,212,255,.5);
+    }
+
+    .login-title {
+      font-size: 30px;
+      font-weight: 700;
+      background: linear-gradient(45deg,#00d4ff,#ff007f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .login-subtitle {
+      color: #aaa;
+      font-size: 14px;
+      margin: 8px 0 28px;
+    }
+
+    #googleLoginBtn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: #fff;
+      color: #222;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: .2s;
+    }
+
+    #googleLoginBtn:hover {
+      transform: translateY(-2px);
+    }
+
+    #googleLoginBtn i {
+      color: #4285F4;
+      font-size: 20px;
+    }
+
+    #loginError {
+      display: none;
+      margin-top: 15px;
+      color: #ff668f;
+      font-size: 12px;
+    }
+
+    /* APP */
+    #appScreen {
+      display: none;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 450px;
+      margin: auto;
+      background: #080820;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 70px;
+      border-left: 1px solid rgba(0,212,255,0.2);
+      border-right: 1px solid rgba(0,212,255,0.2);
+    }
+
     /* Header */
-    .header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(10, 10, 35, 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
-    .logo-container { display: flex; align-items: center; gap: 10px; }
-    .logo-img { width: 40px; height: 40px; border-radius: 12px; border: 2px solid #00d4ff; box-shadow: 0 0 10px #00d4ff; }
-    .logo-text { font-size: 20px; font-weight: 700; background: linear-gradient(45deg, #00d4ff, #ff007f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .header-icons { display: flex; gap: 18px; font-size: 18px; color: #00d4ff; }
+    .header {
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10,10,35,.8);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      background: linear-gradient(45deg,#00d4ff,#ff007f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 18px;
+      color: #00d4ff;
+    }
+
+    /* USER PROFILE */
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px 5px;
+    }
+
+    .user-profile img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid #00d4ff;
+      object-fit: cover;
+    }
+
+    .user-details {
+      flex: 1;
+    }
+
+    .user-name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .user-email {
+      font-size: 10px;
+      color: #777;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .logout-btn {
+      background: rgba(255,0,127,.12);
+      color: #ff4f9a;
+      border: 1px solid rgba(255,0,127,.25);
+      border-radius: 10px;
+      padding: 7px 10px;
+      cursor: pointer;
+      font-size: 11px;
+    }
 
     /* Stories */
-    .stories-container { display: flex; gap: 15px; padding: 15px 20px; overflow-x: auto; scrollbar-width: none; }
-    .story { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 12px; }
-    .story-avatar { width: 60px; height: 60px; border-radius: 50%; padding: 3px; background: linear-gradient(45deg, #00d4ff, #ff007f); position: relative; }
-    .story-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #080820; }
-    .add-story { position: absolute; bottom: 0; right: 0; background: #00d4ff; color: #000; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
+    .stories-container {
+      display: flex;
+      gap: 15px;
+      padding: 15px 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
 
-    /* Categories */
-    .tabs { display: flex; gap: 10px; padding: 10px 20px; overflow-x: auto; scrollbar-width: none; }
-    .tab { padding: 6px 16px; border-radius: 20px; font-size: 13px; background: rgba(255,255,255,0.05); color: #aaa; border: 1px solid rgba(255,255,255,0.1); }
-    .tab.active { background: linear-gradient(45deg, #00d4ff, #ff007f); color: #fff; font-weight: 600; border: none; box-shadow: 0 0 10px rgba(0,212,255,0.5); }
+    .story {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .story-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(45deg,#00d4ff,#ff007f);
+      position: relative;
+    }
+
+    .story-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #080820;
+    }
+
+    .add-story {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: #00d4ff;
+      color: #000;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      padding: 10px 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tab {
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      background: rgba(255,255,255,.05);
+      color: #aaa;
+      border: 1px solid rgba(255,255,255,.1);
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      background: linear-gradient(45deg,#00d4ff,#ff007f);
+      color: #fff;
+      font-weight: 600;
+      border: none;
+    }
 
     /* Chat List */
-    .chat-list { padding: 10px 20px; display: flex; flex-direction: column; gap: 12px; }
-    .chat-card { display: flex; align-items: center; gap: 15px; padding: 12px; background: rgba(20, 20, 50, 0.6); border-radius: 16px; border: 1px solid rgba(0, 212, 255, 0.2); backdrop-filter: blur(5px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-    .avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #ff007f; position: relative; }
-    .avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-    .online { position: absolute; bottom: 2px; right: 2px; width: 10px; height: 10px; background: #00ff66; border-radius: 50%; border: 2px solid #080820; }
-    .chat-info { flex: 1; }
-    .chat-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
-    .chat-name { font-weight: 600; font-size: 15px; }
-    .chat-time { font-size: 11px; color: #888; }
-    .chat-msg { font-size: 13px; color: #aaa; display: flex; justify-content: space-between; align-items: center; }
-    .badge { background: #ff007f; color: #fff; font-size: 10px; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px #ff007f; }
+    .chat-list {
+      padding: 10px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-    /* Floating Button */
-    .fab { position: fixed; bottom: 80px; right: 20px; width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(45deg, #00d4ff, #ff007f); display: flex; align-items: center; justify-content: center; font-size: 22px; color: #fff; box-shadow: 0 0 15px #00d4ff; border: none; }
+    .chat-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 12px;
+      background: rgba(20,20,50,.6);
+      border-radius: 16px;
+      border: 1px solid rgba(0,212,255,.2);
+      backdrop-filter: blur(5px);
+    }
 
-    /* Bottom Navigation */
-    .nav { position: fixed; bottom: 0; width: 100%; max-width: 450px; height: 65px; background: rgba(10, 10, 35, 0.95); backdrop-filter: blur(15px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); }
-    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; color: #666; text-decoration: none; }
-    .nav-item.active { color: #00d4ff; }
-    .nav-item i { font-size: 18px; }
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid #ff007f;
+      position: relative;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .online {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 10px;
+      height: 10px;
+      background: #00ff66;
+      border-radius: 50%;
+      border: 2px solid #080820;
+    }
+
+    .chat-info {
+      flex: 1;
+    }
+
+    .chat-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .chat-name {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .chat-time {
+      font-size: 11px;
+      color: #888;
+    }
+
+    .chat-msg {
+      font-size: 13px;
+      color: #aaa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: #ff007f;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* FAB */
+    .fab {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: linear-gradient(45deg,#00d4ff,#ff007f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #fff;
+      box-shadow: 0 0 15px #00d4ff;
+      border: none;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 450px;
+      height: 65px;
+      background: rgba(10,10,35,.95);
+      backdrop-filter: blur(15px);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,.1);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      color: #666;
+      text-decoration: none;
+    }
+
+    .nav-item.active {
+      color: #00d4ff;
+    }
+
+    .nav-item i {
+      font-size: 18px;
+    }
   </style>
 </head>
+
 <body>
 
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+
+    <div class="login-logo">💬</div>
+
+    <div class="login-title">Oii Chat</div>
+
+    <div class="login-subtitle">
+      Tamil First Chat App 💙
+    </div>
+
+    <button id="googleLoginBtn">
+      <i class="fab fa-google"></i>
+      Continue with Google
+    </button>
+
+    <div id="loginError"></div>
+
+  </div>
+</div>
+
+
+<!-- APP -->
+<div id="appScreen">
+
   <div class="app-container">
+
     <!-- Header -->
     <div class="header">
       <div class="logo-container">
         <div class="logo-text">Oii Chat 💬</div>
       </div>
+
       <div class="header-icons">
         <i class="fas fa-search"></i>
         <i class="fas fa-ellipsis-v"></i>
       </div>
     </div>
 
+
+    <!-- USER -->
+    <div class="user-profile">
+
+      <img id="userPhoto"
+           src="https://i.pravatar.cc/100?img=12"
+           alt="Profile">
+
+      <div class="user-details">
+        <div class="user-name" id="userName">
+          User
+        </div>
+
+        <div class="user-email" id="userEmail">
+          user@email.com
+        </div>
+      </div>
+
+      <button class="logout-btn" id="logoutBtn">
+        Logout
+      </button>
+
+    </div>
+
+
     <!-- Stories -->
     <div class="stories-container">
+
       <div class="story">
-        <div class="story-avatar"><img src="https://i.pravatar.cc/100?img=12" alt="My Story"><div class="add-story">+</div></div>
+
+        <div class="story-avatar">
+
+          <img id="myStoryPhoto"
+               src="https://i.pravatar.cc/100?img=12"
+               alt="My Story">
+
+          <div class="add-story">+</div>
+
+        </div>
+
         <span>My Story</span>
+
       </div>
+
+
       <div class="story">
-        <div class="story-avatar"><img src="https://i.pravatar.cc/100?img=5" alt="Sobiya"></div>
+        <div class="story-avatar">
+          <img src="https://i.pravatar.cc/100?img=5">
+        </div>
         <span>Sobiya ❤️</span>
       </div>
+
+
       <div class="story">
-        <div class="story-avatar"><img src="https://i.pravatar.cc/100?img=8" alt="Kavi"></div>
+        <div class="story-avatar">
+          <img src="https://i.pravatar.cc/100?img=8">
+        </div>
         <span>Kavi 😎</span>
       </div>
+
+
       <div class="story">
-        <div class="story-avatar"><img src="https://i.pravatar.cc/100?img=11" alt="Vijay"></div>
+        <div class="story-avatar">
+          <img src="https://i.pravatar.cc/100?img=11">
+        </div>
         <span>Vijay 🔥</span>
       </div>
+
     </div>
+
 
     <!-- Tabs -->
     <div class="tabs">
-      <div class="tab active">All Chats 12</div>
-      <div class="tab">Unread 5</div>
-      <div class="tab">Groups</div>
-      <div class="tab">Channels</div>
+
+      <div class="tab active">
+        All Chats 12
+      </div>
+
+      <div class="tab">
+        Unread 5
+      </div>
+
+      <div class="tab">
+        Groups
+      </div>
+
+      <div class="tab">
+        Channels
+      </div>
+
     </div>
 
-    <!-- Chat List -->
+
+    <!-- Chats -->
     <div class="chat-list">
-      <div class="chat-card">
-        <div class="avatar"><img src="https://i.pravatar.cc/100?img=5" alt="User"><div class="online"></div></div>
-        <div class="chat-info">
-          <div class="chat-top"><span class="chat-name">Sobiya ❤️</span><span class="chat-time">9:40 AM</span></div>
-          <div class="chat-msg"><span>Heyy 😘 Enna panra?</span><span class="badge">2</span></div>
-        </div>
-      </div>
 
       <div class="chat-card">
-        <div class="avatar"><img src="https://i.pravatar.cc/100?img=8" alt="User"><div class="online"></div></div>
-        <div class="chat-info">
-          <div class="chat-top"><span class="chat-name">Kavi 😎</span><span class="chat-time">9:38 AM</span></div>
-          <div class="chat-msg"><span>📷 Photo</span><span class="badge">1</span></div>
+
+        <div class="avatar">
+          <img src="https://i.pravatar.cc/100?img=5">
+          <div class="online"></div>
         </div>
+
+        <div class="chat-info">
+
+          <div class="chat-top">
+            <span class="chat-name">Sobiya ❤️</span>
+            <span class="chat-time">9:40 AM</span>
+          </div>
+
+          <div class="chat-msg">
+            <span>Heyy 😘 Enna panra?</span>
+            <span class="badge">2</span>
+          </div>
+
+        </div>
+
       </div>
 
+
       <div class="chat-card">
-        <div class="avatar"><img src="https://i.pravatar.cc/100?img=11" alt="User"></div>
-        <div class="chat-info">
-          <div class="chat-top"><span class="chat-name">Vijay 🔥</span><span class="chat-time">Yesterday</span></div>
-          <div class="chat-msg"><span>🎙️ Voice message</span><span class="badge">1</span></div>
+
+        <div class="avatar">
+          <img src="https://i.pravatar.cc/100?img=8">
+          <div class="online"></div>
         </div>
+
+        <div class="chat-info">
+
+          <div class="chat-top">
+            <span class="chat-name">Kavi 😎</span>
+            <span class="chat-time">9:38 AM</span>
+          </div>
+
+          <div class="chat-msg">
+            <span>📷 Photo</span>
+            <span class="badge">1</span>
+          </div>
+
+        </div>
+
       </div>
+
+
+      <div class="chat-card">
+
+        <div class="avatar">
+          <img src="https://i.pravatar.cc/100?img=11">
+        </div>
+
+        <div class="chat-info">
+
+          <div class="chat-top">
+            <span class="chat-name">Vijay 🔥</span>
+            <span class="chat-time">Yesterday</span>
+          </div>
+
+          <div class="chat-msg">
+            <span>🎙️ Voice message</span>
+            <span class="badge">1</span>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <!-- Floating Action Button -->
-    <button class="fab"><i class="fas fa-plus"></i></button>
+
+    <!-- FAB -->
+    <button class="fab">
+      <i class="fas fa-plus"></i>
+    </button>
+
 
     <!-- Bottom Navigation -->
     <div class="nav">
-      <a href="#" class="nav-item active"><i class="fas fa-comment-dots"></i><span>Chats</span></a>
-      <a href="#" class="nav-item"><i class="fas fa-phone-alt"></i><span>Calls</span></a>
-      <a href="#" class="nav-item"><i class="fas fa-circle-notch"></i><span>Status</span></a>
-      <a href="#" class="nav-item"><i class="fas fa-users"></i><span>Communities</span></a>
-      <a href="#" class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+
+      <a href="#" class="nav-item active">
+        <i class="fas fa-comment-dots"></i>
+        <span>Chats</span>
+      </a>
+
+      <a href="#" class="nav-item">
+        <i class="fas fa-phone-alt"></i>
+        <span>Calls</span>
+      </a>
+
+      <a href="#" class="nav-item">
+        <i class="fas fa-circle-notch"></i>
+        <span>Status</span>
+      </a>
+
+      <a href="#" class="nav-item">
+        <i class="fas fa-users"></i>
+        <span>Communities</span>
+      </a>
+
+      <a href="#" class="nav-item">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+      </a>
+
     </div>
+
   </div>
+
+</div>
+
+
+<!-- FIREBASE -->
+<script type="module">
+
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+  /* Firebase Configuration */
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCzPOAjXI0dJ33RJCVIUyCCFGyeI50Dvd0",
+    authDomain: "oii-chat-8802e.firebaseapp.com",
+    projectId: "oii-chat-8802e",
+    storageBucket: "oii-chat-8802e.firebasestorage.app",
+    messagingSenderId: "1017345795063",
+    appId: "1:1017345795063:web:7fc1dfedd027c4be0d84f2",
+    measurementId: "G-304SPRZSPL"
+  };
+
+
+  /* Initialize Firebase */
+
+  const app = initializeApp(firebaseConfig);
+
+  const auth = getAuth(app);
+
+  const provider = new GoogleAuthProvider();
+
+
+  /* Elements */
+
+  const loginScreen =
+    document.getElementById("loginScreen");
+
+  const appScreen =
+    document.getElementById("appScreen");
+
+  const googleLoginBtn =
+    document.getElementById("googleLoginBtn");
+
+  const logoutBtn =
+    document.getElementById("logoutBtn");
+
+  const loginError =
+    document.getElementById("loginError");
+
+  const userName =
+    document.getElementById("userName");
+
+  const userEmail =
+    document.getElementById("userEmail");
+
+  const userPhoto =
+    document.getElementById("userPhoto");
+
+  const myStoryPhoto =
+    document.getElementById("myStoryPhoto");
+
+
+  /* GOOGLE LOGIN */
+
+  googleLoginBtn.addEventListener("click", async () => {
+
+    loginError.style.display = "none";
+
+    googleLoginBtn.disabled = true;
+
+    googleLoginBtn.innerHTML =
+      '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+
+    try {
+
+      await signInWithPopup(auth, provider);
+
+    } catch (error) {
+
+      console.error(error);
+
+      loginError.style.display = "block";
+
+      loginError.textContent =
+        "Login failed: " + error.message;
+
+      googleLoginBtn.disabled = false;
+
+      googleLoginBtn.innerHTML =
+        '<i class="fab fa-google"></i> Continue with Google';
+
+    }
+
+  });
+
+
+  /* AUTH STATE */
+
+  onAuthStateChanged(auth, (user) => {
+
+    if (user) {
+
+      loginScreen.style.display = "none";
+
+      appScreen.style.display = "block";
+
+      userName.textContent =
+        user.displayName || "Oii User";
+
+      userEmail.textContent =
+        user.email || "";
+
+      if (user.photoURL) {
+
+        userPhoto.src = user.photoURL;
+
+        myStoryPhoto.src = user.photoURL;
+
+      }
+
+    } else {
+
+      loginScreen.style.display = "flex";
+
+      appScreen.style.display = "none";
+
+    }
+
+  });
+
+
+  /* LOGOUT */
+
+  logoutBtn.addEventListener("click", async () => {
+
+    try {
+
+      await signOut(auth);
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
+  });
+
+</script>
 
 </body>
 </html>
