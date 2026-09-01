@@ -704,6 +704,7 @@ button{font-family:inherit}
 }
 
 @media(max-width:450px){
+
   .app-container{
     border:none;
   }
@@ -715,6 +716,7 @@ button{font-family:inherit}
   .fab{
     right:20px;
   }
+
 }
 </style>
 </head>
@@ -1052,7 +1054,6 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-
 import {
   getAuth,
   GoogleAuthProvider,
@@ -1063,7 +1064,6 @@ import {
   browserLocalPersistence
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
 
 import {
   getFirestore,
@@ -1090,7 +1090,7 @@ from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 const firebaseConfig = {
 
   apiKey:
-    "AIzaSyCzPOXI0dJ33RJCVIUyCCFGyeI50Dvd0",
+    "AIzaSyCzPOAjXI0dJ33RJCVIUyCCFGyeI50Dvd0",
 
   authDomain:
     "oii-chat-8802e.firebaseapp.com",
@@ -1115,14 +1115,11 @@ const firebaseConfig = {
 const app =
   initializeApp(firebaseConfig);
 
-
 const auth =
   getAuth(app);
 
-
 const db =
   getFirestore(app);
-
 
 const provider =
   new GoogleAuthProvider();
@@ -1221,12 +1218,6 @@ let unsubscribeUserStatus = null;
 let allChats = [];
 
 let onlineTimer = null;
-
-
-/*
-  If heartbeat hasn't updated within
-  this time, show user as offline.
-*/
 
 const ONLINE_TIMEOUT = 60000;
 
@@ -1405,14 +1396,12 @@ async function saveUserProfile(user){
 
   };
 
-
   if(!existing.exists()){
 
     data.createdAt =
       serverTimestamp();
 
   }
-
 
   await setDoc(
     userRef,
@@ -1555,10 +1544,6 @@ function stopOnlineHeartbeat(){
 
 async function startApp(){
 
-  /*
-    Keep Google login session.
-  */
-
   try{
 
     await setPersistence(
@@ -1575,19 +1560,12 @@ async function startApp(){
 
   }
 
-
-  /*
-    Wait for Firebase to restore
-    the existing Google session.
-  */
-
   onAuthStateChanged(
     auth,
     async(user)=>{
 
       currentUser =
         user;
-
 
       if(user){
 
@@ -1600,16 +1578,13 @@ async function startApp(){
         chatScreen.style.display =
           "none";
 
-
         userName.textContent =
           user.displayName ||
           "Oii User";
 
-
         userEmail.textContent =
           user.email ||
           "";
-
 
         if(user.photoURL){
 
@@ -1620,7 +1595,6 @@ async function startApp(){
             user.photoURL;
 
         }
-
 
         try{
 
@@ -1673,8 +1647,6 @@ async function startApp(){
 }
 
 
-/* START */
-
 startApp();
 
 
@@ -1688,7 +1660,6 @@ document.addEventListener(
 
     if(!currentUser)
       return;
-
 
     if(document.hidden){
 
@@ -1714,10 +1685,6 @@ window.addEventListener(
 
     if(currentUser){
 
-      /*
-        Best-effort offline update.
-      */
-
       setUserOffline();
 
     }
@@ -1735,13 +1702,11 @@ function loadMyChats(){
   if(!currentUser)
     return;
 
-
   const chatsRef =
     collection(
       db,
       "chats"
     );
-
 
   const chatsQuery =
     query(
@@ -1753,10 +1718,8 @@ function loadMyChats(){
       )
     );
 
-
   if(unsubscribeChats)
     unsubscribeChats();
-
 
   unsubscribeChats =
     onSnapshot(
@@ -1764,7 +1727,6 @@ function loadMyChats(){
       async(snapshot)=>{
 
         allChats=[];
-
 
         for(
           const chatDoc
@@ -1774,7 +1736,6 @@ function loadMyChats(){
           const data =
             chatDoc.data();
 
-
           const otherUid =
             data.participants.find(
               uid =>
@@ -1782,10 +1743,8 @@ function loadMyChats(){
                 currentUser.uid
             );
 
-
           if(!otherUid)
             continue;
-
 
           try{
 
@@ -1798,12 +1757,10 @@ function loadMyChats(){
                 )
               );
 
-
             if(userSnap.exists()){
 
               const otherUser =
                 userSnap.data();
-
 
               allChats.push({
 
@@ -1837,7 +1794,6 @@ function loadMyChats(){
           }
 
         }
-
 
         renderAllChats();
 
@@ -1874,7 +1830,6 @@ function renderAllChats(){
 
   chatList.innerHTML="";
 
-
   const totalUnread =
     allChats.reduce(
       (sum,chat)=>
@@ -1882,7 +1837,6 @@ function renderAllChats(){
         (chat.unread || 0),
       0
     );
-
 
   if(totalUnread>0){
 
@@ -1901,17 +1855,14 @@ function renderAllChats(){
 
   }
 
-
   const activeTab =
     document
       .querySelector(".tab.active")
       ?.dataset.tab ||
     "all";
 
-
   let chats =
     [...allChats];
-
 
   if(activeTab==="unread"){
 
@@ -1923,7 +1874,6 @@ function renderAllChats(){
 
   }
 
-
   if(
     activeTab==="groups" ||
     activeTab==="channels"
@@ -1933,7 +1883,6 @@ function renderAllChats(){
 
   }
 
-
   chats.sort(
     (a,b)=>{
 
@@ -1942,18 +1891,15 @@ function renderAllChats(){
           ? a.updatedAt.toMillis()
           : 0;
 
-
       const bTime =
         b.updatedAt?.toMillis
           ? b.updatedAt.toMillis()
           : 0;
 
-
       return bTime-aTime;
 
     }
   );
-
 
   if(chats.length===0){
 
@@ -1975,7 +1921,6 @@ function renderAllChats(){
 
   }
 
-
   chats.forEach(
     chat =>
       renderChatCard(chat)
@@ -1995,27 +1940,22 @@ function renderChatCard(chat){
       "div"
     );
 
-
   div.className =
     "chat-card";
-
 
   if(chat.unread>0)
     div.classList.add(
       "has-unread"
     );
 
-
   const photo =
     chat.user.photoURL ||
     "https://i.pravatar.cc/100";
-
 
   const online =
     isUserOnline(
       chat.user
     );
-
 
   div.innerHTML=`
 
@@ -2034,7 +1974,6 @@ function renderChatCard(chat){
 
     </div>
 
-
     <div class="chat-info">
 
       <div class="chat-top">
@@ -2048,7 +1987,6 @@ function renderChatCard(chat){
 
         </span>
 
-
         <span class="chat-time">
 
           ${formatTime(
@@ -2058,7 +1996,6 @@ function renderChatCard(chat){
         </span>
 
       </div>
-
 
       <div class="chat-msg">
 
@@ -2070,7 +2007,6 @@ function renderChatCard(chat){
       </div>
 
     </div>
-
 
     ${
       chat.unread>0
@@ -2090,7 +2026,6 @@ function renderChatCard(chat){
 
   `;
 
-
   div.addEventListener(
     "click",
     ()=>{
@@ -2102,7 +2037,6 @@ function renderChatCard(chat){
 
     }
   );
-
 
   chatList.appendChild(
     div
@@ -2125,7 +2059,6 @@ async function loadUsers(){
 
   `;
 
-
   try{
 
     const usersSnapshot =
@@ -2136,20 +2069,16 @@ async function loadUsers(){
         )
       );
 
-
     usersList.innerHTML =
       "";
 
-
     let count=0;
-
 
     usersSnapshot.forEach(
       userDoc=>{
 
         const user =
           userDoc.data();
-
 
         if(
           !currentUser ||
@@ -2161,30 +2090,24 @@ async function loadUsers(){
 
         }
 
-
         count++;
-
 
         const div =
           document.createElement(
             "div"
           );
 
-
         div.className =
           "user-card";
-
 
         const photo =
           user.photoURL ||
           "https://i.pravatar.cc/100";
 
-
         const online =
           isUserOnline(
             user
           );
-
 
         div.innerHTML=`
 
@@ -2203,7 +2126,6 @@ async function loadUsers(){
 
           </div>
 
-
           <div class="user-card-info">
 
             <div class="user-card-name">
@@ -2214,7 +2136,6 @@ async function loadUsers(){
               )}
 
             </div>
-
 
             <div class="user-card-email">
 
@@ -2230,7 +2151,6 @@ async function loadUsers(){
 
         `;
 
-
         div.addEventListener(
           "click",
           async()=>{
@@ -2242,14 +2162,12 @@ async function loadUsers(){
           }
         );
 
-
         usersList.appendChild(
           div
         );
 
       }
     );
-
 
     if(count===0){
 
@@ -2299,13 +2217,11 @@ async function startPrivateChat(
   if(!currentUser)
     return;
 
-
   const chatId =
     makeChatId(
       currentUser.uid,
       otherUser.uid
     );
-
 
   const chatRef =
     doc(
@@ -2314,14 +2230,12 @@ async function startPrivateChat(
       chatId
     );
 
-
   try{
 
     const existing =
       await getDoc(
         chatRef
       );
-
 
     if(!existing.exists()){
 
@@ -2358,10 +2272,8 @@ async function startPrivateChat(
 
     }
 
-
     usersModal.style.display =
       "none";
-
 
     openChat(
       chatId,
@@ -2391,12 +2303,10 @@ function updateChatStatus(user){
   const online =
     isUserOnline(user);
 
-
   chatUserStatus.textContent =
     online
       ? "👀 Online"
       : "🫣 Offline";
-
 
   chatUserStatus.style.color =
     online
@@ -2418,29 +2328,23 @@ async function openChat(
   currentChatId =
     chatId;
 
-
   currentChatUser =
     otherUser;
-
 
   chatUserName.textContent =
     otherUser.name ||
     "Oii User";
 
-
   chatUserPhoto.src =
     otherUser.photoURL ||
     "https://i.pravatar.cc/100";
-
 
   updateChatStatus(
     otherUser
   );
 
-
   chatScreen.style.display =
     "block";
-
 
   messages.innerHTML=`
 
@@ -2450,12 +2354,8 @@ async function openChat(
 
   `;
 
-
   messageInput.value =
     "";
-
-
-  /* CLEAR UNREAD */
 
   try{
 
@@ -2480,9 +2380,6 @@ async function openChat(
 
   }
 
-
-  /* STOP OLD STATUS */
-
   if(unsubscribeUserStatus){
 
     unsubscribeUserStatus();
@@ -2491,11 +2388,6 @@ async function openChat(
       null;
 
   }
-
-
-  /*
-    LIVE USER STATUS
-  */
 
   unsubscribeUserStatus =
     onSnapshot(
@@ -2509,10 +2401,8 @@ async function openChat(
         if(!snapshot.exists())
           return;
 
-
         const freshUser =
           snapshot.data();
-
 
         currentChatUser = {
 
@@ -2523,7 +2413,6 @@ async function openChat(
 
         };
 
-
         updateChatStatus(
           currentChatUser
         );
@@ -2531,12 +2420,8 @@ async function openChat(
       }
     );
 
-
-  /* MESSAGES */
-
   if(unsubscribeMessages)
     unsubscribeMessages();
-
 
   const messagesRef =
     collection(
@@ -2545,7 +2430,6 @@ async function openChat(
       chatId,
       "messages"
     );
-
 
   const messagesQuery =
     query(
@@ -2556,7 +2440,6 @@ async function openChat(
       )
     );
 
-
   unsubscribeMessages =
     onSnapshot(
       messagesQuery,
@@ -2564,7 +2447,6 @@ async function openChat(
 
         messages.innerHTML =
           "";
-
 
         if(snapshot.empty){
 
@@ -2580,7 +2462,6 @@ async function openChat(
 
         }
 
-
         snapshot.forEach(
           messageDoc=>{
 
@@ -2590,7 +2471,6 @@ async function openChat(
 
           }
         );
-
 
         scrollMessages();
 
@@ -2616,7 +2496,6 @@ async function openChat(
       }
     );
 
-
   setTimeout(
     ()=>{
 
@@ -2640,73 +2519,59 @@ function renderMessage(data){
       "div"
     );
 
-
   row.className =
     "message-row";
-
 
   const mine =
     currentUser &&
     data.senderId ===
     currentUser.uid;
 
-
   if(mine)
     row.classList.add(
       "mine"
     );
-
 
   const bubble =
     document.createElement(
       "div"
     );
 
-
   bubble.className =
     "message";
-
 
   const text =
     document.createElement(
       "div"
     );
 
-
   text.textContent =
     data.text || "";
-
 
   const time =
     document.createElement(
       "span"
     );
 
-
   time.className =
     "message-time";
-
 
   time.textContent =
     formatTime(
       data.createdAt
     );
 
-
   bubble.appendChild(
     text
   );
-
 
   bubble.appendChild(
     time
   );
 
-
   row.appendChild(
     bubble
   );
-
 
   messages.appendChild(
     row
@@ -2724,7 +2589,6 @@ async function sendMessage(){
   const text =
     messageInput.value.trim();
 
-
   if(
     !text ||
     !currentUser ||
@@ -2736,14 +2600,11 @@ async function sendMessage(){
 
   }
 
-
   messageInput.value =
     "";
 
-
   sendMessageBtn.disabled =
     true;
-
 
   try{
 
@@ -2754,12 +2615,10 @@ async function sendMessage(){
         currentChatId
       );
 
-
     const chatSnap =
       await getDoc(
         chatRef
       );
-
 
     if(!chatSnap.exists()){
 
@@ -2769,10 +2628,8 @@ async function sendMessage(){
 
     }
 
-
     const chatData =
       chatSnap.data();
-
 
     if(
       !chatData.participants.includes(
@@ -2785,7 +2642,6 @@ async function sendMessage(){
       );
 
     }
-
 
     await addDoc(
       collection(
@@ -2811,12 +2667,10 @@ async function sendMessage(){
       }
     );
 
-
     const oldUnread =
       chatData.unread?.[
         currentChatUser.uid
       ] || 0;
-
 
     await setDoc(
       chatRef,
@@ -2839,7 +2693,6 @@ async function sendMessage(){
         merge:true
       }
     );
-
 
   }catch(error){
 
@@ -2935,14 +2788,11 @@ backChatBtn.addEventListener(
     chatScreen.style.display =
       "none";
 
-
     currentChatId =
       null;
 
-
     currentChatUser =
       null;
-
 
     if(unsubscribeMessages){
 
@@ -2952,7 +2802,6 @@ backChatBtn.addEventListener(
         null;
 
     }
-
 
     if(unsubscribeUserStatus){
 
@@ -3011,7 +2860,6 @@ logoutBtn.addEventListener(
 
       stopOnlineHeartbeat();
 
-
       if(unsubscribeChats){
 
         unsubscribeChats();
@@ -3020,7 +2868,6 @@ logoutBtn.addEventListener(
           null;
 
       }
-
 
       if(unsubscribeMessages){
 
@@ -3031,7 +2878,6 @@ logoutBtn.addEventListener(
 
       }
 
-
       if(unsubscribeUserStatus){
 
         unsubscribeUserStatus();
@@ -3040,7 +2886,6 @@ logoutBtn.addEventListener(
           null;
 
       }
-
 
       await signOut(
         auth
@@ -3078,15 +2923,12 @@ document
             )
           );
 
-
         tab.classList.add(
           "active"
         );
 
-
         const type =
           tab.dataset.tab;
-
 
         if(type === "groups"){
 
@@ -3141,7 +2983,6 @@ document
               "active"
             )
           );
-
 
         item.classList.add(
           "active"
