@@ -629,6 +629,8 @@ button{font-family:inherit}
   font-size:10px;
 }
 
+/* MESSAGES */
+
 .messages{
   flex:1;
   overflow-y:auto;
@@ -660,12 +662,22 @@ button{font-family:inherit}
   background:linear-gradient(45deg,#007ea0,#a90055);
 }
 
-.message-time{
-  display:block;
+.message-meta{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:3px;
   margin-top:3px;
+}
+
+.message-time{
   font-size:8px;
   color:rgba(255,255,255,.55);
-  text-align:right;
+}
+
+.message-status{
+  font-size:10px;
+  line-height:1;
 }
 
 .message-input-area{
@@ -701,6 +713,11 @@ button{font-family:inherit}
   background:linear-gradient(45deg,#00d4ff,#ff007f);
   color:white;
   cursor:pointer;
+}
+
+#sendMessageBtn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
 }
 
 @media(max-width:450px){
@@ -1045,7 +1062,7 @@ button{font-family:inherit}
 </div>
 
 
-<!-- FIREBASE SCRIPT -->
+<!-- FIREBASE -->
 
 <script type="module">
 
@@ -1078,7 +1095,8 @@ import {
   onSnapshot,
   orderBy,
   serverTimestamp,
-  updateDoc
+  updateDoc,
+  writeBatch
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
@@ -1109,6 +1127,7 @@ const firebaseConfig = {
 
   measurementId:
     "G-304SPRZSPL"
+
 };
 
 
@@ -1220,6 +1239,18 @@ let allChats = [];
 let onlineTimer = null;
 
 const ONLINE_TIMEOUT = 60000;
+
+
+/*
+  Global message listeners.
+
+  These listeners allow Oii Chat to detect
+  messages arriving while the receiver is
+  on the main chat screen.
+
+  chatId -> unsubscribe function
+*/
+const deliveryListeners = new Map();
 
 
 /* =========================
@@ -1539,6 +1570,226 @@ function stopOnlineHeartbeat(){
 
 
 /* =========================
+   DELIVERY LISTENER
+========================= */
+
+function stopDeliveryListener(chatId){
+
+  const unsubscribe =
+    deliveryListeners.get(chatId);
+
+  if(unsubscribe){
+
+    unsubscribe();
+
+    deliveryListeners.delete(chatId);
+
+  }
+
+}
+
+
+/*
+  Listen to messages in a chat.
+
+  When a message sent to the current user
+  arrives with "sent" status, change it to
+  "delivered".
+
+  If the chat is currently open, it becomes
+  "read" immediately.
+*/
+
+function startDeliveryListener(
+  chatId
+){
+
+  if(!currentUser)
+    return;
+
+  if(deliveryListeners.has(chatId))
+    return;
+
+  const messagesRef =
+    collection(
+      db,
+      "chats",
+      chatId,
+      "messages"
+    );
+
+  const messagesQuery =
+    query(
+      messagesRef,
+      orderBy(
+        "createdAt",
+        "asc"
+      )
+    );
+
+  const unsubscribe =
+    onSnapshot(
+      messagesQuery,
+      async(snapshot)=>{
+
+        const updates = [];
+
+        snapshot.forEach(
+          messageDoc=>{
+
+            const data =
+              messageDoc.data();
+
+            /*
+              Only messages received by
+              current user are handled.
+            */
+            if(
+              data.receiverId !==
+              currentUser.uid
+            ){
+
+              return;
+
+            }
+
+            /*
+              If current chat is open,
+              mark incoming message as READ.
+            */
+            if(
+              currentChatId === chatId &&
+              chatScreen.style.display === "block"
+            ){
+
+              if(
+                data.status === "sent" ||
+                data.status === "delivered"
+              ){
+
+                updates.push(
+                  updateDoc(
+                    messageDoc.ref,
+                    {
+                      status:"read"
+                    }
+                  )
+                );
+
+              }
+
+            }
+
+            /*
+              If chat is not open, message is
+              delivered but not read.
+            */
+            else if(
+              data.status === "sent"
+            ){
+
+              updates.push(
+                updateDoc(
+                  messageDoc.ref,
+                  {
+                    status:"delivered"
+                  }
+                )
+              );
+
+            }
+
+          }
+        );
+
+        if(updates.length){
+
+          try{
+
+            await Promise.all(
+              updates
+            );
+
+          }catch(error){
+
+            console.error(
+              "Delivery/read update error:",
+              error
+            );
+
+          }
+
+        }
+
+      },
+      error=>{
+
+        console.error(
+          "Delivery listener error:",
+          error
+        );
+
+      }
+    );
+
+  deliveryListeners.set(
+    chatId,
+    unsubscribe
+  );
+
+}
+
+
+/* =========================
+   START ALL DELIVERY LISTENERS
+========================= */
+
+function startAllDeliveryListeners(){
+
+  if(!currentUser)
+    return;
+
+  allChats.forEach(
+    chat=>{
+
+      startDeliveryListener(
+        chat.id
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   STOP ALL DELIVERY LISTENERS
+========================= */
+
+function stopAllDeliveryListeners(){
+
+  deliveryListeners.forEach(
+    unsubscribe=>{
+
+      try{
+
+        unsubscribe();
+
+      }catch(error){
+
+        console.error(error);
+
+      }
+
+    }
+  );
+
+  deliveryListeners.clear();
+
+}
+
+
+/* =========================
    AUTH START
 ========================= */
 
@@ -1630,6 +1881,8 @@ async function startApp(){
 
         stopOnlineHeartbeat();
 
+        stopAllDeliveryListeners();
+
         loginScreen.style.display =
           "flex";
 
@@ -1669,6 +1922,11 @@ document.addEventListener(
 
       setUserOnline();
 
+      /*
+        When user comes back to app,
+        delivery listeners continue and
+        current open chat messages become read.
+      */
     }
 
   }
@@ -1796,6 +2054,13 @@ function loadMyChats(){
         }
 
         renderAllChats();
+
+        /*
+          Start a realtime listener for every
+          private chat so incoming messages
+          can become 💓 Delivered.
+        */
+        startAllDeliveryListeners();
 
       },
       error=>{
@@ -2275,6 +2540,14 @@ async function startPrivateChat(
     usersModal.style.display =
       "none";
 
+    /*
+      Start delivery listener immediately
+      for newly created chat.
+    */
+    startDeliveryListener(
+      chatId
+    );
+
     openChat(
       chatId,
       otherUser
@@ -2312,6 +2585,92 @@ function updateChatStatus(user){
     online
       ? "#00ff66"
       : "#888";
+
+}
+
+
+/* =========================
+   MARK CHAT MESSAGES READ
+========================= */
+
+async function markChatMessagesRead(
+  chatId
+){
+
+  if(!currentUser)
+    return;
+
+  try{
+
+    const messagesRef =
+      collection(
+        db,
+        "chats",
+        chatId,
+        "messages"
+      );
+
+    const messagesQuery =
+      query(
+        messagesRef,
+        orderBy(
+          "createdAt",
+          "asc"
+        )
+      );
+
+    const snapshot =
+      await getDocs(
+        messagesQuery
+      );
+
+    const updates=[];
+
+    snapshot.forEach(
+      messageDoc=>{
+
+        const data =
+          messageDoc.data();
+
+        if(
+          data.receiverId ===
+          currentUser.uid &&
+          (
+            data.status === "sent" ||
+            data.status === "delivered"
+          )
+        ){
+
+          updates.push(
+            updateDoc(
+              messageDoc.ref,
+              {
+                status:"read"
+              }
+            )
+          );
+
+        }
+
+      }
+    );
+
+    if(updates.length){
+
+      await Promise.all(
+        updates
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Read status error:",
+      error
+    );
+
+  }
 
 }
 
@@ -2357,6 +2716,10 @@ async function openChat(
   messageInput.value =
     "";
 
+  /*
+    Clear unread count.
+  */
+
   try{
 
     await updateDoc(
@@ -2380,6 +2743,20 @@ async function openChat(
 
   }
 
+
+  /*
+    Start delivery listener.
+  */
+
+  startDeliveryListener(
+    chatId
+  );
+
+
+  /*
+    Stop previous user status listener.
+  */
+
   if(unsubscribeUserStatus){
 
     unsubscribeUserStatus();
@@ -2388,6 +2765,11 @@ async function openChat(
       null;
 
   }
+
+
+  /*
+    Listen to other user's online status.
+  */
 
   unsubscribeUserStatus =
     onSnapshot(
@@ -2420,8 +2802,14 @@ async function openChat(
       }
     );
 
+
+  /*
+    Stop previous message listener.
+  */
+
   if(unsubscribeMessages)
     unsubscribeMessages();
+
 
   const messagesRef =
     collection(
@@ -2431,6 +2819,7 @@ async function openChat(
       "messages"
     );
 
+
   const messagesQuery =
     query(
       messagesRef,
@@ -2439,6 +2828,7 @@ async function openChat(
         "asc"
       )
     );
+
 
   unsubscribeMessages =
     onSnapshot(
@@ -2474,6 +2864,15 @@ async function openChat(
 
         scrollMessages();
 
+        /*
+          Chat is open, so incoming
+          messages are READ.
+        */
+
+        markChatMessagesRead(
+          chatId
+        );
+
       },
       error=>{
 
@@ -2496,6 +2895,7 @@ async function openChat(
       }
     );
 
+
   setTimeout(
     ()=>{
 
@@ -2504,6 +2904,31 @@ async function openChat(
     },
     100
   );
+
+}
+
+
+/* =========================
+   MESSAGE STATUS
+========================= */
+
+function getMessageStatusIcon(
+  status
+){
+
+  if(status === "read"){
+
+    return "💞";
+
+  }
+
+  if(status === "delivered"){
+
+    return "💓";
+
+  }
+
+  return "🚀";
 
 }
 
@@ -2532,6 +2957,7 @@ function renderMessage(data){
       "mine"
     );
 
+
   const bubble =
     document.createElement(
       "div"
@@ -2540,6 +2966,7 @@ function renderMessage(data){
   bubble.className =
     "message";
 
+
   const text =
     document.createElement(
       "div"
@@ -2547,6 +2974,16 @@ function renderMessage(data){
 
   text.textContent =
     data.text || "";
+
+
+  const meta =
+    document.createElement(
+      "div"
+    );
+
+  meta.className =
+    "message-meta";
+
 
   const time =
     document.createElement(
@@ -2561,12 +2998,45 @@ function renderMessage(data){
       data.createdAt
     );
 
+
+  meta.appendChild(
+    time
+  );
+
+
+  /*
+    Status icon is shown only
+    on messages sent by me.
+  */
+
+  if(mine){
+
+    const status =
+      document.createElement(
+        "span"
+      );
+
+    status.className =
+      "message-status";
+
+    status.textContent =
+      getMessageStatusIcon(
+        data.status
+      );
+
+    meta.appendChild(
+      status
+    );
+
+  }
+
+
   bubble.appendChild(
     text
   );
 
   bubble.appendChild(
-    time
+    meta
   );
 
   row.appendChild(
@@ -2606,6 +3076,7 @@ async function sendMessage(){
   sendMessageBtn.disabled =
     true;
 
+
   try{
 
     const chatRef =
@@ -2615,10 +3086,12 @@ async function sendMessage(){
         currentChatId
       );
 
+
     const chatSnap =
       await getDoc(
         chatRef
       );
+
 
     if(!chatSnap.exists()){
 
@@ -2628,8 +3101,10 @@ async function sendMessage(){
 
     }
 
+
     const chatData =
       chatSnap.data();
+
 
     if(
       !chatData.participants.includes(
@@ -2642,6 +3117,11 @@ async function sendMessage(){
       );
 
     }
+
+
+    /*
+      Create message with SENT status.
+    */
 
     await addDoc(
       collection(
@@ -2662,15 +3142,24 @@ async function sendMessage(){
           text,
 
         createdAt:
-          serverTimestamp()
+          serverTimestamp(),
+
+        status:
+          "sent"
 
       }
     );
+
+
+    /*
+      Update chat preview and unread count.
+    */
 
     const oldUnread =
       chatData.unread?.[
         currentChatUser.uid
       ] || 0;
+
 
     await setDoc(
       chatRef,
@@ -2694,9 +3183,17 @@ async function sendMessage(){
       }
     );
 
+
   }catch(error){
 
     console.error(error);
+
+    /*
+      Put message back if sending failed.
+    */
+
+    messageInput.value =
+      text;
 
     alert(
       "Message send failed 😕\n\n" +
@@ -2794,6 +3291,7 @@ backChatBtn.addEventListener(
     currentChatUser =
       null;
 
+
     if(unsubscribeMessages){
 
       unsubscribeMessages();
@@ -2802,6 +3300,7 @@ backChatBtn.addEventListener(
         null;
 
     }
+
 
     if(unsubscribeUserStatus){
 
@@ -2860,6 +3359,9 @@ logoutBtn.addEventListener(
 
       stopOnlineHeartbeat();
 
+      stopAllDeliveryListeners();
+
+
       if(unsubscribeChats){
 
         unsubscribeChats();
@@ -2868,6 +3370,7 @@ logoutBtn.addEventListener(
           null;
 
       }
+
 
       if(unsubscribeMessages){
 
@@ -2878,6 +3381,7 @@ logoutBtn.addEventListener(
 
       }
 
+
       if(unsubscribeUserStatus){
 
         unsubscribeUserStatus();
@@ -2886,6 +3390,7 @@ logoutBtn.addEventListener(
           null;
 
       }
+
 
       await signOut(
         auth
@@ -2929,6 +3434,7 @@ document
 
         const type =
           tab.dataset.tab;
+
 
         if(type === "groups"){
 
