@@ -26,7 +26,7 @@ button{font-family:inherit}
 
 #loginScreen{
   min-height:100vh;
-  display:flex;
+  display:none;
   align-items:center;
   justify-content:center;
   padding:20px;
@@ -102,7 +102,9 @@ button{font-family:inherit}
   font-size:12px;
 }
 
-#appScreen{display:none}
+#appScreen{
+  display:none;
+}
 
 .app-container{
   width:100%;
@@ -142,7 +144,9 @@ button{font-family:inherit}
   font-size:18px;
 }
 
-.header-icons i{cursor:pointer}
+.header-icons i{
+  cursor:pointer;
+}
 
 .user-profile{
   display:flex;
@@ -201,7 +205,9 @@ button{font-family:inherit}
   scrollbar-width:none;
 }
 
-.stories-container::-webkit-scrollbar{display:none}
+.stories-container::-webkit-scrollbar{
+  display:none;
+}
 
 .story{
   display:flex;
@@ -255,7 +261,9 @@ button{font-family:inherit}
   scrollbar-width:none;
 }
 
-.tabs::-webkit-scrollbar{display:none}
+.tabs::-webkit-scrollbar{
+  display:none;
+}
 
 .tab{
   padding:7px 16px;
@@ -275,8 +283,6 @@ button{font-family:inherit}
   font-weight:600;
   border:none;
 }
-
-/* UNREAD TAB */
 
 .unread-badge{
   display:inline-flex;
@@ -334,8 +340,6 @@ button{font-family:inherit}
   border-radius:50%;
   object-fit:cover;
 }
-
-/* ONLINE / OFFLINE */
 
 .online-dot{
   position:absolute;
@@ -466,9 +470,13 @@ button{font-family:inherit}
   cursor:pointer;
 }
 
-.nav-item.active{color:#00d4ff}
+.nav-item.active{
+  color:#00d4ff;
+}
 
-.nav-item i{font-size:18px}
+.nav-item i{
+  font-size:18px;
+}
 
 /* MODAL */
 
@@ -501,7 +509,9 @@ button{font-family:inherit}
   border-bottom:1px solid rgba(255,255,255,.08);
 }
 
-.modal-header h3{font-size:18px}
+.modal-header h3{
+  font-size:18px;
+}
 
 .close-btn{
   background:none;
@@ -678,7 +688,9 @@ button{font-family:inherit}
   font-size:13px;
 }
 
-#messageInput::placeholder{color:#777}
+#messageInput::placeholder{
+  color:#777;
+}
 
 #sendMessageBtn{
   width:45px;
@@ -692,9 +704,17 @@ button{font-family:inherit}
 }
 
 @media(max-width:450px){
-  .app-container{border:none}
-  .nav{max-width:100%}
-  .fab{right:20px}
+  .app-container{
+    border:none;
+  }
+
+  .nav{
+    max-width:100%;
+  }
+
+  .fab{
+    right:20px;
+  }
 }
 </style>
 </head>
@@ -704,11 +724,16 @@ button{font-family:inherit}
 <!-- LOGIN -->
 
 <div id="loginScreen">
+
   <div class="login-box">
 
-    <div class="login-logo">💬</div>
+    <div class="login-logo">
+      💬
+    </div>
 
-    <div class="login-title">Oii Chat</div>
+    <div class="login-title">
+      Oii Chat
+    </div>
 
     <div class="login-subtitle">
       Tamil First Chat App 💙
@@ -722,6 +747,7 @@ button{font-family:inherit}
     <div id="loginError"></div>
 
   </div>
+
 </div>
 
 
@@ -729,165 +755,212 @@ button{font-family:inherit}
 
 <div id="appScreen">
 
-<div class="app-container">
+  <div class="app-container">
 
-  <div class="header">
+    <div class="header">
 
-    <div class="logo-text">
-      Oii Chat 💬
-    </div>
-
-    <div class="header-icons">
-
-      <i class="fas fa-search" id="searchBtn"></i>
-
-      <i class="fas fa-ellipsis-v" id="moreBtn"></i>
-
-    </div>
-
-  </div>
-
-
-  <!-- PROFILE -->
-
-  <div class="user-profile">
-
-    <img id="userPhoto"
-         src="https://i.pravatar.cc/100">
-
-    <div class="user-details">
-
-      <div class="user-name" id="userName">
-        Oii User
+      <div class="logo-text">
+        Oii Chat 💬
       </div>
 
-      <div class="user-email" id="userEmail">
-        Loading...
+      <div class="header-icons">
+
+        <i class="fas fa-search"
+           id="searchBtn"></i>
+
+        <i class="fas fa-ellipsis-v"
+           id="moreBtn"></i>
+
       </div>
 
     </div>
 
-    <button class="logout-btn" id="logoutBtn">
-      Logout
+
+    <!-- PROFILE -->
+
+    <div class="user-profile">
+
+      <img id="userPhoto"
+           src="https://i.pravatar.cc/100">
+
+      <div class="user-details">
+
+        <div class="user-name"
+             id="userName">
+          Oii User
+        </div>
+
+        <div class="user-email"
+             id="userEmail">
+          Loading...
+        </div>
+
+      </div>
+
+      <button class="logout-btn"
+              id="logoutBtn">
+        Logout
+      </button>
+
+    </div>
+
+
+    <!-- STORIES -->
+
+    <div class="stories-container">
+
+      <div class="story">
+
+        <div class="story-avatar">
+
+          <img id="myStoryPhoto"
+               src="https://i.pravatar.cc/100">
+
+          <div class="add-story">
+            +
+          </div>
+
+        </div>
+
+        <span>
+          My Story
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- TABS -->
+
+    <div class="tabs">
+
+      <div class="tab active"
+           data-tab="all">
+        All Chats
+      </div>
+
+      <div class="tab"
+           data-tab="unread">
+
+        Unread
+
+        <span id="unreadTabBadge"
+              class="unread-badge"
+              style="display:none">
+          0
+        </span>
+
+      </div>
+
+      <div class="tab"
+           data-tab="groups">
+        Groups
+      </div>
+
+      <div class="tab"
+           data-tab="channels">
+        Channels
+      </div>
+
+    </div>
+
+
+    <!-- CHAT LIST -->
+
+    <div class="chat-list"
+         id="chatList">
+
+      <div class="empty">
+        Loading chats... 💬
+      </div>
+
+    </div>
+
+
+    <!-- FAB -->
+
+    <button class="fab"
+            id="newChatBtn">
+
+      <i class="fas fa-plus"></i>
+
     </button>
 
-  </div>
 
+    <!-- NAV -->
 
-  <!-- STORIES -->
+    <div class="nav">
 
-  <div class="stories-container">
+      <div class="nav-item active">
 
-    <div class="story">
+        <i class="fas fa-comment-dots"></i>
 
-      <div class="story-avatar">
-
-        <img id="myStoryPhoto"
-             src="https://i.pravatar.cc/100">
-
-        <div class="add-story">+</div>
+        <span>
+          Chats
+        </span>
 
       </div>
 
-      <span>My Story</span>
+      <div class="nav-item">
+
+        <i class="fas fa-phone-alt"></i>
+
+        <span>
+          Calls
+        </span>
+
+      </div>
+
+      <div class="nav-item">
+
+        <i class="fas fa-circle-notch"></i>
+
+        <span>
+          Status
+        </span>
+
+      </div>
+
+      <div class="nav-item">
+
+        <i class="fas fa-users"></i>
+
+        <span>
+          Communities
+        </span>
+
+      </div>
+
+      <div class="nav-item">
+
+        <i class="fas fa-cog"></i>
+
+        <span>
+          Settings
+        </span>
+
+      </div>
 
     </div>
 
   </div>
 
-
-  <!-- TABS -->
-
-  <div class="tabs">
-
-    <div class="tab active" data-tab="all">
-      All Chats
-    </div>
-
-    <div class="tab" data-tab="unread">
-      Unread
-      <span id="unreadTabBadge"
-            class="unread-badge"
-            style="display:none">
-        0
-      </span>
-    </div>
-
-    <div class="tab" data-tab="groups">
-      Groups
-    </div>
-
-    <div class="tab" data-tab="channels">
-      Channels
-    </div>
-
-  </div>
-
-
-  <!-- CHAT LIST -->
-
-  <div class="chat-list" id="chatList">
-
-    <div class="empty">
-      Loading chats... 💬
-    </div>
-
-  </div>
-
-
-  <!-- FAB -->
-
-  <button class="fab" id="newChatBtn">
-
-    <i class="fas fa-plus"></i>
-
-  </button>
-
-
-  <!-- NAV -->
-
-  <div class="nav">
-
-    <div class="nav-item active">
-      <i class="fas fa-comment-dots"></i>
-      <span>Chats</span>
-    </div>
-
-    <div class="nav-item">
-      <i class="fas fa-phone-alt"></i>
-      <span>Calls</span>
-    </div>
-
-    <div class="nav-item">
-      <i class="fas fa-circle-notch"></i>
-      <span>Status</span>
-    </div>
-
-    <div class="nav-item">
-      <i class="fas fa-users"></i>
-      <span>Communities</span>
-    </div>
-
-    <div class="nav-item">
-      <i class="fas fa-cog"></i>
-      <span>Settings</span>
-    </div>
-
-  </div>
-
-</div>
 </div>
 
 
 <!-- USERS MODAL -->
 
-<div class="modal" id="usersModal">
+<div class="modal"
+     id="usersModal">
 
   <div class="modal-box">
 
     <div class="modal-header">
 
-      <h3>New Chat 💬</h3>
+      <h3>
+        New Chat 💬
+      </h3>
 
       <button class="close-btn"
               id="closeUsersModal">
@@ -914,59 +987,63 @@ button{font-family:inherit}
 
 <div id="chatScreen">
 
-<div class="chat-page">
+  <div class="chat-page">
 
-  <div class="chat-header">
+    <div class="chat-header">
 
-    <button class="back-btn"
-            id="backChatBtn">
+      <button class="back-btn"
+              id="backChatBtn">
 
-      <i class="fas fa-arrow-left"></i>
+        <i class="fas fa-arrow-left"></i>
 
-    </button>
+      </button>
 
-    <img id="chatUserPhoto"
-         src="https://i.pravatar.cc/100">
+      <img id="chatUserPhoto"
+           src="https://i.pravatar.cc/100">
 
-    <div class="chat-header-info">
+      <div class="chat-header-info">
 
-      <div class="chat-header-name"
-           id="chatUserName">
-        User
+        <div class="chat-header-name"
+             id="chatUserName">
+          User
+        </div>
+
+        <div class="chat-header-status"
+             id="chatUserStatus">
+          🫣 Offline
+        </div>
+
       </div>
 
-      <div class="chat-header-status"
-           id="chatUserStatus">
-        🫣 Offline
-      </div>
+    </div>
+
+
+    <div class="messages"
+         id="messages">
+    </div>
+
+
+    <div class="message-input-area">
+
+      <input type="text"
+             id="messageInput"
+             placeholder="Type a message..."
+             autocomplete="off">
+
+      <button id="sendMessageBtn">
+
+        <i class="fas fa-paper-plane"></i>
+
+      </button>
 
     </div>
 
   </div>
 
-
-  <div class="messages" id="messages"></div>
-
-
-  <div class="message-input-area">
-
-    <input type="text"
-           id="messageInput"
-           placeholder="Type a message..."
-           autocomplete="off">
-
-    <button id="sendMessageBtn">
-
-      <i class="fas fa-paper-plane"></i>
-
-    </button>
-
-  </div>
-
 </div>
 
-</div>
 
+<!-- FIREBASE SCRIPT -->
 
 <script type="module">
 
@@ -975,14 +1052,18 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
+
 import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
-  signOut
+  signOut,
+  setPersistence,
+  browserLocalPersistence
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
 
 import {
   getFirestore,
@@ -1002,12 +1083,14 @@ import {
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-/* FIREBASE CONFIG */
+/* =========================
+   FIREBASE
+========================= */
 
 const firebaseConfig = {
 
   apiKey:
-    "AIzaSyCzPOAjXI0dJ33RJCVIUyCCFGyeI50Dvd0",
+    "AIzaSyCzPOXI0dJ33RJCVIUyCCFGyeI50Dvd0",
 
   authDomain:
     "oii-chat-8802e.firebaseapp.com",
@@ -1029,16 +1112,25 @@ const firebaseConfig = {
 };
 
 
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-const provider = new GoogleAuthProvider();
+const app =
+  initializeApp(firebaseConfig);
 
 
-/* ELEMENTS */
+const auth =
+  getAuth(app);
+
+
+const db =
+  getFirestore(app);
+
+
+const provider =
+  new GoogleAuthProvider();
+
+
+/* =========================
+   ELEMENTS
+========================= */
 
 const loginScreen =
   document.getElementById("loginScreen");
@@ -1110,7 +1202,9 @@ const unreadTabBadge =
   document.getElementById("unreadTabBadge");
 
 
-/* VARIABLES */
+/* =========================
+   VARIABLES
+========================= */
 
 let currentUser = null;
 
@@ -1122,10 +1216,24 @@ let unsubscribeMessages = null;
 
 let unsubscribeChats = null;
 
+let unsubscribeUserStatus = null;
+
 let allChats = [];
 
+let onlineTimer = null;
 
-/* CHAT ID */
+
+/*
+  If heartbeat hasn't updated within
+  this time, show user as offline.
+*/
+
+const ONLINE_TIMEOUT = 60000;
+
+
+/* =========================
+   CHAT ID
+========================= */
 
 function makeChatId(uid1,uid2){
 
@@ -1136,11 +1244,14 @@ function makeChatId(uid1,uid2){
 }
 
 
-/* TIME */
+/* =========================
+   TIME
+========================= */
 
 function formatTime(timestamp){
 
-  if(!timestamp) return "";
+  if(!timestamp)
+    return "";
 
   const date =
     timestamp.toDate
@@ -1158,7 +1269,37 @@ function formatTime(timestamp){
 }
 
 
-/* ESCAPE */
+/* =========================
+   ONLINE CHECK
+========================= */
+
+function isUserOnline(user){
+
+  if(!user)
+    return false;
+
+  if(user.online !== true)
+    return false;
+
+  if(!user.lastSeen)
+    return false;
+
+  const lastSeen =
+    user.lastSeen.toMillis
+      ? user.lastSeen.toMillis()
+      : new Date(user.lastSeen).getTime();
+
+  return (
+    Date.now() - lastSeen
+    < ONLINE_TIMEOUT
+  );
+
+}
+
+
+/* =========================
+   HTML ESCAPE
+========================= */
 
 function escapeHTML(value){
 
@@ -1166,22 +1307,28 @@ function escapeHTML(value){
     document.createElement("div");
 
   div.textContent =
-    value == null ? "" : String(value);
+    value == null
+      ? ""
+      : String(value);
 
   return div.innerHTML;
 
 }
 
 
-/* GOOGLE LOGIN */
+/* =========================
+   GOOGLE LOGIN
+========================= */
 
 googleLoginBtn.addEventListener(
   "click",
   async()=>{
 
-    loginError.style.display="none";
+    loginError.style.display =
+      "none";
 
-    googleLoginBtn.disabled=true;
+    googleLoginBtn.disabled =
+      true;
 
     googleLoginBtn.innerHTML =
       '<i class="fas fa-spinner fa-spin"></i> Signing in...';
@@ -1197,12 +1344,15 @@ googleLoginBtn.addEventListener(
 
       console.error(error);
 
-      loginError.style.display="block";
+      loginError.style.display =
+        "block";
 
       loginError.textContent =
-        "Login failed: "+error.message;
+        "Login failed: " +
+        error.message;
 
-      googleLoginBtn.disabled=false;
+      googleLoginBtn.disabled =
+        false;
 
       googleLoginBtn.innerHTML =
         '<i class="fab fa-google"></i> Continue with Google';
@@ -1213,28 +1363,37 @@ googleLoginBtn.addEventListener(
 );
 
 
-/* SAVE USER */
+/* =========================
+   SAVE USER
+========================= */
 
 async function saveUserProfile(user){
 
   const userRef =
-    doc(db,"users",user.uid);
+    doc(
+      db,
+      "users",
+      user.uid
+    );
 
   const existing =
     await getDoc(userRef);
 
-  const data={
+  const data = {
 
     uid:user.uid,
 
     name:
-      user.displayName || "Oii User",
+      user.displayName ||
+      "Oii User",
 
     email:
-      user.email || "",
+      user.email ||
+      "",
 
     photoURL:
-      user.photoURL || "",
+      user.photoURL ||
+      "",
 
     online:true,
 
@@ -1246,12 +1405,14 @@ async function saveUserProfile(user){
 
   };
 
+
   if(!existing.exists()){
 
     data.createdAt =
       serverTimestamp();
 
   }
+
 
   await setDoc(
     userRef,
@@ -1262,68 +1423,280 @@ async function saveUserProfile(user){
 }
 
 
-/* AUTH */
+/* =========================
+   SET ONLINE
+========================= */
 
-onAuthStateChanged(
-  auth,
-  async(user)=>{
+async function setUserOnline(){
 
-    currentUser=user;
+  if(!currentUser)
+    return;
 
-    if(user){
+  try{
 
-      loginScreen.style.display="none";
+    await setDoc(
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      ),
+      {
 
-      appScreen.style.display="block";
+        online:true,
 
-      userName.textContent =
-        user.displayName || "Oii User";
+        lastSeen:
+          serverTimestamp()
 
-      userEmail.textContent =
-        user.email || "";
+      },
+      {merge:true}
+    );
 
-      if(user.photoURL){
+  }catch(error){
 
-        userPhoto.src=user.photoURL;
+    console.error(
+      "Online update error:",
+      error
+    );
 
-        myStoryPhoto.src=user.photoURL;
+  }
+
+}
+
+
+/* =========================
+   SET OFFLINE
+========================= */
+
+async function setUserOffline(){
+
+  if(!currentUser)
+    return;
+
+  try{
+
+    await setDoc(
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      ),
+      {
+
+        online:false,
+
+        lastSeen:
+          serverTimestamp()
+
+      },
+      {merge:true}
+    );
+
+  }catch(error){
+
+    console.error(
+      "Offline update error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================
+   HEARTBEAT
+========================= */
+
+function startOnlineHeartbeat(){
+
+  stopOnlineHeartbeat();
+
+  setUserOnline();
+
+  onlineTimer =
+    setInterval(
+      ()=>{
+
+        if(
+          currentUser &&
+          !document.hidden
+        ){
+
+          setUserOnline();
+
+        }
+
+      },
+      20000
+    );
+
+}
+
+
+function stopOnlineHeartbeat(){
+
+  if(onlineTimer){
+
+    clearInterval(
+      onlineTimer
+    );
+
+    onlineTimer =
+      null;
+
+  }
+
+}
+
+
+/* =========================
+   AUTH START
+========================= */
+
+async function startApp(){
+
+  /*
+    Keep Google login session.
+  */
+
+  try{
+
+    await setPersistence(
+      auth,
+      browserLocalPersistence
+    );
+
+  }catch(error){
+
+    console.error(
+      "Persistence error:",
+      error
+    );
+
+  }
+
+
+  /*
+    Wait for Firebase to restore
+    the existing Google session.
+  */
+
+  onAuthStateChanged(
+    auth,
+    async(user)=>{
+
+      currentUser =
+        user;
+
+
+      if(user){
+
+        loginScreen.style.display =
+          "none";
+
+        appScreen.style.display =
+          "block";
+
+        chatScreen.style.display =
+          "none";
+
+
+        userName.textContent =
+          user.displayName ||
+          "Oii User";
+
+
+        userEmail.textContent =
+          user.email ||
+          "";
+
+
+        if(user.photoURL){
+
+          userPhoto.src =
+            user.photoURL;
+
+          myStoryPhoto.src =
+            user.photoURL;
+
+        }
+
+
+        try{
+
+          await saveUserProfile(
+            user
+          );
+
+          startOnlineHeartbeat();
+
+          loadMyChats();
+
+        }catch(error){
+
+          console.error(error);
+
+          chatList.innerHTML=`
+
+            <div class="empty">
+
+              Firebase error 😕<br><br>
+
+              ${escapeHTML(
+                error.message
+              )}
+
+            </div>
+
+          `;
+
+        }
+
+      }else{
+
+        stopOnlineHeartbeat();
+
+        loginScreen.style.display =
+          "flex";
+
+        appScreen.style.display =
+          "none";
+
+        chatScreen.style.display =
+          "none";
 
       }
 
-      try{
+    }
+  );
 
-        await saveUserProfile(user);
+}
 
-        loadMyChats();
 
-      }catch(error){
+/* START */
 
-        console.error(error);
+startApp();
 
-        chatList.innerHTML=`
-          <div class="empty">
-            Firebase error 😕<br><br>
-            ${escapeHTML(error.message)}
-          </div>
-        `;
 
-      }
+/* =========================
+   VISIBILITY
+========================= */
+
+document.addEventListener(
+  "visibilitychange",
+  ()=>{
+
+    if(!currentUser)
+      return;
+
+
+    if(document.hidden){
+
+      setUserOffline();
 
     }else{
 
-      loginScreen.style.display="flex";
-
-      appScreen.style.display="none";
-
-      chatScreen.style.display="none";
-
-      if(unsubscribeChats){
-
-        unsubscribeChats();
-
-        unsubscribeChats=null;
-
-      }
+      setUserOnline();
 
     }
 
@@ -1331,25 +1704,21 @@ onAuthStateChanged(
 );
 
 
-/* ONLINE */
+/* =========================
+   BEFORE CLOSE
+========================= */
 
 window.addEventListener(
   "beforeunload",
-  async()=>{
+  ()=>{
 
     if(currentUser){
 
-      try{
+      /*
+        Best-effort offline update.
+      */
 
-        await updateDoc(
-          doc(db,"users",currentUser.uid),
-          {
-            online:false,
-            lastSeen:serverTimestamp()
-          }
-        );
-
-      }catch(e){}
+      setUserOffline();
 
     }
 
@@ -1357,14 +1726,22 @@ window.addEventListener(
 );
 
 
-/* LOAD CHATS */
+/* =========================
+   LOAD CHATS
+========================= */
 
 function loadMyChats(){
 
-  if(!currentUser)return;
+  if(!currentUser)
+    return;
+
 
   const chatsRef =
-    collection(db,"chats");
+    collection(
+      db,
+      "chats"
+    );
+
 
   const chatsQuery =
     query(
@@ -1376,8 +1753,10 @@ function loadMyChats(){
       )
     );
 
+
   if(unsubscribeChats)
     unsubscribeChats();
+
 
   unsubscribeChats =
     onSnapshot(
@@ -1386,18 +1765,27 @@ function loadMyChats(){
 
         allChats=[];
 
+
         for(
-          const chatDoc of snapshot.docs
+          const chatDoc
+          of snapshot.docs
         ){
 
-          const data=chatDoc.data();
+          const data =
+            chatDoc.data();
+
 
           const otherUid =
             data.participants.find(
-              uid=>uid!==currentUser.uid
+              uid =>
+                uid !==
+                currentUser.uid
             );
 
-          if(!otherUid)continue;
+
+          if(!otherUid)
+            continue;
+
 
           try{
 
@@ -1410,25 +1798,33 @@ function loadMyChats(){
                 )
               );
 
+
             if(userSnap.exists()){
 
               const otherUser =
                 userSnap.data();
 
+
               allChats.push({
 
-                id:chatDoc.id,
+                id:
+                  chatDoc.id,
 
-                user:otherUser,
+                user:
+                  otherUser,
 
                 lastMessage:
-                  data.lastMessage || "",
+                  data.lastMessage ||
+                  "",
 
                 updatedAt:
-                  data.updatedAt || null,
+                  data.updatedAt ||
+                  null,
 
                 unread:
-                  data.unread?.[currentUser.uid] || 0
+                  data.unread?.[
+                    currentUser.uid
+                  ] || 0
 
               });
 
@@ -1442,6 +1838,7 @@ function loadMyChats(){
 
         }
 
+
         renderAllChats();
 
       },
@@ -1450,10 +1847,17 @@ function loadMyChats(){
         console.error(error);
 
         chatList.innerHTML=`
+
           <div class="empty">
+
             Unable to load chats 😕<br><br>
-            ${escapeHTML(error.message)}
+
+            ${escapeHTML(
+              error.message
+            )}
+
           </div>
+
         `;
 
       }
@@ -1462,46 +1866,59 @@ function loadMyChats(){
 }
 
 
-/* RENDER CHATS */
+/* =========================
+   RENDER CHATS
+========================= */
 
 function renderAllChats(){
 
   chatList.innerHTML="";
 
+
   const totalUnread =
     allChats.reduce(
       (sum,chat)=>
-        sum + (chat.unread || 0),
+        sum +
+        (chat.unread || 0),
       0
     );
 
+
   if(totalUnread>0){
 
-    unreadTabBadge.style.display="inline-flex";
+    unreadTabBadge.style.display =
+      "inline-flex";
 
     unreadTabBadge.textContent =
-      totalUnread>99 ? "99+" : totalUnread;
+      totalUnread>99
+        ? "99+"
+        : totalUnread;
 
   }else{
 
-    unreadTabBadge.style.display="none";
+    unreadTabBadge.style.display =
+      "none";
 
   }
 
 
   const activeTab =
-    document.querySelector(".tab.active")
-      ?.dataset.tab || "all";
+    document
+      .querySelector(".tab.active")
+      ?.dataset.tab ||
+    "all";
 
 
-  let chats=allChats;
+  let chats =
+    [...allChats];
 
 
   if(activeTab==="unread"){
 
     chats =
-      allChats.filter(
-        chat=>(chat.unread || 0)>0
+      chats.filter(
+        chat =>
+          (chat.unread || 0)>0
       );
 
   }
@@ -1525,10 +1942,12 @@ function renderAllChats(){
           ? a.updatedAt.toMillis()
           : 0;
 
+
       const bTime =
         b.updatedAt?.toMillis
           ? b.updatedAt.toMillis()
           : 0;
+
 
       return bTime-aTime;
 
@@ -1544,8 +1963,8 @@ function renderAllChats(){
 
         ${
           activeTab==="unread"
-          ? "😢 No unread messages"
-          : "No chats yet 💬<br><br>Tap + to start a new chat."
+            ? "😢 No unread messages"
+            : "No chats yet 💬<br><br>Tap + to start a new chat."
         }
 
       </div>
@@ -1558,23 +1977,33 @@ function renderAllChats(){
 
 
   chats.forEach(
-    chat=>renderChatCard(chat)
+    chat =>
+      renderChatCard(chat)
   );
 
 }
 
 
-/* CHAT CARD */
+/* =========================
+   CHAT CARD
+========================= */
 
 function renderChatCard(chat){
 
   const div =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
-  div.className="chat-card";
+
+  div.className =
+    "chat-card";
+
 
   if(chat.unread>0)
-    div.classList.add("has-unread");
+    div.classList.add(
+      "has-unread"
+    );
 
 
   const photo =
@@ -1583,14 +2012,19 @@ function renderChatCard(chat){
 
 
   const online =
-    chat.user.online === true;
+    isUserOnline(
+      chat.user
+    );
 
 
   div.innerHTML=`
 
     <div class="avatar">
 
-      <img src="${photo}" alt="User">
+      <img
+        src="${photo}"
+        alt="User"
+      >
 
       <span class="${
         online
@@ -1600,6 +2034,7 @@ function renderChatCard(chat){
 
     </div>
 
+
     <div class="chat-info">
 
       <div class="chat-top">
@@ -1607,10 +2042,12 @@ function renderChatCard(chat){
         <span class="chat-name">
 
           ${escapeHTML(
-            chat.user.name || "Oii User"
+            chat.user.name ||
+            "Oii User"
           )}
 
         </span>
+
 
         <span class="chat-time">
 
@@ -1621,6 +2058,7 @@ function renderChatCard(chat){
         </span>
 
       </div>
+
 
       <div class="chat-msg">
 
@@ -1633,12 +2071,21 @@ function renderChatCard(chat){
 
     </div>
 
+
     ${
       chat.unread>0
-      ? `<div class="unread-count">
-           ${chat.unread>99?"99+":chat.unread}
-         </div>`
-      : ""
+        ? `
+          <div class="unread-count">
+
+            ${
+              chat.unread>99
+                ? "99+"
+                : chat.unread
+            }
+
+          </div>
+        `
+        : ""
     }
 
   `;
@@ -1657,55 +2104,87 @@ function renderChatCard(chat){
   );
 
 
-  chatList.appendChild(div);
+  chatList.appendChild(
+    div
+  );
 
 }
 
 
-/* LOAD USERS */
+/* =========================
+   LOAD USERS
+========================= */
 
 async function loadUsers(){
 
   usersList.innerHTML=`
+
     <div class="empty">
       Loading Oii Chat users... ⏳
     </div>
+
   `;
+
 
   try{
 
     const usersSnapshot =
       await getDocs(
-        collection(db,"users")
+        collection(
+          db,
+          "users"
+        )
       );
 
-    usersList.innerHTML="";
+
+    usersList.innerHTML =
+      "";
+
 
     let count=0;
+
 
     usersSnapshot.forEach(
       userDoc=>{
 
-        const user=userDoc.data();
+        const user =
+          userDoc.data();
+
 
         if(
           !currentUser ||
-          user.uid===currentUser.uid
-        )return;
+          user.uid ===
+          currentUser.uid
+        ){
+
+          return;
+
+        }
+
 
         count++;
 
-        const div =
-          document.createElement("div");
 
-        div.className="user-card";
+        const div =
+          document.createElement(
+            "div"
+          );
+
+
+        div.className =
+          "user-card";
+
 
         const photo =
           user.photoURL ||
           "https://i.pravatar.cc/100";
 
+
         const online =
-          user.online===true;
+          isUserOnline(
+            user
+          );
+
 
         div.innerHTML=`
 
@@ -1724,15 +2203,18 @@ async function loadUsers(){
 
           </div>
 
+
           <div class="user-card-info">
 
             <div class="user-card-name">
 
               ${escapeHTML(
-                user.name || "Oii User"
+                user.name ||
+                "Oii User"
               )}
 
             </div>
+
 
             <div class="user-card-email">
 
@@ -1753,12 +2235,17 @@ async function loadUsers(){
           "click",
           async()=>{
 
-            await startPrivateChat(user);
+            await startPrivateChat(
+              user
+            );
 
           }
         );
 
-        usersList.appendChild(div);
+
+        usersList.appendChild(
+          div
+        );
 
       }
     );
@@ -1767,9 +2254,13 @@ async function loadUsers(){
     if(count===0){
 
       usersList.innerHTML=`
+
         <div class="empty">
+
           வேறு Oii Chat users இன்னும் இல்லை 💙
+
         </div>
+
       `;
 
     }
@@ -1779,10 +2270,17 @@ async function loadUsers(){
     console.error(error);
 
     usersList.innerHTML=`
+
       <div class="empty">
+
         Users load ஆகவில்லை 😕<br><br>
-        ${escapeHTML(error.message)}
+
+        ${escapeHTML(
+          error.message
+        )}
+
       </div>
+
     `;
 
   }
@@ -1790,11 +2288,17 @@ async function loadUsers(){
 }
 
 
-/* START CHAT */
+/* =========================
+   START PRIVATE CHAT
+========================= */
 
-async function startPrivateChat(otherUser){
+async function startPrivateChat(
+  otherUser
+){
 
-  if(!currentUser)return;
+  if(!currentUser)
+    return;
+
 
   const chatId =
     makeChatId(
@@ -1802,13 +2306,22 @@ async function startPrivateChat(otherUser){
       otherUser.uid
     );
 
+
   const chatRef =
-    doc(db,"chats",chatId);
+    doc(
+      db,
+      "chats",
+      chatId
+    );
+
 
   try{
 
     const existing =
-      await getDoc(chatRef);
+      await getDoc(
+        chatRef
+      );
+
 
     if(!existing.exists()){
 
@@ -1827,11 +2340,17 @@ async function startPrivateChat(otherUser){
           updatedAt:
             serverTimestamp(),
 
-          lastMessage:"",
+          lastMessage:
+            "",
 
           unread:{
-            [currentUser.uid]:0,
-            [otherUser.uid]:0
+
+            [currentUser.uid]:
+              0,
+
+            [otherUser.uid]:
+              0
+
           }
 
         }
@@ -1839,7 +2358,10 @@ async function startPrivateChat(otherUser){
 
     }
 
-    usersModal.style.display="none";
+
+    usersModal.style.display =
+      "none";
+
 
     openChat(
       chatId,
@@ -1851,7 +2373,7 @@ async function startPrivateChat(otherUser){
     console.error(error);
 
     alert(
-      "Chat create failed 😕\n\n"+
+      "Chat create failed 😕\n\n" +
       error.message
     );
 
@@ -1860,47 +2382,77 @@ async function startPrivateChat(otherUser){
 }
 
 
-/* OPEN CHAT */
+/* =========================
+   UPDATE CHAT STATUS
+========================= */
+
+function updateChatStatus(user){
+
+  const online =
+    isUserOnline(user);
+
+
+  chatUserStatus.textContent =
+    online
+      ? "👀 Online"
+      : "🫣 Offline";
+
+
+  chatUserStatus.style.color =
+    online
+      ? "#00ff66"
+      : "#888";
+
+}
+
+
+/* =========================
+   OPEN CHAT
+========================= */
 
 async function openChat(
   chatId,
   otherUser
 ){
 
-  currentChatId=chatId;
+  currentChatId =
+    chatId;
 
-  currentChatUser=otherUser;
+
+  currentChatUser =
+    otherUser;
+
 
   chatUserName.textContent =
-    otherUser.name || "Oii User";
+    otherUser.name ||
+    "Oii User";
+
 
   chatUserPhoto.src =
     otherUser.photoURL ||
     "https://i.pravatar.cc/100";
 
 
-  chatUserStatus.textContent =
-    otherUser.online
-      ? "👀 Online"
-      : "🫣 Offline";
-
-  chatUserStatus.style.color =
-    otherUser.online
-      ? "#00ff66"
-      : "#888";
+  updateChatStatus(
+    otherUser
+  );
 
 
-  chatScreen.style.display="block";
+  chatScreen.style.display =
+    "block";
 
 
   messages.innerHTML=`
+
     <div class="empty">
       Loading messages... 💬
     </div>
+
   `;
 
 
-  messageInput.value="";
+  messageInput.value =
+    "";
 
 
   /* CLEAR UNREAD */
@@ -1908,9 +2460,14 @@ async function openChat(
   try{
 
     await updateDoc(
-      doc(db,"chats",chatId),
+      doc(
+        db,
+        "chats",
+        chatId
+      ),
       {
-        [`unread.${currentUser.uid}`]:0
+        [`unread.${currentUser.uid}`]:
+          0
       }
     );
 
@@ -1923,6 +2480,59 @@ async function openChat(
 
   }
 
+
+  /* STOP OLD STATUS */
+
+  if(unsubscribeUserStatus){
+
+    unsubscribeUserStatus();
+
+    unsubscribeUserStatus =
+      null;
+
+  }
+
+
+  /*
+    LIVE USER STATUS
+  */
+
+  unsubscribeUserStatus =
+    onSnapshot(
+      doc(
+        db,
+        "users",
+        otherUser.uid
+      ),
+      snapshot=>{
+
+        if(!snapshot.exists())
+          return;
+
+
+        const freshUser =
+          snapshot.data();
+
+
+        currentChatUser = {
+
+          ...freshUser,
+
+          uid:
+            otherUser.uid
+
+        };
+
+
+        updateChatStatus(
+          currentChatUser
+        );
+
+      }
+    );
+
+
+  /* MESSAGES */
 
   if(unsubscribeMessages)
     unsubscribeMessages();
@@ -1940,7 +2550,10 @@ async function openChat(
   const messagesQuery =
     query(
       messagesRef,
-      orderBy("createdAt","asc")
+      orderBy(
+        "createdAt",
+        "asc"
+      )
     );
 
 
@@ -1949,19 +2562,24 @@ async function openChat(
       messagesQuery,
       snapshot=>{
 
-        messages.innerHTML="";
+        messages.innerHTML =
+          "";
+
 
         if(snapshot.empty){
 
           messages.innerHTML=`
+
             <div class="empty">
               Say Hi 👋
             </div>
+
           `;
 
           return;
 
         }
+
 
         snapshot.forEach(
           messageDoc=>{
@@ -1973,6 +2591,7 @@ async function openChat(
           }
         );
 
+
         scrollMessages();
 
       },
@@ -1981,10 +2600,17 @@ async function openChat(
         console.error(error);
 
         messages.innerHTML=`
+
           <div class="empty">
+
             Messages load ஆகவில்லை 😕<br><br>
-            ${escapeHTML(error.message)}
+
+            ${escapeHTML(
+              error.message
+            )}
+
           </div>
+
         `;
 
       }
@@ -1992,65 +2618,106 @@ async function openChat(
 
 
   setTimeout(
-    ()=>messageInput.focus(),
+    ()=>{
+
+      messageInput.focus();
+
+    },
     100
   );
 
 }
 
 
-/* RENDER MESSAGE */
+/* =========================
+   RENDER MESSAGE
+========================= */
 
 function renderMessage(data){
 
   const row =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
-  row.className="message-row";
+
+  row.className =
+    "message-row";
 
 
   const mine =
     currentUser &&
-    data.senderId===currentUser.uid;
+    data.senderId ===
+    currentUser.uid;
 
 
   if(mine)
-    row.classList.add("mine");
+    row.classList.add(
+      "mine"
+    );
 
 
   const bubble =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
-  bubble.className="message";
+
+  bubble.className =
+    "message";
 
 
   const text =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
-  text.textContent=data.text || "";
+
+  text.textContent =
+    data.text || "";
 
 
   const time =
-    document.createElement("span");
+    document.createElement(
+      "span"
+    );
 
-  time.className="message-time";
+
+  time.className =
+    "message-time";
+
 
   time.textContent =
-    formatTime(data.createdAt);
+    formatTime(
+      data.createdAt
+    );
 
 
-  bubble.appendChild(text);
+  bubble.appendChild(
+    text
+  );
 
-  bubble.appendChild(time);
 
-  row.appendChild(bubble);
+  bubble.appendChild(
+    time
+  );
 
-  messages.appendChild(row);
+
+  row.appendChild(
+    bubble
+  );
+
+
+  messages.appendChild(
+    row
+  );
 
 }
 
 
-/* SEND MESSAGE */
+/* =========================
+   SEND MESSAGE
+========================= */
 
 async function sendMessage(){
 
@@ -2063,12 +2730,19 @@ async function sendMessage(){
     !currentUser ||
     !currentChatId ||
     !currentChatUser
-  )return;
+  ){
+
+    return;
+
+  }
 
 
-  messageInput.value="";
+  messageInput.value =
+    "";
 
-  sendMessageBtn.disabled=true;
+
+  sendMessageBtn.disabled =
+    true;
 
 
   try{
@@ -2082,13 +2756,18 @@ async function sendMessage(){
 
 
     const chatSnap =
-      await getDoc(chatRef);
+      await getDoc(
+        chatRef
+      );
 
 
-    if(!chatSnap.exists())
+    if(!chatSnap.exists()){
+
       throw new Error(
         "Chat does not exist."
       );
+
+    }
 
 
     const chatData =
@@ -2123,7 +2802,8 @@ async function sendMessage(){
         receiverId:
           currentChatUser.uid,
 
-        text:text,
+        text:
+          text,
 
         createdAt:
           serverTimestamp()
@@ -2142,19 +2822,22 @@ async function sendMessage(){
       chatRef,
       {
 
-        lastMessage:text,
+        lastMessage:
+          text,
 
         updatedAt:
           serverTimestamp(),
 
         [`unread.${currentChatUser.uid}`]:
-          oldUnread+1,
+          oldUnread + 1,
 
         [`unread.${currentUser.uid}`]:
           0
 
       },
-      {merge:true}
+      {
+        merge:true
+      }
     );
 
 
@@ -2163,13 +2846,14 @@ async function sendMessage(){
     console.error(error);
 
     alert(
-      "Message send failed 😕\n\n"+
+      "Message send failed 😕\n\n" +
       error.message
     );
 
   }finally{
 
-    sendMessageBtn.disabled=false;
+    sendMessageBtn.disabled =
+      false;
 
     messageInput.focus();
 
@@ -2178,7 +2862,9 @@ async function sendMessage(){
 }
 
 
-/* SCROLL */
+/* =========================
+   SCROLL
+========================= */
 
 function scrollMessages(){
 
@@ -2188,13 +2874,16 @@ function scrollMessages(){
 }
 
 
-/* NEW CHAT */
+/* =========================
+   NEW CHAT
+========================= */
 
 newChatBtn.addEventListener(
   "click",
   ()=>{
 
-    usersModal.style.display="flex";
+    usersModal.style.display =
+      "flex";
 
     loadUsers();
 
@@ -2202,13 +2891,16 @@ newChatBtn.addEventListener(
 );
 
 
-/* CLOSE */
+/* =========================
+   CLOSE MODAL
+========================= */
 
 closeUsersModal.addEventListener(
   "click",
   ()=>{
 
-    usersModal.style.display="none";
+    usersModal.style.display =
+      "none";
 
   }
 );
@@ -2218,30 +2910,13 @@ usersModal.addEventListener(
   "click",
   event=>{
 
-    if(event.target===usersModal)
-      usersModal.style.display="none";
+    if(
+      event.target ===
+      usersModal
+    ){
 
-  }
-);
-
-
-/* BACK */
-
-backChatBtn.addEventListener(
-  "click",
-  ()=>{
-
-    chatScreen.style.display="none";
-
-    currentChatId=null;
-
-    currentChatUser=null;
-
-    if(unsubscribeMessages){
-
-      unsubscribeMessages();
-
-      unsubscribeMessages=null;
+      usersModal.style.display =
+        "none";
 
     }
 
@@ -2249,7 +2924,52 @@ backChatBtn.addEventListener(
 );
 
 
-/* SEND */
+/* =========================
+   BACK CHAT
+========================= */
+
+backChatBtn.addEventListener(
+  "click",
+  ()=>{
+
+    chatScreen.style.display =
+      "none";
+
+
+    currentChatId =
+      null;
+
+
+    currentChatUser =
+      null;
+
+
+    if(unsubscribeMessages){
+
+      unsubscribeMessages();
+
+      unsubscribeMessages =
+        null;
+
+    }
+
+
+    if(unsubscribeUserStatus){
+
+      unsubscribeUserStatus();
+
+      unsubscribeUserStatus =
+        null;
+
+    }
+
+  }
+);
+
+
+/* =========================
+   SEND
+========================= */
 
 sendMessageBtn.addEventListener(
   "click",
@@ -2257,13 +2977,15 @@ sendMessageBtn.addEventListener(
 );
 
 
-/* ENTER */
+/* =========================
+   ENTER
+========================= */
 
 messageInput.addEventListener(
   "keydown",
   event=>{
 
-    if(event.key==="Enter"){
+    if(event.key === "Enter"){
 
       event.preventDefault();
 
@@ -2275,7 +2997,9 @@ messageInput.addEventListener(
 );
 
 
-/* LOGOUT */
+/* =========================
+   LOGOUT
+========================= */
 
 logoutBtn.addEventListener(
   "click",
@@ -2283,33 +3007,50 @@ logoutBtn.addEventListener(
 
     try{
 
-      if(currentUser){
+      await setUserOffline();
 
-        await updateDoc(
-          doc(
-            db,
-            "users",
-            currentUser.uid
-          ),
-          {
-            online:false,
-            lastSeen:serverTimestamp()
-          }
-        );
+      stopOnlineHeartbeat();
+
+
+      if(unsubscribeChats){
+
+        unsubscribeChats();
+
+        unsubscribeChats =
+          null;
 
       }
 
-      if(unsubscribeChats)
-        unsubscribeChats();
 
-      if(unsubscribeMessages)
+      if(unsubscribeMessages){
+
         unsubscribeMessages();
 
-      await signOut(auth);
+        unsubscribeMessages =
+          null;
+
+      }
+
+
+      if(unsubscribeUserStatus){
+
+        unsubscribeUserStatus();
+
+        unsubscribeUserStatus =
+          null;
+
+      }
+
+
+      await signOut(
+        auth
+      );
 
     }catch(error){
 
-      console.error(error);
+      console.error(
+        error
+      );
 
     }
 
@@ -2317,105 +3058,135 @@ logoutBtn.addEventListener(
 );
 
 
-/* TABS */
+/* =========================
+   TABS
+========================= */
 
 document
-.querySelectorAll(".tab")
-.forEach(tab=>{
+  .querySelectorAll(".tab")
+  .forEach(tab=>{
 
-  tab.addEventListener(
-    "click",
-    ()=>{
+    tab.addEventListener(
+      "click",
+      ()=>{
 
-      document
-      .querySelectorAll(".tab")
-      .forEach(item=>
-        item.classList.remove("active")
-      );
-
-      tab.classList.add("active");
-
-      const type=tab.dataset.tab;
+        document
+          .querySelectorAll(".tab")
+          .forEach(item=>
+            item.classList.remove(
+              "active"
+            )
+          );
 
 
-      if(type==="groups"){
+        tab.classList.add(
+          "active"
+        );
 
-        chatList.innerHTML=`
-          <div class="empty">
-            Groups coming soon 👥🔥
-          </div>
-        `;
 
-      }else if(type==="channels"){
+        const type =
+          tab.dataset.tab;
 
-        chatList.innerHTML=`
-          <div class="empty">
-            Channels coming soon 📢🔥
-          </div>
-        `;
 
-      }else{
+        if(type === "groups"){
 
-        renderAllChats();
+          chatList.innerHTML=`
+
+            <div class="empty">
+              Groups coming soon 👥🔥
+            </div>
+
+          `;
+
+        }else if(type === "channels"){
+
+          chatList.innerHTML=`
+
+            <div class="empty">
+              Channels coming soon 📢🔥
+            </div>
+
+          `;
+
+        }else{
+
+          renderAllChats();
+
+        }
 
       }
+    );
 
-    }
-  );
-
-});
+  });
 
 
-/* NAV */
+/* =========================
+   NAV
+========================= */
 
 document
-.querySelectorAll(".nav-item")
-.forEach(item=>{
+  .querySelectorAll(".nav-item")
+  .forEach(item=>{
 
-  item.addEventListener(
+    item.addEventListener(
+      "click",
+      ()=>{
+
+        document
+          .querySelectorAll(
+            ".nav-item"
+          )
+          .forEach(nav=>
+            nav.classList.remove(
+              "active"
+            )
+          );
+
+
+        item.classList.add(
+          "active"
+        );
+
+      }
+    );
+
+  });
+
+
+/* =========================
+   SEARCH
+========================= */
+
+document
+  .getElementById("searchBtn")
+  .addEventListener(
     "click",
     ()=>{
 
-      document
-      .querySelectorAll(".nav-item")
-      .forEach(nav=>
-        nav.classList.remove("active")
+      alert(
+        "Search feature coming next 🔎💬"
       );
-
-      item.classList.add("active");
 
     }
   );
 
-});
 
-
-/* SEARCH */
-
-document
-.getElementById("searchBtn")
-.addEventListener(
-  "click",
-  ()=>{
-    alert(
-      "Search feature coming next 🔎💬"
-    );
-  }
-);
-
-
-/* MORE */
+/* =========================
+   MORE
+========================= */
 
 document
-.getElementById("moreBtn")
-.addEventListener(
-  "click",
-  ()=>{
-    alert(
-      "Oii Chat Menu 💬\n\nMore features coming soon 🔥"
-    );
-  }
-);
+  .getElementById("moreBtn")
+  .addEventListener(
+    "click",
+    ()=>{
+
+      alert(
+        "Oii Chat Menu 💬\n\nMore features coming soon 🔥"
+      );
+
+    }
+  );
 
 </script>
 
