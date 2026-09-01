@@ -318,6 +318,7 @@ button{
   border-radius:16px;
   border:1px solid rgba(0,212,255,.2);
   cursor:pointer;
+  transition:.15s;
 }
 
 .chat-card:hover{
@@ -809,7 +810,6 @@ button{
   .fab{
     right:20px;
   }
-
 }
 </style>
 </head>
@@ -1172,14 +1172,17 @@ const firebaseConfig = {
 
 };
 
+const app =
+  initializeApp(firebaseConfig);
 
-const app = initializeApp(firebaseConfig);
+const auth =
+  getAuth(app);
 
-const auth = getAuth(app);
+const db =
+  getFirestore(app);
 
-const db = getFirestore(app);
-
-const provider = new GoogleAuthProvider();
+const provider =
+  new GoogleAuthProvider();
 
 
 /* =========================
@@ -1317,8 +1320,13 @@ async function requestNotificationPermission(){
 
   try{
 
-    if(Notification.permission === "default"){
+    if(
+      Notification.permission ===
+      "default"
+    ){
+
       await Notification.requestPermission();
+
     }
 
   }catch(error){
@@ -1341,14 +1349,16 @@ function showNotification(
 
   if(
     !("Notification" in window) ||
-    Notification.permission !== "granted"
+    Notification.permission !==
+    "granted"
   ){
     return;
   }
 
   if(
     currentChatId &&
-    chatScreen.style.display === "block"
+    chatScreen.style.display ===
+    "block"
   ){
     return;
   }
@@ -1367,8 +1377,11 @@ function showNotification(
       );
 
     notification.onclick = ()=>{
+
       window.focus();
+
       notification.close();
+
     };
 
   }catch(error){
@@ -1387,7 +1400,10 @@ function showNotification(
    CHAT ID
 ========================= */
 
-function makeChatId(uid1,uid2){
+function makeChatId(
+  uid1,
+  uid2
+){
 
   return [
     uid1,
@@ -1403,7 +1419,9 @@ function makeChatId(uid1,uid2){
    TIME
 ========================= */
 
-function formatTime(timestamp){
+function formatTime(
+  timestamp
+){
 
   if(!timestamp)
     return "";
@@ -1428,7 +1446,9 @@ function formatTime(timestamp){
    ONLINE
 ========================= */
 
-function isUserOnline(user){
+function isUserOnline(
+  user
+){
 
   if(!user)
     return false;
@@ -1442,7 +1462,9 @@ function isUserOnline(user){
   const lastSeen =
     user.lastSeen.toMillis
       ? user.lastSeen.toMillis()
-      : new Date(user.lastSeen).getTime();
+      : new Date(
+          user.lastSeen
+        ).getTime();
 
   return (
     Date.now() -
@@ -1457,7 +1479,9 @@ function isUserOnline(user){
    ESCAPE
 ========================= */
 
-function escapeHTML(value){
+function escapeHTML(
+  value
+){
 
   const div =
     document.createElement("div");
@@ -1476,10 +1500,16 @@ function escapeHTML(value){
    BLOCK CHECK
 ========================= */
 
-async function isUserBlocked(uid){
+async function isUserBlocked(
+  uid
+){
 
-  if(!currentUser || !uid)
+  if(
+    !currentUser ||
+    !uid
+  ){
     return false;
+  }
 
   try{
 
@@ -1518,9 +1548,11 @@ googleLoginBtn.addEventListener(
   "click",
   async()=>{
 
-    loginError.style.display = "none";
+    loginError.style.display =
+      "none";
 
-    googleLoginBtn.disabled = true;
+    googleLoginBtn.disabled =
+      true;
 
     googleLoginBtn.innerHTML =
       '<i class="fas fa-spinner fa-spin"></i> Signing in...';
@@ -1536,13 +1568,15 @@ googleLoginBtn.addEventListener(
 
       console.error(error);
 
-      loginError.style.display = "block";
+      loginError.style.display =
+        "block";
 
       loginError.textContent =
         "Login failed: " +
         error.message;
 
-      googleLoginBtn.disabled = false;
+      googleLoginBtn.disabled =
+        false;
 
       googleLoginBtn.innerHTML =
         '<i class="fab fa-google"></i> Continue with Google';
@@ -1557,7 +1591,9 @@ googleLoginBtn.addEventListener(
    SAVE USER
 ========================= */
 
-async function saveUserProfile(user){
+async function saveUserProfile(
+  user
+){
 
   const userRef =
     doc(
@@ -1596,8 +1632,10 @@ async function saveUserProfile(user){
   };
 
   if(!existing.exists()){
+
     data.createdAt =
       serverTimestamp();
+
   }
 
   await setDoc(
@@ -1628,7 +1666,8 @@ async function setUserOnline(){
       ),
       {
         online:true,
-        lastSeen:serverTimestamp()
+        lastSeen:
+          serverTimestamp()
       },
       {merge:true}
     );
@@ -1660,7 +1699,8 @@ async function setUserOffline(){
       ),
       {
         online:false,
-        lastSeen:serverTimestamp()
+        lastSeen:
+          serverTimestamp()
       },
       {merge:true}
     );
@@ -1694,7 +1734,9 @@ function startOnlineHeartbeat(){
           currentUser &&
           !document.hidden
         ){
+
           setUserOnline();
+
         }
       },
       20000
@@ -1722,7 +1764,9 @@ function stopOnlineHeartbeat(){
    TYPING
 ========================= */
 
-async function setTyping(value){
+async function setTyping(
+  value
+){
 
   if(
     !currentUser ||
@@ -1743,7 +1787,8 @@ async function setTyping(value){
       ),
       {
         typing:value,
-        updatedAt:serverTimestamp()
+        updatedAt:
+          serverTimestamp()
       },
       {merge:true}
     );
@@ -1760,11 +1805,14 @@ async function setTyping(value){
 }
 
 
-function startTypingListener(chatId){
+function startTypingListener(
+  chatId
+){
 
   if(unsubscribeTyping){
 
     unsubscribeTyping();
+
     unsubscribeTyping = null;
 
   }
@@ -1808,7 +1856,9 @@ function startTypingListener(chatId){
             data.updatedAt.toMillis();
 
           if(age > 5000){
+
             typing = false;
+
           }
 
         }
@@ -1836,7 +1886,9 @@ function startTypingListener(chatId){
    DELIVERY
 ========================= */
 
-function startDeliveryListener(chatId){
+function startDeliveryListener(
+  chatId
+){
 
   if(!currentUser)
     return;
@@ -1881,13 +1933,16 @@ function startDeliveryListener(chatId){
               return;
             }
 
-            if(data.status === "sent"){
+            if(
+              data.status === "sent"
+            ){
 
               updates.push(
                 updateDoc(
                   change.doc.ref,
                   {
-                    status:"delivered"
+                    status:
+                      "delivered"
                   }
                 )
               );
@@ -1969,7 +2024,9 @@ function startDeliveryListener(chatId){
    READ
 ========================= */
 
-async function markMessagesRead(chatId){
+async function markMessagesRead(
+  chatId
+){
 
   if(!currentUser)
     return;
@@ -2028,7 +2085,11 @@ async function markMessagesRead(chatId){
     );
 
     if(updates.length){
-      await Promise.all(updates);
+
+      await Promise.all(
+        updates
+      );
+
     }
 
   }catch(error){
@@ -2070,11 +2131,14 @@ async function startApp(){
 
       if(user){
 
-        loginScreen.style.display = "none";
+        loginScreen.style.display =
+          "none";
 
-        appScreen.style.display = "block";
+        appScreen.style.display =
+          "block";
 
-        chatScreen.style.display = "none";
+        chatScreen.style.display =
+          "none";
 
         userName.textContent =
           user.displayName ||
@@ -2096,7 +2160,9 @@ async function startApp(){
 
         try{
 
-          await saveUserProfile(user);
+          await saveUserProfile(
+            user
+          );
 
           requestNotificationPermission();
 
@@ -2112,7 +2178,9 @@ async function startApp(){
 
               Firebase error 😕<br><br>
 
-              ${escapeHTML(error.message)}
+              ${escapeHTML(
+                error.message
+              )}
 
             </div>
 
@@ -2124,11 +2192,14 @@ async function startApp(){
 
         stopOnlineHeartbeat();
 
-        loginScreen.style.display = "flex";
+        loginScreen.style.display =
+          "flex";
 
-        appScreen.style.display = "none";
+        appScreen.style.display =
+          "none";
 
-        chatScreen.style.display = "none";
+        chatScreen.style.display =
+          "none";
 
       }
 
@@ -2253,9 +2324,11 @@ function loadMyChats(){
 
               allChats.push({
 
-                id:chatDoc.id,
+                id:
+                  chatDoc.id,
 
-                user:otherUser,
+                user:
+                  otherUser,
 
                 lastMessage:
                   data.lastMessage ||
@@ -2286,9 +2359,11 @@ function loadMyChats(){
 
         allChats.forEach(
           chat=>{
+
             startDeliveryListener(
               chat.id
             );
+
           }
         );
 
@@ -2303,7 +2378,9 @@ function loadMyChats(){
 
             Unable to load chats 😕<br><br>
 
-            ${escapeHTML(error.message)}
+            ${escapeHTML(
+              error.message
+            )}
 
           </div>
 
@@ -2371,7 +2448,9 @@ function renderAllChats(){
     activeTab === "groups" ||
     activeTab === "channels"
   ){
+
     return;
+
   }
 
   chats.sort(
@@ -2423,7 +2502,9 @@ function renderAllChats(){
    CHAT CARD
 ========================= */
 
-function renderChatCard(chat){
+function renderChatCard(
+  chat
+){
 
   const div =
     document.createElement("div");
@@ -2432,9 +2513,11 @@ function renderChatCard(chat){
     "chat-card";
 
   if(chat.unread > 0){
+
     div.classList.add(
       "has-unread"
     );
+
   }
 
   const photo =
@@ -2571,7 +2654,9 @@ async function loadUsers(){
           user.uid ===
           currentUser.uid
         ){
+
           return;
+
         }
 
         count++;
@@ -2690,7 +2775,9 @@ async function loadUsers(){
    CREATE CHAT
 ========================= */
 
-async function startPrivateChat(otherUser){
+async function startPrivateChat(
+  otherUser
+){
 
   if(!currentUser)
     return;
@@ -2754,7 +2841,11 @@ async function startPrivateChat(otherUser){
             [otherUser.uid]:0
           },
 
-          deletedFor:{}
+          deletedFor:{},
+
+          /* NEW */
+
+          blockedBy:{}
 
         }
       );
@@ -2797,10 +2888,14 @@ async function startPrivateChat(otherUser){
    CHAT STATUS
 ========================= */
 
-function updateChatStatus(user){
+function updateChatStatus(
+  user
+){
 
   const online =
-    isUserOnline(user);
+    isUserOnline(
+      user
+    );
 
   chatUserStatus.textContent =
     online
@@ -3041,22 +3136,28 @@ async function openChat(
    BLOCK UI
 ========================= */
 
-function updateBlockUI(blocked){
+function updateBlockUI(
+  blocked
+){
 
   if(blocked){
 
-    messageInput.disabled = true;
+    messageInput.disabled =
+      true;
 
-    sendMessageBtn.disabled = true;
+    sendMessageBtn.disabled =
+      true;
 
     messageInput.placeholder =
       "🚫 User blocked";
 
   }else{
 
-    messageInput.disabled = false;
+    messageInput.disabled =
+      false;
 
-    sendMessageBtn.disabled = false;
+    sendMessageBtn.disabled =
+      false;
 
     messageInput.placeholder =
       "Type a message...";
@@ -3070,7 +3171,9 @@ function updateBlockUI(blocked){
    STATUS ICON
 ========================= */
 
-function getMessageStatusIcon(status){
+function getMessageStatusIcon(
+  status
+){
 
   if(status === "read")
     return "💞";
@@ -3087,7 +3190,9 @@ function getMessageStatusIcon(status){
    RENDER MESSAGE
 ========================= */
 
-function renderMessage(data){
+function renderMessage(
+  data
+){
 
   const row =
     document.createElement("div");
@@ -3180,17 +3285,18 @@ async function sendMessage(){
     !currentChatId ||
     !currentChatUser
   ){
+
     return;
+
   }
 
-
-  sendMessageBtn.disabled = true;
-
+  sendMessageBtn.disabled =
+    true;
 
   try{
 
     /* =========================
-       BLOCK CHECK
+       OWN BLOCK CHECK
     ========================= */
 
     const blocked =
@@ -3273,21 +3379,15 @@ async function sendMessage(){
 
 
     /* =========================
-       RECEIVER BLOCK CHECK
+       BLOCKED BY RECEIVER
     ========================= */
 
-    const receiverBlocked =
-      await getDoc(
-        doc(
-          db,
-          "users",
-          currentChatUser.uid,
-          "blocked",
-          currentUser.uid
-        )
-      );
-
-    if(receiverBlocked.exists()){
+    if(
+      chatData.blockedBy &&
+      chatData.blockedBy[
+        currentChatUser.uid
+      ] === true
+    ){
 
       throw new Error(
         "இந்த user உங்களை block பண்ணியிருக்கிறார் 🚫"
@@ -3307,38 +3407,31 @@ async function sendMessage(){
        SEND MESSAGE
     ========================= */
 
-    const messageRef =
-      await addDoc(
-        collection(
-          db,
-          "chats",
-          currentChatId,
-          "messages"
-        ),
-        {
+    await addDoc(
+      collection(
+        db,
+        "chats",
+        currentChatId,
+        "messages"
+      ),
+      {
 
-          senderId:
-            currentUser.uid,
+        senderId:
+          currentUser.uid,
 
-          receiverId:
-            currentChatUser.uid,
+        receiverId:
+          currentChatUser.uid,
 
-          text:
-            text,
+        text:
+          text,
 
-          createdAt:
-            serverTimestamp(),
+        createdAt:
+          serverTimestamp(),
 
-          status:
-            "sent"
+        status:
+          "sent"
 
-        }
-      );
-
-
-    console.log(
-      "Message sent:",
-      messageRef.id
+      }
     );
 
 
@@ -3372,10 +3465,6 @@ async function sendMessage(){
     );
 
 
-    /* =========================
-       CLEAR INPUT
-    ========================= */
-
     messageInput.value = "";
 
 
@@ -3391,7 +3480,7 @@ async function sendMessage(){
 
     alert(
       "Message send failed 😕\n\n" +
-      error.code +
+      (error.code || "") +
       "\n\n" +
       error.message
     );
@@ -3518,8 +3607,10 @@ newChatBtn.addEventListener(
 closeUsersModal.addEventListener(
   "click",
   ()=>{
+
     usersModal.style.display =
       "none";
+
   }
 );
 
@@ -3551,7 +3642,9 @@ async function deleteCurrentChat(){
     !currentUser ||
     !currentChatId
   ){
+
     return;
+
   }
 
   const name =
@@ -3649,9 +3742,12 @@ async function blockCurrentUser(){
 
   if(
     !currentUser ||
-    !currentChatUser
+    !currentChatUser ||
+    !currentChatId
   ){
+
     return;
+
   }
 
   const name =
@@ -3667,6 +3763,10 @@ async function blockCurrentUser(){
     return;
 
   try{
+
+    /* =========================
+       SAVE PRIVATE BLOCK
+    ========================= */
 
     await setDoc(
       doc(
@@ -3688,6 +3788,23 @@ async function blockCurrentUser(){
         blockedAt:
           serverTimestamp()
 
+      }
+    );
+
+
+    /* =========================
+       SAVE CHAT BLOCK STATUS
+    ========================= */
+
+    await updateDoc(
+      doc(
+        db,
+        "chats",
+        currentChatId
+      ),
+      {
+        [`blockedBy.${currentUser.uid}`]:
+          true
       }
     );
 
@@ -3763,9 +3880,12 @@ async function unblockCurrentUser(){
 
   if(
     !currentUser ||
-    !currentChatUser
+    !currentChatUser ||
+    !currentChatId
   ){
+
     return;
+
   }
 
   const name =
@@ -3782,6 +3902,10 @@ async function unblockCurrentUser(){
 
   try{
 
+    /* =========================
+       REMOVE PRIVATE BLOCK
+    ========================= */
+
     await deleteDoc(
       doc(
         db,
@@ -3790,6 +3914,23 @@ async function unblockCurrentUser(){
         "blocked",
         currentChatUser.uid
       )
+    );
+
+
+    /* =========================
+       REMOVE CHAT BLOCK
+    ========================= */
+
+    await updateDoc(
+      doc(
+        db,
+        "chats",
+        currentChatId
+      ),
+      {
+        [`blockedBy.${currentUser.uid}`]:
+          false
+      }
     );
 
 
@@ -3831,7 +3972,9 @@ async function updateChatActionMenu(){
     !currentUser ||
     !currentChatUser
   ){
+
     return;
+
   }
 
   try{
