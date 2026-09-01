@@ -6,7 +6,8 @@
 <title>Oii Chat 💬</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 *{
@@ -97,11 +98,16 @@ button{
   font-size:20px;
 }
 
+#googleLoginBtn:disabled{
+  opacity:.65;
+}
+
 #loginError{
   display:none;
   margin-top:15px;
   color:#ff668f;
   font-size:12px;
+  line-height:1.5;
 }
 
 #appScreen{
@@ -616,6 +622,9 @@ button{
 .chat-header-name{
   font-size:14px;
   font-weight:600;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .chat-header-status{
@@ -716,6 +725,10 @@ button{
   color:#777;
 }
 
+#messageInput:disabled{
+  opacity:.5;
+}
+
 #sendMessageBtn{
   width:45px;
   height:45px;
@@ -810,6 +823,7 @@ button{
   .fab{
     right:20px;
   }
+
 }
 </style>
 </head>
@@ -1106,8 +1120,6 @@ button{
 </div>
 
 
-<!-- FIREBASE -->
-
 <script type="module">
 
 import {
@@ -1171,6 +1183,7 @@ const firebaseConfig = {
     "G-304SPRZSPL"
 
 };
+
 
 const app =
   initializeApp(firebaseConfig);
@@ -1419,17 +1432,25 @@ function makeChatId(
    TIME
 ========================= */
 
-function formatTime(
-  timestamp
-){
+function formatTime(timestamp){
 
   if(!timestamp)
     return "";
 
-  const date =
-    timestamp.toDate
-      ? timestamp.toDate()
-      : new Date(timestamp);
+  let date;
+
+  try{
+
+    date =
+      timestamp.toDate
+        ? timestamp.toDate()
+        : new Date(timestamp);
+
+  }catch(error){
+
+    return "";
+
+  }
 
   return date.toLocaleTimeString(
     [],
@@ -1446,9 +1467,7 @@ function formatTime(
    ONLINE
 ========================= */
 
-function isUserOnline(
-  user
-){
+function isUserOnline(user){
 
   if(!user)
     return false;
@@ -1459,12 +1478,22 @@ function isUserOnline(
   if(!user.lastSeen)
     return false;
 
-  const lastSeen =
-    user.lastSeen.toMillis
-      ? user.lastSeen.toMillis()
-      : new Date(
-          user.lastSeen
-        ).getTime();
+  let lastSeen;
+
+  try{
+
+    lastSeen =
+      user.lastSeen.toMillis
+        ? user.lastSeen.toMillis()
+        : new Date(
+            user.lastSeen
+          ).getTime();
+
+  }catch(error){
+
+    return false;
+
+  }
 
   return (
     Date.now() -
@@ -1479,9 +1508,7 @@ function isUserOnline(
    ESCAPE
 ========================= */
 
-function escapeHTML(
-  value
-){
+function escapeHTML(value){
 
   const div =
     document.createElement("div");
@@ -1500,9 +1527,7 @@ function escapeHTML(
    BLOCK CHECK
 ========================= */
 
-async function isUserBlocked(
-  uid
-){
+async function isUserBlocked(uid){
 
   if(
     !currentUser ||
@@ -1513,7 +1538,7 @@ async function isUserBlocked(
 
   try{
 
-    const blockedSnap =
+    const snap =
       await getDoc(
         doc(
           db,
@@ -1524,7 +1549,7 @@ async function isUserBlocked(
         )
       );
 
-    return blockedSnap.exists();
+    return snap.exists();
 
   }catch(error){
 
@@ -1591,9 +1616,7 @@ googleLoginBtn.addEventListener(
    SAVE USER
 ========================= */
 
-async function saveUserProfile(
-  user
-){
+async function saveUserProfile(user){
 
   const userRef =
     doc(
@@ -1641,7 +1664,9 @@ async function saveUserProfile(
   await setDoc(
     userRef,
     data,
-    {merge:true}
+    {
+      merge:true
+    }
   );
 
 }
@@ -1669,7 +1694,9 @@ async function setUserOnline(){
         lastSeen:
           serverTimestamp()
       },
-      {merge:true}
+      {
+        merge:true
+      }
     );
 
   }catch(error){
@@ -1702,7 +1729,9 @@ async function setUserOffline(){
         lastSeen:
           serverTimestamp()
       },
-      {merge:true}
+      {
+        merge:true
+      }
     );
 
   }catch(error){
@@ -1730,6 +1759,7 @@ function startOnlineHeartbeat(){
   onlineTimer =
     setInterval(
       ()=>{
+
         if(
           currentUser &&
           !document.hidden
@@ -1738,6 +1768,7 @@ function startOnlineHeartbeat(){
           setUserOnline();
 
         }
+
       },
       20000
     );
@@ -1764,9 +1795,7 @@ function stopOnlineHeartbeat(){
    TYPING
 ========================= */
 
-async function setTyping(
-  value
-){
+async function setTyping(value){
 
   if(
     !currentUser ||
@@ -1790,7 +1819,9 @@ async function setTyping(
         updatedAt:
           serverTimestamp()
       },
-      {merge:true}
+      {
+        merge:true
+      }
     );
 
   }catch(error){
@@ -1805,9 +1836,7 @@ async function setTyping(
 }
 
 
-function startTypingListener(
-  chatId
-){
+function startTypingListener(chatId){
 
   if(unsubscribeTyping){
 
@@ -1886,9 +1915,7 @@ function startTypingListener(
    DELIVERY
 ========================= */
 
-function startDeliveryListener(
-  chatId
-){
+function startDeliveryListener(chatId){
 
   if(!currentUser)
     return;
@@ -1920,8 +1947,12 @@ function startDeliveryListener(
         .forEach(
           change=>{
 
-            if(change.type !== "added")
+            if(
+              change.type !==
+              "added"
+            ){
               return;
+            }
 
             const data =
               change.doc.data();
@@ -1934,7 +1965,8 @@ function startDeliveryListener(
             }
 
             if(
-              data.status === "sent"
+              data.status ===
+              "sent"
             ){
 
               updates.push(
@@ -1980,7 +2012,9 @@ function startDeliveryListener(
 
                 }
               )
-              .catch(()=>{});
+              .catch(
+                ()=>{}
+              );
 
             }
 
@@ -2065,8 +2099,10 @@ async function markMessagesRead(
           data.receiverId ===
           currentUser.uid &&
           (
-            data.status === "sent" ||
-            data.status === "delivered"
+            data.status ===
+            "sent" ||
+            data.status ===
+            "delivered"
           )
         ){
 
@@ -2127,7 +2163,8 @@ async function startApp(){
     auth,
     async user=>{
 
-      currentUser = user;
+      currentUser =
+        user;
 
       if(user){
 
@@ -2171,6 +2208,8 @@ async function startApp(){
           loadMyChats();
 
         }catch(error){
+
+          console.error(error);
 
           chatList.innerHTML = `
 
@@ -2261,8 +2300,11 @@ function loadMyChats(){
       )
     );
 
-  if(unsubscribeChats)
+  if(unsubscribeChats){
+
     unsubscribeChats();
+
+  }
 
   unsubscribeChats =
     onSnapshot(
@@ -2285,15 +2327,21 @@ function loadMyChats(){
               currentUser.uid
             ] === true
           ){
+
             continue;
+
           }
 
           const otherUid =
-            data.participants.find(
-              uid =>
-                uid !==
-                currentUser.uid
-            );
+            Array.isArray(
+              data.participants
+            )
+              ? data.participants.find(
+                  uid =>
+                    uid !==
+                    currentUser.uid
+                )
+              : null;
 
           if(!otherUid)
             continue;
@@ -2349,7 +2397,9 @@ function loadMyChats(){
 
           }catch(error){
 
-            console.error(error);
+            console.error(
+              error
+            );
 
           }
 
@@ -2427,14 +2477,19 @@ function renderAllChats(){
 
   const activeTab =
     document
-      .querySelector(".tab.active")
+      .querySelector(
+        ".tab.active"
+      )
       ?.dataset.tab ||
     "all";
 
   let chats =
     [...allChats];
 
-  if(activeTab === "unread"){
+  if(
+    activeTab ===
+    "unread"
+  ){
 
     chats =
       chats.filter(
@@ -2502,9 +2557,7 @@ function renderAllChats(){
    CHAT CARD
 ========================= */
 
-function renderChatCard(
-  chat
-){
+function renderChatCard(chat){
 
   const div =
     document.createElement("div");
@@ -2534,7 +2587,7 @@ function renderChatCard(
     <div class="avatar">
 
       <img
-        src="${photo}"
+        src="${escapeHTML(photo)}"
         alt="User"
       >
 
@@ -2601,10 +2654,12 @@ function renderChatCard(
   div.addEventListener(
     "click",
     ()=>{
+
       openChat(
         chat.id,
         chat.user
       );
+
     }
   );
 
@@ -2662,7 +2717,9 @@ async function loadUsers(){
         count++;
 
         const div =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         div.className =
           "user-card";
@@ -2681,7 +2738,7 @@ async function loadUsers(){
           <div style="position:relative">
 
             <img
-              src="${photo}"
+              src="${escapeHTML(photo)}"
               alt="User"
             >
 
@@ -2721,9 +2778,11 @@ async function loadUsers(){
         div.addEventListener(
           "click",
           ()=>{
+
             startPrivateChat(
               user
             );
+
           }
         );
 
@@ -2841,11 +2900,7 @@ async function startPrivateChat(
             [otherUser.uid]:0
           },
 
-          deletedFor:{},
-
-          /* NEW */
-
-          blockedBy:{}
+          deletedFor:{}
 
         }
       );
@@ -2876,6 +2931,8 @@ async function startPrivateChat(
 
     alert(
       "Chat create failed 😕\n\n" +
+      error.code +
+      "\n\n" +
       error.message
     );
 
@@ -3195,7 +3252,9 @@ function renderMessage(
 ){
 
   const row =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   row.className =
     "message-row";
@@ -3207,30 +3266,40 @@ function renderMessage(
 
   if(mine){
 
-    row.classList.add("mine");
+    row.classList.add(
+      "mine"
+    );
 
   }
 
   const bubble =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   bubble.className =
     "message";
 
   const text =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   text.textContent =
     data.text || "";
 
   const meta =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   meta.className =
     "message-meta";
 
   const time =
-    document.createElement("span");
+    document.createElement(
+      "span"
+    );
 
   time.className =
     "message-time";
@@ -3240,12 +3309,16 @@ function renderMessage(
       data.createdAt
     );
 
-  meta.appendChild(time);
+  meta.appendChild(
+    time
+  );
 
   if(mine){
 
     const status =
-      document.createElement("span");
+      document.createElement(
+        "span"
+      );
 
     status.className =
       "message-status";
@@ -3255,17 +3328,27 @@ function renderMessage(
         data.status
       );
 
-    meta.appendChild(status);
+    meta.appendChild(
+      status
+    );
 
   }
 
-  bubble.appendChild(text);
+  bubble.appendChild(
+    text
+  );
 
-  bubble.appendChild(meta);
+  bubble.appendChild(
+    meta
+  );
 
-  row.appendChild(bubble);
+  row.appendChild(
+    bubble
+  );
 
-  messages.appendChild(row);
+  messages.appendChild(
+    row
+  );
 
 }
 
@@ -3290,13 +3373,15 @@ async function sendMessage(){
 
   }
 
+
   sendMessageBtn.disabled =
     true;
+
 
   try{
 
     /* =========================
-       OWN BLOCK CHECK
+       ONLY CHECK MY BLOCK
     ========================= */
 
     const blocked =
@@ -3310,7 +3395,9 @@ async function sendMessage(){
         "இந்த user-ஐ நீ block பண்ணியிருக்கிறாய் 🚫"
       );
 
-      updateBlockUI(true);
+      updateBlockUI(
+        true
+      );
 
       return;
 
@@ -3352,7 +3439,16 @@ async function sendMessage(){
     if(
       !Array.isArray(
         chatData.participants
-      ) ||
+      )
+    ){
+
+      throw new Error(
+        "Invalid chat participants."
+      );
+
+    }
+
+    if(
       !chatData.participants.includes(
         currentUser.uid
       )
@@ -3363,7 +3459,6 @@ async function sendMessage(){
       );
 
     }
-
 
     if(
       !chatData.participants.includes(
@@ -3379,21 +3474,20 @@ async function sendMessage(){
 
 
     /* =========================
-       BLOCKED BY RECEIVER
+       IMPORTANT:
+       NO RECEIVER BLOCK READ HERE
     ========================= */
 
-    if(
-      chatData.blockedBy &&
-      chatData.blockedBy[
-        currentChatUser.uid
-      ] === true
-    ){
+    /*
+      OLD CODE REMOVED:
 
-      throw new Error(
-        "இந்த user உங்களை block பண்ணியிருக்கிறார் 🚫"
-      );
+      getDoc(
+        users/receiver/blocked/myUid
+      )
 
-    }
+      This was causing:
+      permission-denied
+    */
 
 
     /* =========================
@@ -3404,7 +3498,7 @@ async function sendMessage(){
 
 
     /* =========================
-       SEND MESSAGE
+       ADD MESSAGE
     ========================= */
 
     await addDoc(
@@ -3465,6 +3559,10 @@ async function sendMessage(){
     );
 
 
+    /* =========================
+       CLEAR INPUT
+    ========================= */
+
     messageInput.value = "";
 
 
@@ -3480,19 +3578,23 @@ async function sendMessage(){
 
     alert(
       "Message send failed 😕\n\n" +
-      (error.code || "") +
+      error.code +
       "\n\n" +
       error.message
     );
 
   }finally{
 
-    const stillBlocked =
-      currentChatUser
-        ? await isUserBlocked(
-            currentChatUser.uid
-          )
-        : false;
+    let stillBlocked = false;
+
+    if(currentChatUser){
+
+      stillBlocked =
+        await isUserBlocked(
+          currentChatUser.uid
+        );
+
+    }
 
     updateBlockUI(
       stillBlocked
@@ -3530,8 +3632,14 @@ messageInput.addEventListener(
   "input",
   ()=>{
 
-    if(!currentChatId)
+    if(
+      !currentChatId ||
+      messageInput.disabled
+    ){
+
       return;
+
+    }
 
     setTyping(true);
 
@@ -3559,7 +3667,10 @@ messageInput.addEventListener(
   "keydown",
   event=>{
 
-    if(event.key === "Enter"){
+    if(
+      event.key ===
+      "Enter"
+    ){
 
       event.preventDefault();
 
@@ -3613,6 +3724,7 @@ closeUsersModal.addEventListener(
 
   }
 );
+
 
 usersModal.addEventListener(
   "click",
@@ -3668,11 +3780,13 @@ async function deleteCurrentChat(){
         currentChatId
       ),
       {
+
         [`deletedFor.${currentUser.uid}`]:
           true,
 
         [`unread.${currentUser.uid}`]:
           0
+
       }
     );
 
@@ -3715,8 +3829,6 @@ async function deleteCurrentChat(){
 
     currentChatUser = null;
 
-    loadMyChats();
-
   }catch(error){
 
     console.error(
@@ -3726,6 +3838,8 @@ async function deleteCurrentChat(){
 
     alert(
       "Chat delete failed 😕\n\n" +
+      error.code +
+      "\n\n" +
       error.message
     );
 
@@ -3742,8 +3856,7 @@ async function blockCurrentUser(){
 
   if(
     !currentUser ||
-    !currentChatUser ||
-    !currentChatId
+    !currentChatUser
   ){
 
     return;
@@ -3763,10 +3876,6 @@ async function blockCurrentUser(){
     return;
 
   try{
-
-    /* =========================
-       SAVE PRIVATE BLOCK
-    ========================= */
 
     await setDoc(
       doc(
@@ -3792,24 +3901,9 @@ async function blockCurrentUser(){
     );
 
 
-    /* =========================
-       SAVE CHAT BLOCK STATUS
-    ========================= */
-
-    await updateDoc(
-      doc(
-        db,
-        "chats",
-        currentChatId
-      ),
-      {
-        [`blockedBy.${currentUser.uid}`]:
-          true
-      }
+    updateBlockUI(
+      true
     );
-
-
-    updateBlockUI(true);
 
     chatActionMenu.style.display =
       "none";
@@ -3853,8 +3947,6 @@ async function blockCurrentUser(){
 
     currentChatUser = null;
 
-    loadMyChats();
-
   }catch(error){
 
     console.error(
@@ -3864,6 +3956,8 @@ async function blockCurrentUser(){
 
     alert(
       "Block failed 😕\n\n" +
+      error.code +
+      "\n\n" +
       error.message
     );
 
@@ -3880,8 +3974,7 @@ async function unblockCurrentUser(){
 
   if(
     !currentUser ||
-    !currentChatUser ||
-    !currentChatId
+    !currentChatUser
   ){
 
     return;
@@ -3902,10 +3995,6 @@ async function unblockCurrentUser(){
 
   try{
 
-    /* =========================
-       REMOVE PRIVATE BLOCK
-    ========================= */
-
     await deleteDoc(
       doc(
         db,
@@ -3917,24 +4006,9 @@ async function unblockCurrentUser(){
     );
 
 
-    /* =========================
-       REMOVE CHAT BLOCK
-    ========================= */
-
-    await updateDoc(
-      doc(
-        db,
-        "chats",
-        currentChatId
-      ),
-      {
-        [`blockedBy.${currentUser.uid}`]:
-          false
-      }
+    updateBlockUI(
+      false
     );
-
-
-    updateBlockUI(false);
 
     chatActionMenu.style.display =
       "none";
@@ -3954,6 +4028,8 @@ async function unblockCurrentUser(){
 
     alert(
       "Unblock failed 😕\n\n" +
+      error.code +
+      "\n\n" +
       error.message
     );
 
@@ -4043,8 +4119,10 @@ deleteChatBtn.addEventListener(
 closeChatActionMenu.addEventListener(
   "click",
   ()=>{
+
     chatActionMenu.style.display =
       "none";
+
   }
 );
 
@@ -4168,11 +4246,15 @@ logoutBtn.addEventListener(
 
       }
 
-      await signOut(auth);
+      await signOut(
+        auth
+      );
 
     }catch(error){
 
-      console.error(error);
+      console.error(
+        error
+      );
 
     }
 
@@ -4185,7 +4267,9 @@ logoutBtn.addEventListener(
 ========================= */
 
 document
-  .querySelectorAll(".tab")
+  .querySelectorAll(
+    ".tab"
+  )
   .forEach(
     tab=>{
 
@@ -4194,7 +4278,9 @@ document
         ()=>{
 
           document
-            .querySelectorAll(".tab")
+            .querySelectorAll(
+              ".tab"
+            )
             .forEach(
               item=>
                 item.classList.remove(
@@ -4209,7 +4295,10 @@ document
           const type =
             tab.dataset.tab;
 
-          if(type === "groups"){
+          if(
+            type ===
+            "groups"
+          ){
 
             chatList.innerHTML = `
 
@@ -4220,7 +4309,8 @@ document
             `;
 
           }else if(
-            type === "channels"
+            type ===
+            "channels"
           ){
 
             chatList.innerHTML = `
@@ -4249,7 +4339,9 @@ document
 ========================= */
 
 document
-  .querySelectorAll(".nav-item")
+  .querySelectorAll(
+    ".nav-item"
+  )
   .forEach(
     item=>{
 
@@ -4284,13 +4376,17 @@ document
 ========================= */
 
 document
-  .getElementById("searchBtn")
+  .getElementById(
+    "searchBtn"
+  )
   .addEventListener(
     "click",
     ()=>{
+
       alert(
         "Search feature coming next 🔎💬"
       );
+
     }
   );
 
@@ -4300,13 +4396,17 @@ document
 ========================= */
 
 document
-  .getElementById("moreBtn")
+  .getElementById(
+    "moreBtn"
+  )
   .addEventListener(
     "click",
     ()=>{
+
       alert(
         "Oii Chat Menu 💬\n\nMore features coming soon 🔥"
       );
+
     }
   );
 
