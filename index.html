@@ -102,9 +102,7 @@ button{font-family:inherit}
   font-size:12px;
 }
 
-#appScreen{
-  display:none;
-}
+#appScreen{display:none}
 
 .app-container{
   width:100%;
@@ -144,9 +142,7 @@ button{font-family:inherit}
   font-size:18px;
 }
 
-.header-icons i{
-  cursor:pointer;
-}
+.header-icons i{cursor:pointer}
 
 .user-profile{
   display:flex;
@@ -205,9 +201,7 @@ button{font-family:inherit}
   scrollbar-width:none;
 }
 
-.stories-container::-webkit-scrollbar{
-  display:none;
-}
+.stories-container::-webkit-scrollbar{display:none}
 
 .story{
   display:flex;
@@ -261,9 +255,7 @@ button{font-family:inherit}
   scrollbar-width:none;
 }
 
-.tabs::-webkit-scrollbar{
-  display:none;
-}
+.tabs::-webkit-scrollbar{display:none}
 
 .tab{
   padding:7px 16px;
@@ -274,7 +266,6 @@ button{font-family:inherit}
   color:#aaa;
   border:1px solid rgba(255,255,255,.1);
   cursor:pointer;
-  position:relative;
 }
 
 .tab.active{
@@ -317,12 +308,11 @@ button{font-family:inherit}
   border-radius:16px;
   border:1px solid rgba(0,212,255,.2);
   cursor:pointer;
-  transition:.2s;
 }
 
-.chat-card:hover{
-  border-color:rgba(0,212,255,.5);
-  transform:translateY(-1px);
+.chat-card.has-unread .chat-msg{
+  color:white;
+  font-weight:600;
 }
 
 .avatar{
@@ -341,17 +331,7 @@ button{font-family:inherit}
   object-fit:cover;
 }
 
-.online-dot{
-  position:absolute;
-  right:-1px;
-  bottom:0;
-  width:14px;
-  height:14px;
-  border-radius:50%;
-  background:#00ff66;
-  border:2px solid #080820;
-}
-
+.online-dot,
 .offline-dot{
   position:absolute;
   right:-1px;
@@ -359,9 +339,11 @@ button{font-family:inherit}
   width:14px;
   height:14px;
   border-radius:50%;
-  background:#555;
   border:2px solid #080820;
 }
+
+.online-dot{background:#00ff66}
+.offline-dot{background:#555}
 
 .chat-info{
   flex:1;
@@ -408,19 +390,6 @@ button{font-family:inherit}
   justify-content:center;
   font-size:10px;
   font-weight:700;
-  margin-left:5px;
-}
-
-.chat-card.has-unread .chat-msg{
-  color:white;
-  font-weight:600;
-}
-
-.empty{
-  text-align:center;
-  color:#777;
-  padding:40px 20px;
-  font-size:13px;
 }
 
 /* FAB */
@@ -439,7 +408,6 @@ button{font-family:inherit}
   align-items:center;
   justify-content:center;
   font-size:22px;
-  box-shadow:0 0 15px rgba(0,212,255,.5);
   cursor:pointer;
   z-index:90;
 }
@@ -470,13 +438,9 @@ button{font-family:inherit}
   cursor:pointer;
 }
 
-.nav-item.active{
-  color:#00d4ff;
-}
+.nav-item.active{color:#00d4ff}
 
-.nav-item i{
-  font-size:18px;
-}
+.nav-item i{font-size:18px}
 
 /* MODAL */
 
@@ -509,9 +473,7 @@ button{font-family:inherit}
   border-bottom:1px solid rgba(255,255,255,.08);
 }
 
-.modal-header h3{
-  font-size:18px;
-}
+.modal-header h3{font-size:18px}
 
 .close-btn{
   background:none;
@@ -561,12 +523,9 @@ button{font-family:inherit}
 .user-card-email{
   color:#777;
   font-size:10px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
 }
 
-/* CHAT SCREEN */
+/* CHAT */
 
 #chatScreen{
   display:none;
@@ -677,7 +636,53 @@ button{font-family:inherit}
 
 .message-status{
   font-size:10px;
-  line-height:1;
+}
+
+/* TYPING */
+
+.typing-indicator{
+  display:none;
+  align-items:center;
+  gap:5px;
+  width:max-content;
+  padding:7px 12px;
+  margin:0 15px 8px;
+  background:#1b1b42;
+  border-radius:15px;
+  color:#aaa;
+  font-size:11px;
+}
+
+.typing-dots{
+  display:flex;
+  gap:3px;
+}
+
+.typing-dots span{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#00d4ff;
+  animation:typing 1s infinite;
+}
+
+.typing-dots span:nth-child(2){
+  animation-delay:.2s;
+}
+
+.typing-dots span:nth-child(3){
+  animation-delay:.4s;
+}
+
+@keyframes typing{
+  0%,60%,100%{
+    transform:translateY(0);
+    opacity:.4;
+  }
+  30%{
+    transform:translateY(-4px);
+    opacity:1;
+  }
 }
 
 .message-input-area{
@@ -717,22 +722,22 @@ button{font-family:inherit}
 
 #sendMessageBtn:disabled{
   opacity:.6;
-  cursor:not-allowed;
+}
+
+.empty{
+  text-align:center;
+  color:#777;
+  padding:40px 20px;
+  font-size:13px;
 }
 
 @media(max-width:450px){
 
-  .app-container{
-    border:none;
-  }
+  .app-container{border:none}
 
-  .nav{
-    max-width:100%;
-  }
+  .nav{max-width:100%}
 
-  .fab{
-    right:20px;
-  }
+  .fab{right:20px}
 
 }
 </style>
@@ -746,13 +751,9 @@ button{font-family:inherit}
 
   <div class="login-box">
 
-    <div class="login-logo">
-      💬
-    </div>
+    <div class="login-logo">💬</div>
 
-    <div class="login-title">
-      Oii Chat
-    </div>
+    <div class="login-title">Oii Chat</div>
 
     <div class="login-subtitle">
       Tamil First Chat App 💙
@@ -774,222 +775,156 @@ button{font-family:inherit}
 
 <div id="appScreen">
 
-  <div class="app-container">
+<div class="app-container">
 
-    <div class="header">
+  <div class="header">
 
-      <div class="logo-text">
-        Oii Chat 💬
+    <div class="logo-text">
+      Oii Chat 💬
+    </div>
+
+    <div class="header-icons">
+      <i class="fas fa-search" id="searchBtn"></i>
+      <i class="fas fa-ellipsis-v" id="moreBtn"></i>
+    </div>
+
+  </div>
+
+
+  <div class="user-profile">
+
+    <img id="userPhoto"
+         src="https://i.pravatar.cc/100">
+
+    <div class="user-details">
+
+      <div class="user-name" id="userName">
+        Oii User
       </div>
 
-      <div class="header-icons">
-
-        <i class="fas fa-search"
-           id="searchBtn"></i>
-
-        <i class="fas fa-ellipsis-v"
-           id="moreBtn"></i>
-
+      <div class="user-email" id="userEmail">
+        Loading...
       </div>
 
     </div>
 
-
-    <!-- PROFILE -->
-
-    <div class="user-profile">
-
-      <img id="userPhoto"
-           src="https://i.pravatar.cc/100">
-
-      <div class="user-details">
-
-        <div class="user-name"
-             id="userName">
-          Oii User
-        </div>
-
-        <div class="user-email"
-             id="userEmail">
-          Loading...
-        </div>
-
-      </div>
-
-      <button class="logout-btn"
-              id="logoutBtn">
-        Logout
-      </button>
-
-    </div>
-
-
-    <!-- STORIES -->
-
-    <div class="stories-container">
-
-      <div class="story">
-
-        <div class="story-avatar">
-
-          <img id="myStoryPhoto"
-               src="https://i.pravatar.cc/100">
-
-          <div class="add-story">
-            +
-          </div>
-
-        </div>
-
-        <span>
-          My Story
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <!-- TABS -->
-
-    <div class="tabs">
-
-      <div class="tab active"
-           data-tab="all">
-        All Chats
-      </div>
-
-      <div class="tab"
-           data-tab="unread">
-
-        Unread
-
-        <span id="unreadTabBadge"
-              class="unread-badge"
-              style="display:none">
-          0
-        </span>
-
-      </div>
-
-      <div class="tab"
-           data-tab="groups">
-        Groups
-      </div>
-
-      <div class="tab"
-           data-tab="channels">
-        Channels
-      </div>
-
-    </div>
-
-
-    <!-- CHAT LIST -->
-
-    <div class="chat-list"
-         id="chatList">
-
-      <div class="empty">
-        Loading chats... 💬
-      </div>
-
-    </div>
-
-
-    <!-- FAB -->
-
-    <button class="fab"
-            id="newChatBtn">
-
-      <i class="fas fa-plus"></i>
-
+    <button class="logout-btn" id="logoutBtn">
+      Logout
     </button>
 
+  </div>
 
-    <!-- NAV -->
 
-    <div class="nav">
+  <div class="stories-container">
 
-      <div class="nav-item active">
+    <div class="story">
 
-        <i class="fas fa-comment-dots"></i>
+      <div class="story-avatar">
 
-        <span>
-          Chats
-        </span>
+        <img id="myStoryPhoto"
+             src="https://i.pravatar.cc/100">
 
-      </div>
-
-      <div class="nav-item">
-
-        <i class="fas fa-phone-alt"></i>
-
-        <span>
-          Calls
-        </span>
+        <div class="add-story">+</div>
 
       </div>
 
-      <div class="nav-item">
-
-        <i class="fas fa-circle-notch"></i>
-
-        <span>
-          Status
-        </span>
-
-      </div>
-
-      <div class="nav-item">
-
-        <i class="fas fa-users"></i>
-
-        <span>
-          Communities
-        </span>
-
-      </div>
-
-      <div class="nav-item">
-
-        <i class="fas fa-cog"></i>
-
-        <span>
-          Settings
-        </span>
-
-      </div>
+      <span>My Story</span>
 
     </div>
 
   </div>
 
+
+  <div class="tabs">
+
+    <div class="tab active" data-tab="all">
+      All Chats
+    </div>
+
+    <div class="tab" data-tab="unread">
+      Unread
+      <span id="unreadTabBadge"
+            class="unread-badge"
+            style="display:none">
+        0
+      </span>
+    </div>
+
+    <div class="tab" data-tab="groups">
+      Groups
+    </div>
+
+    <div class="tab" data-tab="channels">
+      Channels
+    </div>
+
+  </div>
+
+
+  <div class="chat-list" id="chatList">
+
+    <div class="empty">
+      Loading chats... 💬
+    </div>
+
+  </div>
+
+
+  <button class="fab" id="newChatBtn">
+    <i class="fas fa-plus"></i>
+  </button>
+
+
+  <div class="nav">
+
+    <div class="nav-item active">
+      <i class="fas fa-comment-dots"></i>
+      <span>Chats</span>
+    </div>
+
+    <div class="nav-item">
+      <i class="fas fa-phone-alt"></i>
+      <span>Calls</span>
+    </div>
+
+    <div class="nav-item">
+      <i class="fas fa-circle-notch"></i>
+      <span>Status</span>
+    </div>
+
+    <div class="nav-item">
+      <i class="fas fa-users"></i>
+      <span>Communities</span>
+    </div>
+
+    <div class="nav-item">
+      <i class="fas fa-cog"></i>
+      <span>Settings</span>
+    </div>
+
+  </div>
+
+</div>
 </div>
 
 
 <!-- USERS MODAL -->
 
-<div class="modal"
-     id="usersModal">
+<div class="modal" id="usersModal">
 
   <div class="modal-box">
 
     <div class="modal-header">
 
-      <h3>
-        New Chat 💬
-      </h3>
+      <h3>New Chat 💬</h3>
 
-      <button class="close-btn"
-              id="closeUsersModal">
+      <button class="close-btn" id="closeUsersModal">
         ×
       </button>
 
     </div>
 
-    <div class="users-list"
-         id="usersList">
+    <div class="users-list" id="usersList">
 
       <div class="empty">
         Loading Oii Chat users...
@@ -1002,67 +937,78 @@ button{font-family:inherit}
 </div>
 
 
-<!-- CHAT -->
+<!-- CHAT SCREEN -->
 
 <div id="chatScreen">
 
-  <div class="chat-page">
+<div class="chat-page">
 
-    <div class="chat-header">
+  <div class="chat-header">
 
-      <button class="back-btn"
-              id="backChatBtn">
+    <button class="back-btn" id="backChatBtn">
+      <i class="fas fa-arrow-left"></i>
+    </button>
 
-        <i class="fas fa-arrow-left"></i>
+    <img id="chatUserPhoto"
+         src="https://i.pravatar.cc/100">
 
-      </button>
+    <div class="chat-header-info">
 
-      <img id="chatUserPhoto"
-           src="https://i.pravatar.cc/100">
-
-      <div class="chat-header-info">
-
-        <div class="chat-header-name"
-             id="chatUserName">
-          User
-        </div>
-
-        <div class="chat-header-status"
-             id="chatUserStatus">
-          🫣 Offline
-        </div>
-
+      <div class="chat-header-name"
+           id="chatUserName">
+        User
       </div>
 
-    </div>
-
-
-    <div class="messages"
-         id="messages">
-    </div>
-
-
-    <div class="message-input-area">
-
-      <input type="text"
-             id="messageInput"
-             placeholder="Type a message..."
-             autocomplete="off">
-
-      <button id="sendMessageBtn">
-
-        <i class="fas fa-paper-plane"></i>
-
-      </button>
+      <div class="chat-header-status"
+           id="chatUserStatus">
+        🫣 Offline
+      </div>
 
     </div>
 
   </div>
 
+
+  <div class="messages" id="messages"></div>
+
+
+  <!-- TYPING INDICATOR -->
+
+  <div class="typing-indicator"
+       id="typingIndicator">
+
+    <span id="typingName">
+      User
+    </span>
+
+    <div class="typing-dots">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    🤔
+
+  </div>
+
+
+  <div class="message-input-area">
+
+    <input
+      type="text"
+      id="messageInput"
+      placeholder="Type a message..."
+      autocomplete="off">
+
+    <button id="sendMessageBtn">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+
+  </div>
+
+</div>
 </div>
 
-
-<!-- FIREBASE -->
 
 <script type="module">
 
@@ -1095,8 +1041,7 @@ import {
   onSnapshot,
   orderBy,
   serverTimestamp,
-  updateDoc,
-  writeBatch
+  updateDoc
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
@@ -1105,284 +1050,186 @@ from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
    FIREBASE
 ========================= */
 
-const firebaseConfig = {
+const firebaseConfig={
 
-  apiKey:
-    "AIzaSyCzPOAjXI0dJ33RJCVIUyCCFGyeI50Dvd0",
+  apiKey:"AIzaSyCzPOAjXI0dJ33RJCVIUyCCFGyeI50Dvd0",
 
-  authDomain:
-    "oii-chat-8802e.firebaseapp.com",
+  authDomain:"oii-chat-8802e.firebaseapp.com",
 
-  projectId:
-    "oii-chat-8802e",
+  projectId:"oii-chat-8802e",
 
-  storageBucket:
-    "oii-chat-8802e.firebasestorage.app",
+  storageBucket:"oii-chat-8802e.firebasestorage.app",
 
-  messagingSenderId:
-    "1017345795063",
+  messagingSenderId:"1017345795063",
 
-  appId:
-    "1:1017345795063:web:7fc1dfedd027c4be0d84f2",
+  appId:"1:1017345795063:web:7fc1dfedd027c4be0d84f2",
 
-  measurementId:
-    "G-304SPRZSPL"
+  measurementId:"G-304SPRZSPL"
 
 };
 
+const app=initializeApp(firebaseConfig);
 
-const app =
-  initializeApp(firebaseConfig);
+const auth=getAuth(app);
 
-const auth =
-  getAuth(app);
+const db=getFirestore(app);
 
-const db =
-  getFirestore(app);
-
-const provider =
-  new GoogleAuthProvider();
+const provider=new GoogleAuthProvider();
 
 
 /* =========================
    ELEMENTS
 ========================= */
 
-const loginScreen =
-  document.getElementById("loginScreen");
+const loginScreen=document.getElementById("loginScreen");
+const appScreen=document.getElementById("appScreen");
+const chatScreen=document.getElementById("chatScreen");
 
-const appScreen =
-  document.getElementById("appScreen");
+const googleLoginBtn=document.getElementById("googleLoginBtn");
+const logoutBtn=document.getElementById("logoutBtn");
+const loginError=document.getElementById("loginError");
 
-const chatScreen =
-  document.getElementById("chatScreen");
+const userName=document.getElementById("userName");
+const userEmail=document.getElementById("userEmail");
+const userPhoto=document.getElementById("userPhoto");
+const myStoryPhoto=document.getElementById("myStoryPhoto");
 
-const googleLoginBtn =
-  document.getElementById("googleLoginBtn");
+const newChatBtn=document.getElementById("newChatBtn");
+const usersModal=document.getElementById("usersModal");
+const closeUsersModal=document.getElementById("closeUsersModal");
+const usersList=document.getElementById("usersList");
 
-const logoutBtn =
-  document.getElementById("logoutBtn");
+const chatList=document.getElementById("chatList");
 
-const loginError =
-  document.getElementById("loginError");
+const backChatBtn=document.getElementById("backChatBtn");
 
-const userName =
-  document.getElementById("userName");
+const chatUserPhoto=document.getElementById("chatUserPhoto");
+const chatUserName=document.getElementById("chatUserName");
+const chatUserStatus=document.getElementById("chatUserStatus");
 
-const userEmail =
-  document.getElementById("userEmail");
+const messages=document.getElementById("messages");
+const messageInput=document.getElementById("messageInput");
+const sendMessageBtn=document.getElementById("sendMessageBtn");
 
-const userPhoto =
-  document.getElementById("userPhoto");
+const typingIndicator=document.getElementById("typingIndicator");
+const typingName=document.getElementById("typingName");
 
-const myStoryPhoto =
-  document.getElementById("myStoryPhoto");
-
-const newChatBtn =
-  document.getElementById("newChatBtn");
-
-const usersModal =
-  document.getElementById("usersModal");
-
-const closeUsersModal =
-  document.getElementById("closeUsersModal");
-
-const usersList =
-  document.getElementById("usersList");
-
-const chatList =
-  document.getElementById("chatList");
-
-const backChatBtn =
-  document.getElementById("backChatBtn");
-
-const chatUserPhoto =
-  document.getElementById("chatUserPhoto");
-
-const chatUserName =
-  document.getElementById("chatUserName");
-
-const chatUserStatus =
-  document.getElementById("chatUserStatus");
-
-const messages =
-  document.getElementById("messages");
-
-const messageInput =
-  document.getElementById("messageInput");
-
-const sendMessageBtn =
-  document.getElementById("sendMessageBtn");
-
-const unreadTabBadge =
-  document.getElementById("unreadTabBadge");
+const unreadTabBadge=document.getElementById("unreadTabBadge");
 
 
 /* =========================
    VARIABLES
 ========================= */
 
-let currentUser = null;
+let currentUser=null;
+let currentChatId=null;
+let currentChatUser=null;
 
-let currentChatId = null;
+let unsubscribeMessages=null;
+let unsubscribeChats=null;
+let unsubscribeUserStatus=null;
+let unsubscribeTyping=null;
 
-let currentChatUser = null;
+let allChats=[];
 
-let unsubscribeMessages = null;
+let onlineTimer=null;
+let typingTimer=null;
 
-let unsubscribeChats = null;
-
-let unsubscribeUserStatus = null;
-
-let allChats = [];
-
-let onlineTimer = null;
-
-const ONLINE_TIMEOUT = 60000;
-
-
-/*
-  Global message listeners.
-
-  These listeners allow Oii Chat to detect
-  messages arriving while the receiver is
-  on the main chat screen.
-
-  chatId -> unsubscribe function
-*/
-const deliveryListeners = new Map();
+const ONLINE_TIMEOUT=60000;
 
 
 /* =========================
-   CHAT ID
+   HELPERS
 ========================= */
 
-function makeChatId(uid1,uid2){
+function makeChatId(a,b){
 
-  return [uid1,uid2]
-    .sort()
-    .join("_");
+  return [a,b].sort().join("_");
 
 }
 
-
-/* =========================
-   TIME
-========================= */
 
 function formatTime(timestamp){
 
   if(!timestamp)
     return "";
 
-  const date =
-    timestamp.toDate
-      ? timestamp.toDate()
-      : new Date(timestamp);
+  const date=timestamp.toDate
+    ? timestamp.toDate()
+    : new Date(timestamp);
 
-  return date.toLocaleTimeString(
-    [],
-    {
-      hour:"numeric",
-      minute:"2-digit"
-    }
-  );
+  return date.toLocaleTimeString([],{
+    hour:"numeric",
+    minute:"2-digit"
+  });
 
 }
 
-
-/* =========================
-   ONLINE CHECK
-========================= */
-
-function isUserOnline(user){
-
-  if(!user)
-    return false;
-
-  if(user.online !== true)
-    return false;
-
-  if(!user.lastSeen)
-    return false;
-
-  const lastSeen =
-    user.lastSeen.toMillis
-      ? user.lastSeen.toMillis()
-      : new Date(user.lastSeen).getTime();
-
-  return (
-    Date.now() - lastSeen
-    < ONLINE_TIMEOUT
-  );
-
-}
-
-
-/* =========================
-   HTML ESCAPE
-========================= */
 
 function escapeHTML(value){
 
-  const div =
-    document.createElement("div");
+  const div=document.createElement("div");
 
-  div.textContent =
-    value == null
-      ? ""
-      : String(value);
+  div.textContent=value==null
+    ? ""
+    : String(value);
 
   return div.innerHTML;
 
 }
 
 
+function isUserOnline(user){
+
+  if(!user || user.online!==true)
+    return false;
+
+  if(!user.lastSeen)
+    return false;
+
+  const lastSeen=user.lastSeen.toMillis
+    ? user.lastSeen.toMillis()
+    : new Date(user.lastSeen).getTime();
+
+  return Date.now()-lastSeen<ONLINE_TIMEOUT;
+
+}
+
+
 /* =========================
-   GOOGLE LOGIN
+   LOGIN
 ========================= */
 
-googleLoginBtn.addEventListener(
-  "click",
-  async()=>{
+googleLoginBtn.addEventListener("click",async()=>{
 
-    loginError.style.display =
-      "none";
+  loginError.style.display="none";
 
-    googleLoginBtn.disabled =
-      true;
+  googleLoginBtn.disabled=true;
 
-    googleLoginBtn.innerHTML =
-      '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+  googleLoginBtn.innerHTML=
+    '<i class="fas fa-spinner fa-spin"></i> Signing in...';
 
-    try{
+  try{
 
-      await signInWithPopup(
-        auth,
-        provider
-      );
+    await signInWithPopup(auth,provider);
 
-    }catch(error){
+  }catch(error){
 
-      console.error(error);
+    console.error(error);
 
-      loginError.style.display =
-        "block";
+    loginError.style.display="block";
 
-      loginError.textContent =
-        "Login failed: " +
-        error.message;
+    loginError.textContent=
+      "Login failed: "+error.message;
 
-      googleLoginBtn.disabled =
-        false;
+    googleLoginBtn.disabled=false;
 
-      googleLoginBtn.innerHTML =
-        '<i class="fab fa-google"></i> Continue with Google';
-
-    }
+    googleLoginBtn.innerHTML=
+      '<i class="fab fa-google"></i> Continue with Google';
 
   }
-);
+
+});
 
 
 /* =========================
@@ -1391,60 +1238,38 @@ googleLoginBtn.addEventListener(
 
 async function saveUserProfile(user){
 
-  const userRef =
-    doc(
-      db,
-      "users",
-      user.uid
-    );
+  const ref=doc(db,"users",user.uid);
 
-  const existing =
-    await getDoc(userRef);
+  const existing=await getDoc(ref);
 
-  const data = {
+  const data={
 
     uid:user.uid,
 
-    name:
-      user.displayName ||
-      "Oii User",
+    name:user.displayName||"Oii User",
 
-    email:
-      user.email ||
-      "",
+    email:user.email||"",
 
-    photoURL:
-      user.photoURL ||
-      "",
+    photoURL:user.photoURL||"",
 
     online:true,
 
-    lastSeen:
-      serverTimestamp(),
+    lastSeen:serverTimestamp(),
 
-    lastLogin:
-      serverTimestamp()
+    lastLogin:serverTimestamp()
 
   };
 
-  if(!existing.exists()){
+  if(!existing.exists())
+    data.createdAt=serverTimestamp();
 
-    data.createdAt =
-      serverTimestamp();
-
-  }
-
-  await setDoc(
-    userRef,
-    data,
-    {merge:true}
-  );
+  await setDoc(ref,data,{merge:true});
 
 }
 
 
 /* =========================
-   SET ONLINE
+   ONLINE
 ========================= */
 
 async function setUserOnline(){
@@ -1455,37 +1280,22 @@ async function setUserOnline(){
   try{
 
     await setDoc(
-      doc(
-        db,
-        "users",
-        currentUser.uid
-      ),
+      doc(db,"users",currentUser.uid),
       {
-
         online:true,
-
-        lastSeen:
-          serverTimestamp()
-
+        lastSeen:serverTimestamp()
       },
       {merge:true}
     );
 
   }catch(error){
 
-    console.error(
-      "Online update error:",
-      error
-    );
+    console.error(error);
 
   }
 
 }
 
-
-/* =========================
-   SET OFFLINE
-========================= */
 
 async function setUserOffline(){
 
@@ -1495,37 +1305,22 @@ async function setUserOffline(){
   try{
 
     await setDoc(
-      doc(
-        db,
-        "users",
-        currentUser.uid
-      ),
+      doc(db,"users",currentUser.uid),
       {
-
         online:false,
-
-        lastSeen:
-          serverTimestamp()
-
+        lastSeen:serverTimestamp()
       },
       {merge:true}
     );
 
   }catch(error){
 
-    console.error(
-      "Offline update error:",
-      error
-    );
+    console.error(error);
 
   }
 
 }
 
-
-/* =========================
-   HEARTBEAT
-========================= */
 
 function startOnlineHeartbeat(){
 
@@ -1533,22 +1328,12 @@ function startOnlineHeartbeat(){
 
   setUserOnline();
 
-  onlineTimer =
-    setInterval(
-      ()=>{
+  onlineTimer=setInterval(()=>{
 
-        if(
-          currentUser &&
-          !document.hidden
-        ){
+    if(currentUser && !document.hidden)
+      setUserOnline();
 
-          setUserOnline();
-
-        }
-
-      },
-      20000
-    );
+  },20000);
 
 }
 
@@ -1557,12 +1342,9 @@ function stopOnlineHeartbeat(){
 
   if(onlineTimer){
 
-    clearInterval(
-      onlineTimer
-    );
+    clearInterval(onlineTimer);
 
-    onlineTimer =
-      null;
+    onlineTimer=null;
 
   }
 
@@ -1570,227 +1352,7 @@ function stopOnlineHeartbeat(){
 
 
 /* =========================
-   DELIVERY LISTENER
-========================= */
-
-function stopDeliveryListener(chatId){
-
-  const unsubscribe =
-    deliveryListeners.get(chatId);
-
-  if(unsubscribe){
-
-    unsubscribe();
-
-    deliveryListeners.delete(chatId);
-
-  }
-
-}
-
-
-/*
-  Listen to messages in a chat.
-
-  When a message sent to the current user
-  arrives with "sent" status, change it to
-  "delivered".
-
-  If the chat is currently open, it becomes
-  "read" immediately.
-*/
-
-function startDeliveryListener(
-  chatId
-){
-
-  if(!currentUser)
-    return;
-
-  if(deliveryListeners.has(chatId))
-    return;
-
-  const messagesRef =
-    collection(
-      db,
-      "chats",
-      chatId,
-      "messages"
-    );
-
-  const messagesQuery =
-    query(
-      messagesRef,
-      orderBy(
-        "createdAt",
-        "asc"
-      )
-    );
-
-  const unsubscribe =
-    onSnapshot(
-      messagesQuery,
-      async(snapshot)=>{
-
-        const updates = [];
-
-        snapshot.forEach(
-          messageDoc=>{
-
-            const data =
-              messageDoc.data();
-
-            /*
-              Only messages received by
-              current user are handled.
-            */
-            if(
-              data.receiverId !==
-              currentUser.uid
-            ){
-
-              return;
-
-            }
-
-            /*
-              If current chat is open,
-              mark incoming message as READ.
-            */
-            if(
-              currentChatId === chatId &&
-              chatScreen.style.display === "block"
-            ){
-
-              if(
-                data.status === "sent" ||
-                data.status === "delivered"
-              ){
-
-                updates.push(
-                  updateDoc(
-                    messageDoc.ref,
-                    {
-                      status:"read"
-                    }
-                  )
-                );
-
-              }
-
-            }
-
-            /*
-              If chat is not open, message is
-              delivered but not read.
-            */
-            else if(
-              data.status === "sent"
-            ){
-
-              updates.push(
-                updateDoc(
-                  messageDoc.ref,
-                  {
-                    status:"delivered"
-                  }
-                )
-              );
-
-            }
-
-          }
-        );
-
-        if(updates.length){
-
-          try{
-
-            await Promise.all(
-              updates
-            );
-
-          }catch(error){
-
-            console.error(
-              "Delivery/read update error:",
-              error
-            );
-
-          }
-
-        }
-
-      },
-      error=>{
-
-        console.error(
-          "Delivery listener error:",
-          error
-        );
-
-      }
-    );
-
-  deliveryListeners.set(
-    chatId,
-    unsubscribe
-  );
-
-}
-
-
-/* =========================
-   START ALL DELIVERY LISTENERS
-========================= */
-
-function startAllDeliveryListeners(){
-
-  if(!currentUser)
-    return;
-
-  allChats.forEach(
-    chat=>{
-
-      startDeliveryListener(
-        chat.id
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================
-   STOP ALL DELIVERY LISTENERS
-========================= */
-
-function stopAllDeliveryListeners(){
-
-  deliveryListeners.forEach(
-    unsubscribe=>{
-
-      try{
-
-        unsubscribe();
-
-      }catch(error){
-
-        console.error(error);
-
-      }
-
-    }
-  );
-
-  deliveryListeners.clear();
-
-}
-
-
-/* =========================
-   AUTH START
+   AUTH
 ========================= */
 
 async function startApp(){
@@ -1804,151 +1366,136 @@ async function startApp(){
 
   }catch(error){
 
-    console.error(
-      "Persistence error:",
-      error
-    );
+    console.error(error);
 
   }
 
-  onAuthStateChanged(
-    auth,
-    async(user)=>{
+  onAuthStateChanged(auth,async(user)=>{
 
-      currentUser =
-        user;
+    currentUser=user;
 
-      if(user){
+    if(user){
 
-        loginScreen.style.display =
-          "none";
+      loginScreen.style.display="none";
+      appScreen.style.display="block";
+      chatScreen.style.display="none";
 
-        appScreen.style.display =
-          "block";
+      userName.textContent=user.displayName||"Oii User";
+      userEmail.textContent=user.email||"";
 
-        chatScreen.style.display =
-          "none";
+      if(user.photoURL){
 
-        userName.textContent =
-          user.displayName ||
-          "Oii User";
-
-        userEmail.textContent =
-          user.email ||
-          "";
-
-        if(user.photoURL){
-
-          userPhoto.src =
-            user.photoURL;
-
-          myStoryPhoto.src =
-            user.photoURL;
-
-        }
-
-        try{
-
-          await saveUserProfile(
-            user
-          );
-
-          startOnlineHeartbeat();
-
-          loadMyChats();
-
-        }catch(error){
-
-          console.error(error);
-
-          chatList.innerHTML=`
-
-            <div class="empty">
-
-              Firebase error 😕<br><br>
-
-              ${escapeHTML(
-                error.message
-              )}
-
-            </div>
-
-          `;
-
-        }
-
-      }else{
-
-        stopOnlineHeartbeat();
-
-        stopAllDeliveryListeners();
-
-        loginScreen.style.display =
-          "flex";
-
-        appScreen.style.display =
-          "none";
-
-        chatScreen.style.display =
-          "none";
+        userPhoto.src=user.photoURL;
+        myStoryPhoto.src=user.photoURL;
 
       }
 
+      try{
+
+        await saveUserProfile(user);
+
+        startOnlineHeartbeat();
+
+        loadMyChats();
+
+        requestNotificationPermission();
+
+      }catch(error){
+
+        chatList.innerHTML=`
+          <div class="empty">
+            Firebase error 😕<br><br>
+            ${escapeHTML(error.message)}
+          </div>
+        `;
+
+      }
+
+    }else{
+
+      stopOnlineHeartbeat();
+
+      loginScreen.style.display="flex";
+      appScreen.style.display="none";
+      chatScreen.style.display="none";
+
     }
-  );
+
+  });
 
 }
-
 
 startApp();
 
 
 /* =========================
-   VISIBILITY
+   NOTIFICATION PERMISSION
 ========================= */
 
-document.addEventListener(
-  "visibilitychange",
-  ()=>{
+async function requestNotificationPermission(){
 
-    if(!currentUser)
-      return;
+  if(
+    "Notification" in window &&
+    Notification.permission==="default"
+  ){
 
-    if(document.hidden){
-
-      setUserOffline();
-
-    }else{
-
-      setUserOnline();
-
-      /*
-        When user comes back to app,
-        delivery listeners continue and
-        current open chat messages become read.
-      */
+    try{
+      await Notification.requestPermission();
+    }catch(error){
+      console.log(error);
     }
 
   }
-);
+
+}
 
 
 /* =========================
-   BEFORE CLOSE
+   SHOW NOTIFICATION 😅
 ========================= */
 
-window.addEventListener(
-  "beforeunload",
-  ()=>{
+function showMessageNotification(data){
 
-    if(currentUser){
+  if(!currentUser)
+    return;
 
-      setUserOffline();
+  if(data.receiverId!==currentUser.uid)
+    return;
 
-    }
+  if(
+    currentChatId &&
+    currentChatId===makeChatId(
+      data.senderId,
+      data.receiverId
+    ) &&
+    chatScreen.style.display==="block"
+  ){
+
+    return;
 
   }
-);
+
+  if(
+    "Notification" in window &&
+    Notification.permission==="granted"
+  ){
+
+    const title=
+      (currentChatUser?.name || "Oii Chat")+" 😅";
+
+    new Notification(title,{
+
+      body:data.text||"New message 💬",
+
+      icon:
+        currentChatUser?.photoURL ||
+        "https://i.pravatar.cc/100"
+
+    });
+
+  }
+
+}
 
 
 /* =========================
@@ -1960,236 +1507,156 @@ function loadMyChats(){
   if(!currentUser)
     return;
 
-  const chatsRef =
-    collection(
-      db,
-      "chats"
-    );
+  const chatsRef=collection(db,"chats");
 
-  const chatsQuery =
-    query(
-      chatsRef,
-      where(
-        "participants",
-        "array-contains",
-        currentUser.uid
-      )
-    );
+  const chatsQuery=query(
+    chatsRef,
+    where(
+      "participants",
+      "array-contains",
+      currentUser.uid
+    )
+  );
 
   if(unsubscribeChats)
     unsubscribeChats();
 
-  unsubscribeChats =
-    onSnapshot(
-      chatsQuery,
-      async(snapshot)=>{
+  unsubscribeChats=onSnapshot(
+    chatsQuery,
+    async(snapshot)=>{
 
-        allChats=[];
+      allChats=[];
 
-        for(
-          const chatDoc
-          of snapshot.docs
-        ){
+      for(const chatDoc of snapshot.docs){
 
-          const data =
-            chatDoc.data();
+        const data=chatDoc.data();
 
-          const otherUid =
-            data.participants.find(
-              uid =>
-                uid !==
-                currentUser.uid
-            );
+        const otherUid=data.participants.find(
+          uid=>uid!==currentUser.uid
+        );
 
-          if(!otherUid)
-            continue;
+        if(!otherUid)
+          continue;
 
-          try{
+        try{
 
-            const userSnap =
-              await getDoc(
-                doc(
-                  db,
-                  "users",
-                  otherUid
-                )
-              );
+          const userSnap=await getDoc(
+            doc(db,"users",otherUid)
+          );
 
-            if(userSnap.exists()){
+          if(userSnap.exists()){
 
-              const otherUser =
-                userSnap.data();
+            const otherUser=userSnap.data();
 
-              allChats.push({
+            allChats.push({
 
-                id:
-                  chatDoc.id,
+              id:chatDoc.id,
 
-                user:
-                  otherUser,
+              user:otherUser,
 
-                lastMessage:
-                  data.lastMessage ||
-                  "",
+              lastMessage:data.lastMessage||"",
 
-                updatedAt:
-                  data.updatedAt ||
-                  null,
+              updatedAt:data.updatedAt||null,
 
-                unread:
-                  data.unread?.[
-                    currentUser.uid
-                  ] || 0
+              unread:
+                data.unread?.[currentUser.uid]||0
 
-              });
-
-            }
-
-          }catch(error){
-
-            console.error(error);
+            });
 
           }
 
+        }catch(error){
+
+          console.error(error);
+
         }
 
-        renderAllChats();
-
-        /*
-          Start a realtime listener for every
-          private chat so incoming messages
-          can become 💓 Delivered.
-        */
-        startAllDeliveryListeners();
-
-      },
-      error=>{
-
-        console.error(error);
-
-        chatList.innerHTML=`
-
-          <div class="empty">
-
-            Unable to load chats 😕<br><br>
-
-            ${escapeHTML(
-              error.message
-            )}
-
-          </div>
-
-        `;
-
       }
-    );
+
+      renderAllChats();
+
+    }
+  );
 
 }
 
 
 /* =========================
-   RENDER CHATS
+   RENDER CHAT LIST
 ========================= */
 
 function renderAllChats(){
 
   chatList.innerHTML="";
 
-  const totalUnread =
-    allChats.reduce(
-      (sum,chat)=>
-        sum +
-        (chat.unread || 0),
-      0
-    );
+  const totalUnread=allChats.reduce(
+    (sum,chat)=>sum+(chat.unread||0),
+    0
+  );
 
-  if(totalUnread>0){
+  if(totalUnread){
 
-    unreadTabBadge.style.display =
-      "inline-flex";
+    unreadTabBadge.style.display="inline-flex";
 
-    unreadTabBadge.textContent =
-      totalUnread>99
-        ? "99+"
-        : totalUnread;
+    unreadTabBadge.textContent=
+      totalUnread>99 ? "99+" : totalUnread;
 
   }else{
 
-    unreadTabBadge.style.display =
-      "none";
+    unreadTabBadge.style.display="none";
 
   }
 
-  const activeTab =
-    document
-      .querySelector(".tab.active")
-      ?.dataset.tab ||
-    "all";
+  const activeTab=
+    document.querySelector(".tab.active")?.dataset.tab||"all";
 
-  let chats =
-    [...allChats];
+  let chats=[...allChats];
 
   if(activeTab==="unread"){
 
-    chats =
-      chats.filter(
-        chat =>
-          (chat.unread || 0)>0
-      );
+    chats=chats.filter(
+      chat=>(chat.unread||0)>0
+    );
 
   }
 
   if(
     activeTab==="groups" ||
     activeTab==="channels"
-  ){
-
+  )
     return;
 
-  }
+  chats.sort((a,b)=>{
 
-  chats.sort(
-    (a,b)=>{
+    const aTime=a.updatedAt?.toMillis
+      ? a.updatedAt.toMillis()
+      : 0;
 
-      const aTime =
-        a.updatedAt?.toMillis
-          ? a.updatedAt.toMillis()
-          : 0;
+    const bTime=b.updatedAt?.toMillis
+      ? b.updatedAt.toMillis()
+      : 0;
 
-      const bTime =
-        b.updatedAt?.toMillis
-          ? b.updatedAt.toMillis()
-          : 0;
+    return bTime-aTime;
 
-      return bTime-aTime;
+  });
 
-    }
-  );
-
-  if(chats.length===0){
+  if(!chats.length){
 
     chatList.innerHTML=`
-
       <div class="empty">
-
         ${
           activeTab==="unread"
             ? "😢 No unread messages"
             : "No chats yet 💬<br><br>Tap + to start a new chat."
         }
-
       </div>
-
     `;
 
     return;
 
   }
 
-  chats.forEach(
-    chat =>
-      renderChatCard(chat)
-  );
+  chats.forEach(renderChatCard);
 
 }
 
@@ -2200,41 +1667,27 @@ function renderAllChats(){
 
 function renderChatCard(chat){
 
-  const div =
-    document.createElement(
-      "div"
-    );
+  const div=document.createElement("div");
 
-  div.className =
-    "chat-card";
+  div.className="chat-card";
 
   if(chat.unread>0)
-    div.classList.add(
-      "has-unread"
-    );
+    div.classList.add("has-unread");
 
-  const photo =
+  const photo=
     chat.user.photoURL ||
     "https://i.pravatar.cc/100";
 
-  const online =
-    isUserOnline(
-      chat.user
-    );
+  const online=isUserOnline(chat.user);
 
   div.innerHTML=`
 
     <div class="avatar">
 
-      <img
-        src="${photo}"
-        alt="User"
-      >
+      <img src="${photo}" alt="User">
 
       <span class="${
-        online
-          ? "online-dot"
-          : "offline-dot"
+        online ? "online-dot" : "offline-dot"
       }"></span>
 
     </div>
@@ -2244,226 +1697,139 @@ function renderChatCard(chat){
       <div class="chat-top">
 
         <span class="chat-name">
-
-          ${escapeHTML(
-            chat.user.name ||
-            "Oii User"
-          )}
-
+          ${escapeHTML(chat.user.name||"Oii User")}
         </span>
 
         <span class="chat-time">
-
-          ${formatTime(
-            chat.updatedAt
-          )}
-
+          ${formatTime(chat.updatedAt)}
         </span>
 
       </div>
 
       <div class="chat-msg">
-
-        ${escapeHTML(
-          chat.lastMessage ||
-          "Start chatting 💬"
-        )}
-
+        ${escapeHTML(chat.lastMessage||"Start chatting 💬")}
       </div>
 
     </div>
 
     ${
       chat.unread>0
-        ? `
-          <div class="unread-count">
-
-            ${
-              chat.unread>99
-                ? "99+"
-                : chat.unread
-            }
-
-          </div>
-        `
+        ? `<div class="unread-count">
+             ${chat.unread>99?"99+":chat.unread}
+           </div>`
         : ""
     }
 
   `;
 
-  div.addEventListener(
-    "click",
-    ()=>{
+  div.addEventListener("click",()=>{
 
-      openChat(
-        chat.id,
-        chat.user
-      );
+    openChat(chat.id,chat.user);
 
-    }
-  );
+  });
 
-  chatList.appendChild(
-    div
-  );
+  chatList.appendChild(div);
 
 }
 
 
 /* =========================
-   LOAD USERS
+   USERS
 ========================= */
 
 async function loadUsers(){
 
   usersList.innerHTML=`
-
     <div class="empty">
       Loading Oii Chat users... ⏳
     </div>
-
   `;
 
   try{
 
-    const usersSnapshot =
-      await getDocs(
-        collection(
-          db,
-          "users"
-        )
-      );
+    const snapshot=await getDocs(
+      collection(db,"users")
+    );
 
-    usersList.innerHTML =
-      "";
+    usersList.innerHTML="";
 
     let count=0;
 
-    usersSnapshot.forEach(
-      userDoc=>{
+    snapshot.forEach(userDoc=>{
 
-        const user =
-          userDoc.data();
+      const user=userDoc.data();
 
-        if(
-          !currentUser ||
-          user.uid ===
-          currentUser.uid
-        ){
+      if(
+        !currentUser ||
+        user.uid===currentUser.uid
+      )
+        return;
 
-          return;
+      count++;
 
-        }
+      const div=document.createElement("div");
 
-        count++;
+      div.className="user-card";
 
-        const div =
-          document.createElement(
-            "div"
-          );
+      const photo=
+        user.photoURL ||
+        "https://i.pravatar.cc/100";
 
-        div.className =
-          "user-card";
+      const online=isUserOnline(user);
 
-        const photo =
-          user.photoURL ||
-          "https://i.pravatar.cc/100";
+      div.innerHTML=`
 
-        const online =
-          isUserOnline(
-            user
-          );
+        <div style="position:relative">
 
-        div.innerHTML=`
+          <img src="${photo}" alt="User">
 
-          <div style="position:relative">
-
-            <img
-              src="${photo}"
-              alt="User"
-            >
-
-            <span class="${
-              online
-                ? "online-dot"
-                : "offline-dot"
-            }"></span>
-
-          </div>
-
-          <div class="user-card-info">
-
-            <div class="user-card-name">
-
-              ${escapeHTML(
-                user.name ||
-                "Oii User"
-              )}
-
-            </div>
-
-            <div class="user-card-email">
-
-              ${
-                online
-                  ? "👀 Online"
-                  : "🫣 Offline"
-              }
-
-            </div>
-
-          </div>
-
-        `;
-
-        div.addEventListener(
-          "click",
-          async()=>{
-
-            await startPrivateChat(
-              user
-            );
-
-          }
-        );
-
-        usersList.appendChild(
-          div
-        );
-
-      }
-    );
-
-    if(count===0){
-
-      usersList.innerHTML=`
-
-        <div class="empty">
-
-          வேறு Oii Chat users இன்னும் இல்லை 💙
+          <span class="${
+            online ? "online-dot" : "offline-dot"
+          }"></span>
 
         </div>
 
+        <div class="user-card-info">
+
+          <div class="user-card-name">
+            ${escapeHTML(user.name||"Oii User")}
+          </div>
+
+          <div class="user-card-email">
+            ${online ? "👀 Online" : "🫣 Offline"}
+          </div>
+
+        </div>
+
+      `;
+
+      div.addEventListener("click",()=>{
+
+        startPrivateChat(user);
+
+      });
+
+      usersList.appendChild(div);
+
+    });
+
+    if(!count){
+
+      usersList.innerHTML=`
+        <div class="empty">
+          வேறு Oii Chat users இன்னும் இல்லை 💙
+        </div>
       `;
 
     }
 
   }catch(error){
 
-    console.error(error);
-
     usersList.innerHTML=`
-
       <div class="empty">
-
         Users load ஆகவில்லை 😕<br><br>
-
-        ${escapeHTML(
-          error.message
-        )}
-
+        ${escapeHTML(error.message)}
       </div>
-
     `;
 
   }
@@ -2472,202 +1838,62 @@ async function loadUsers(){
 
 
 /* =========================
-   START PRIVATE CHAT
+   CREATE CHAT
 ========================= */
 
-async function startPrivateChat(
-  otherUser
-){
+async function startPrivateChat(otherUser){
 
   if(!currentUser)
     return;
 
-  const chatId =
-    makeChatId(
-      currentUser.uid,
-      otherUser.uid
-    );
+  const chatId=makeChatId(
+    currentUser.uid,
+    otherUser.uid
+  );
 
-  const chatRef =
-    doc(
-      db,
-      "chats",
-      chatId
-    );
+  const chatRef=doc(
+    db,
+    "chats",
+    chatId
+  );
 
   try{
 
-    const existing =
-      await getDoc(
-        chatRef
-      );
+    const existing=await getDoc(chatRef);
 
     if(!existing.exists()){
 
-      await setDoc(
-        chatRef,
-        {
+      await setDoc(chatRef,{
 
-          participants:[
-            currentUser.uid,
-            otherUser.uid
-          ],
+        participants:[
+          currentUser.uid,
+          otherUser.uid
+        ],
 
-          createdAt:
-            serverTimestamp(),
+        createdAt:serverTimestamp(),
 
-          updatedAt:
-            serverTimestamp(),
+        updatedAt:serverTimestamp(),
 
-          lastMessage:
-            "",
+        lastMessage:"",
 
-          unread:{
-
-            [currentUser.uid]:
-              0,
-
-            [otherUser.uid]:
-              0
-
-          }
-
+        unread:{
+          [currentUser.uid]:0,
+          [otherUser.uid]:0
         }
-      );
+
+      });
 
     }
 
-    usersModal.style.display =
-      "none";
+    usersModal.style.display="none";
 
-    /*
-      Start delivery listener immediately
-      for newly created chat.
-    */
-    startDeliveryListener(
-      chatId
-    );
-
-    openChat(
-      chatId,
-      otherUser
-    );
+    openChat(chatId,otherUser);
 
   }catch(error){
-
-    console.error(error);
 
     alert(
-      "Chat create failed 😕\n\n" +
+      "Chat create failed 😕\n\n"+
       error.message
-    );
-
-  }
-
-}
-
-
-/* =========================
-   UPDATE CHAT STATUS
-========================= */
-
-function updateChatStatus(user){
-
-  const online =
-    isUserOnline(user);
-
-  chatUserStatus.textContent =
-    online
-      ? "👀 Online"
-      : "🫣 Offline";
-
-  chatUserStatus.style.color =
-    online
-      ? "#00ff66"
-      : "#888";
-
-}
-
-
-/* =========================
-   MARK CHAT MESSAGES READ
-========================= */
-
-async function markChatMessagesRead(
-  chatId
-){
-
-  if(!currentUser)
-    return;
-
-  try{
-
-    const messagesRef =
-      collection(
-        db,
-        "chats",
-        chatId,
-        "messages"
-      );
-
-    const messagesQuery =
-      query(
-        messagesRef,
-        orderBy(
-          "createdAt",
-          "asc"
-        )
-      );
-
-    const snapshot =
-      await getDocs(
-        messagesQuery
-      );
-
-    const updates=[];
-
-    snapshot.forEach(
-      messageDoc=>{
-
-        const data =
-          messageDoc.data();
-
-        if(
-          data.receiverId ===
-          currentUser.uid &&
-          (
-            data.status === "sent" ||
-            data.status === "delivered"
-          )
-        ){
-
-          updates.push(
-            updateDoc(
-              messageDoc.ref,
-              {
-                status:"read"
-              }
-            )
-          );
-
-        }
-
-      }
-    );
-
-    if(updates.length){
-
-      await Promise.all(
-        updates
-      );
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Read status error:",
-      error
     );
 
   }
@@ -2679,254 +1905,263 @@ async function markChatMessagesRead(
    OPEN CHAT
 ========================= */
 
-async function openChat(
-  chatId,
-  otherUser
-){
+async function openChat(chatId,otherUser){
 
-  currentChatId =
-    chatId;
+  currentChatId=chatId;
 
-  currentChatUser =
-    otherUser;
+  currentChatUser=otherUser;
 
-  chatUserName.textContent =
-    otherUser.name ||
-    "Oii User";
+  chatUserName.textContent=
+    otherUser.name||"Oii User";
 
-  chatUserPhoto.src =
-    otherUser.photoURL ||
+  chatUserPhoto.src=
+    otherUser.photoURL||
     "https://i.pravatar.cc/100";
 
-  updateChatStatus(
-    otherUser
-  );
+  updateChatStatus(otherUser);
 
-  chatScreen.style.display =
-    "block";
+  chatScreen.style.display="block";
 
   messages.innerHTML=`
-
     <div class="empty">
       Loading messages... 💬
     </div>
-
   `;
 
-  messageInput.value =
-    "";
+  messageInput.value="";
 
-  /*
-    Clear unread count.
-  */
+  typingIndicator.style.display="none";
 
   try{
 
     await updateDoc(
-      doc(
-        db,
-        "chats",
-        chatId
-      ),
+      doc(db,"chats",chatId),
       {
-        [`unread.${currentUser.uid}`]:
-          0
+        [`unread.${currentUser.uid}`]:0
       }
     );
 
   }catch(error){
 
-    console.error(
-      "Unread clear error:",
-      error
-    );
+    console.error(error);
 
   }
 
 
-  /*
-    Start delivery listener.
-  */
+  /* USER ONLINE STATUS */
 
-  startDeliveryListener(
-    chatId
+  if(unsubscribeUserStatus)
+    unsubscribeUserStatus();
+
+  unsubscribeUserStatus=onSnapshot(
+    doc(db,"users",otherUser.uid),
+    snapshot=>{
+
+      if(!snapshot.exists())
+        return;
+
+      currentChatUser={
+        ...snapshot.data(),
+        uid:otherUser.uid
+      };
+
+      updateChatStatus(currentChatUser);
+
+    }
   );
 
 
-  /*
-    Stop previous user status listener.
-  */
+  /* TYPING LISTENER 🤔 */
 
-  if(unsubscribeUserStatus){
+  if(unsubscribeTyping)
+    unsubscribeTyping();
 
-    unsubscribeUserStatus();
+  unsubscribeTyping=onSnapshot(
+    doc(db,"chats",chatId),
+    snapshot=>{
 
-    unsubscribeUserStatus =
-      null;
+      if(!snapshot.exists())
+        return;
 
-  }
+      const data=snapshot.data();
 
+      const isTyping=
+        data.typing?.[otherUser.uid]===true;
 
-  /*
-    Listen to other user's online status.
-  */
+      if(isTyping){
 
-  unsubscribeUserStatus =
-    onSnapshot(
-      doc(
-        db,
-        "users",
-        otherUser.uid
-      ),
-      snapshot=>{
+        typingName.textContent=
+          otherUser.name||"User";
 
-        if(!snapshot.exists())
-          return;
+        typingIndicator.style.display=
+          "flex";
 
-        const freshUser =
-          snapshot.data();
+      }else{
 
-        currentChatUser = {
-
-          ...freshUser,
-
-          uid:
-            otherUser.uid
-
-        };
-
-        updateChatStatus(
-          currentChatUser
-        );
+        typingIndicator.style.display=
+          "none";
 
       }
-    );
+
+    }
+  );
 
 
-  /*
-    Stop previous message listener.
-  */
+  /* MESSAGES */
 
   if(unsubscribeMessages)
     unsubscribeMessages();
 
+  const messagesRef=collection(
+    db,
+    "chats",
+    chatId,
+    "messages"
+  );
 
-  const messagesRef =
-    collection(
+  const messagesQuery=query(
+    messagesRef,
+    orderBy("createdAt","asc")
+  );
+
+  unsubscribeMessages=onSnapshot(
+    messagesQuery,
+    async snapshot=>{
+
+      messages.innerHTML="";
+
+      if(snapshot.empty){
+
+        messages.innerHTML=`
+          <div class="empty">
+            Say Hi 👋
+          </div>
+        `;
+
+        return;
+
+      }
+
+      snapshot.forEach(messageDoc=>{
+
+        const data=messageDoc.data();
+
+        renderMessage(data);
+
+        /* 😅 NOTIFICATION */
+
+        showMessageNotification(data);
+
+      });
+
+      scrollMessages();
+
+      await markChatMessagesRead(chatId);
+
+    }
+  );
+
+
+  setTimeout(()=>{
+    messageInput.focus();
+  },100);
+
+}
+
+
+/* =========================
+   CHAT STATUS
+========================= */
+
+function updateChatStatus(user){
+
+  const online=isUserOnline(user);
+
+  chatUserStatus.textContent=
+    online
+      ? "👀 Online"
+      : "🫣 Offline";
+
+  chatUserStatus.style.color=
+    online
+      ? "#00ff66"
+      : "#888";
+
+}
+
+
+/* =========================
+   READ
+========================= */
+
+async function markChatMessagesRead(chatId){
+
+  if(!currentUser)
+    return;
+
+  try{
+
+    const ref=collection(
       db,
       "chats",
       chatId,
       "messages"
     );
 
-
-  const messagesQuery =
-    query(
-      messagesRef,
-      orderBy(
-        "createdAt",
-        "asc"
-      )
+    const q=query(
+      ref,
+      orderBy("createdAt","asc")
     );
 
+    const snapshot=await getDocs(q);
 
-  unsubscribeMessages =
-    onSnapshot(
-      messagesQuery,
-      snapshot=>{
+    const updates=[];
 
-        messages.innerHTML =
-          "";
+    snapshot.forEach(messageDoc=>{
 
-        if(snapshot.empty){
+      const data=messageDoc.data();
 
-          messages.innerHTML=`
+      if(
+        data.receiverId===currentUser.uid &&
+        (
+          data.status==="sent" ||
+          data.status==="delivered"
+        )
+      ){
 
-            <div class="empty">
-              Say Hi 👋
-            </div>
-
-          `;
-
-          return;
-
-        }
-
-        snapshot.forEach(
-          messageDoc=>{
-
-            renderMessage(
-              messageDoc.data()
-            );
-
-          }
+        updates.push(
+          updateDoc(
+            messageDoc.ref,
+            {status:"read"}
+          )
         );
-
-        scrollMessages();
-
-        /*
-          Chat is open, so incoming
-          messages are READ.
-        */
-
-        markChatMessagesRead(
-          chatId
-        );
-
-      },
-      error=>{
-
-        console.error(error);
-
-        messages.innerHTML=`
-
-          <div class="empty">
-
-            Messages load ஆகவில்லை 😕<br><br>
-
-            ${escapeHTML(
-              error.message
-            )}
-
-          </div>
-
-        `;
 
       }
-    );
 
+    });
 
-  setTimeout(
-    ()=>{
+    await Promise.all(updates);
 
-      messageInput.focus();
+  }catch(error){
 
-    },
-    100
-  );
+    console.error(error);
+
+  }
 
 }
 
 
 /* =========================
-   MESSAGE STATUS
+   MESSAGE ICON
 ========================= */
 
-function getMessageStatusIcon(
-  status
-){
+function getMessageStatusIcon(status){
 
-  if(status === "read"){
-
+  if(status==="read")
     return "💞";
 
-  }
-
-  if(status === "delivered"){
-
+  if(status==="delivered")
     return "💓";
-
-  }
 
   return "🚀";
 
@@ -2939,189 +2174,111 @@ function getMessageStatusIcon(
 
 function renderMessage(data){
 
-  const row =
-    document.createElement(
-      "div"
-    );
+  const row=document.createElement("div");
 
-  row.className =
-    "message-row";
+  row.className="message-row";
 
-  const mine =
+  const mine=
     currentUser &&
-    data.senderId ===
-    currentUser.uid;
+    data.senderId===currentUser.uid;
 
   if(mine)
-    row.classList.add(
-      "mine"
-    );
+    row.classList.add("mine");
 
+  const bubble=document.createElement("div");
 
-  const bubble =
-    document.createElement(
-      "div"
-    );
+  bubble.className="message";
 
-  bubble.className =
-    "message";
+  const text=document.createElement("div");
 
+  text.textContent=data.text||"";
 
-  const text =
-    document.createElement(
-      "div"
-    );
+  const meta=document.createElement("div");
 
-  text.textContent =
-    data.text || "";
+  meta.className="message-meta";
 
+  const time=document.createElement("span");
 
-  const meta =
-    document.createElement(
-      "div"
-    );
+  time.className="message-time";
 
-  meta.className =
-    "message-meta";
+  time.textContent=formatTime(data.createdAt);
 
-
-  const time =
-    document.createElement(
-      "span"
-    );
-
-  time.className =
-    "message-time";
-
-  time.textContent =
-    formatTime(
-      data.createdAt
-    );
-
-
-  meta.appendChild(
-    time
-  );
-
-
-  /*
-    Status icon is shown only
-    on messages sent by me.
-  */
+  meta.appendChild(time);
 
   if(mine){
 
-    const status =
-      document.createElement(
-        "span"
-      );
+    const status=document.createElement("span");
 
-    status.className =
-      "message-status";
+    status.className="message-status";
 
-    status.textContent =
-      getMessageStatusIcon(
-        data.status
-      );
+    status.textContent=
+      getMessageStatusIcon(data.status);
 
-    meta.appendChild(
-      status
-    );
+    meta.appendChild(status);
 
   }
 
+  bubble.appendChild(text);
 
-  bubble.appendChild(
-    text
-  );
+  bubble.appendChild(meta);
 
-  bubble.appendChild(
-    meta
-  );
+  row.appendChild(bubble);
 
-  row.appendChild(
-    bubble
-  );
-
-  messages.appendChild(
-    row
-  );
+  messages.appendChild(row);
 
 }
 
 
 /* =========================
-   SEND MESSAGE
+   SEND MESSAGE 🚀
 ========================= */
 
 async function sendMessage(){
 
-  const text =
-    messageInput.value.trim();
+  const text=messageInput.value.trim();
 
   if(
     !text ||
     !currentUser ||
     !currentChatId ||
     !currentChatUser
-  ){
-
+  )
     return;
 
-  }
+  messageInput.value="";
 
-  messageInput.value =
-    "";
+  sendMessageBtn.disabled=true;
 
-  sendMessageBtn.disabled =
-    true;
+  /* stop typing */
 
+  await setTyping(false);
 
   try{
 
-    const chatRef =
-      doc(
-        db,
-        "chats",
-        currentChatId
-      );
+    const chatRef=doc(
+      db,
+      "chats",
+      currentChatId
+    );
 
+    const chatSnap=await getDoc(chatRef);
 
-    const chatSnap =
-      await getDoc(
-        chatRef
-      );
+    if(!chatSnap.exists())
+      throw new Error("Chat does not exist.");
 
-
-    if(!chatSnap.exists()){
-
-      throw new Error(
-        "Chat does not exist."
-      );
-
-    }
-
-
-    const chatData =
-      chatSnap.data();
-
+    const chatData=chatSnap.data();
 
     if(
       !chatData.participants.includes(
         currentUser.uid
       )
-    ){
-
+    )
       throw new Error(
         "You are not a participant in this chat."
       );
 
-    }
 
-
-    /*
-      Create message with SENT status.
-    */
+    /* MESSAGE 🚀 */
 
     await addDoc(
       collection(
@@ -3132,78 +2289,57 @@ async function sendMessage(){
       ),
       {
 
-        senderId:
-          currentUser.uid,
+        senderId:currentUser.uid,
 
-        receiverId:
-          currentChatUser.uid,
+        receiverId:currentChatUser.uid,
 
-        text:
-          text,
+        text:text,
 
-        createdAt:
-          serverTimestamp(),
+        createdAt:serverTimestamp(),
 
-        status:
-          "sent"
+        status:"sent"
 
       }
     );
 
 
-    /*
-      Update chat preview and unread count.
-    */
-
-    const oldUnread =
+    const oldUnread=
       chatData.unread?.[
         currentChatUser.uid
-      ] || 0;
+      ]||0;
 
 
     await setDoc(
       chatRef,
       {
 
-        lastMessage:
-          text,
+        lastMessage:text,
 
-        updatedAt:
-          serverTimestamp(),
+        updatedAt:serverTimestamp(),
 
         [`unread.${currentChatUser.uid}`]:
-          oldUnread + 1,
+          oldUnread+1,
 
-        [`unread.${currentUser.uid}`]:
-          0
+        [`unread.${currentUser.uid}`]:0
 
       },
-      {
-        merge:true
-      }
+      {merge:true}
     );
-
 
   }catch(error){
 
     console.error(error);
 
-    /*
-      Put message back if sending failed.
-    */
-
-    messageInput.value =
-      text;
+    messageInput.value=text;
 
     alert(
-      "Message send failed 😕\n\n" +
+      "Message send failed 😕\n\n"+
       error.message
     );
 
   }finally{
 
-    sendMessageBtn.disabled =
-      false;
+    sendMessageBtn.disabled=false;
 
     messageInput.focus();
 
@@ -3213,12 +2349,78 @@ async function sendMessage(){
 
 
 /* =========================
+   TYPING 🤔
+========================= */
+
+async function setTyping(value){
+
+  if(
+    !currentUser ||
+    !currentChatId
+  )
+    return;
+
+  try{
+
+    await setDoc(
+      doc(
+        db,
+        "chats",
+        currentChatId
+      ),
+      {
+        typing:{
+          [currentUser.uid]:value
+        }
+      },
+      {merge:true}
+    );
+
+  }catch(error){
+
+    console.error(
+      "Typing error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================
+   TYPING INPUT
+========================= */
+
+messageInput.addEventListener(
+  "input",
+  ()=>{
+
+    if(!currentChatId)
+      return;
+
+    setTyping(true);
+
+    clearTimeout(typingTimer);
+
+    typingTimer=setTimeout(
+      ()=>{
+        setTyping(false);
+      },
+      1500
+    );
+
+  }
+);
+
+
+/* =========================
    SCROLL
 ========================= */
 
 function scrollMessages(){
 
-  messages.scrollTop =
+  messages.scrollTop=
     messages.scrollHeight;
 
 }
@@ -3232,8 +2434,7 @@ newChatBtn.addEventListener(
   "click",
   ()=>{
 
-    usersModal.style.display =
-      "flex";
+    usersModal.style.display="flex";
 
     loadUsers();
 
@@ -3248,66 +2449,57 @@ newChatBtn.addEventListener(
 closeUsersModal.addEventListener(
   "click",
   ()=>{
-
-    usersModal.style.display =
-      "none";
-
+    usersModal.style.display="none";
   }
 );
-
 
 usersModal.addEventListener(
   "click",
   event=>{
 
-    if(
-      event.target ===
-      usersModal
-    ){
-
-      usersModal.style.display =
-        "none";
-
-    }
+    if(event.target===usersModal)
+      usersModal.style.display="none";
 
   }
 );
 
 
 /* =========================
-   BACK CHAT
+   BACK
 ========================= */
 
 backChatBtn.addEventListener(
   "click",
-  ()=>{
+  async()=>{
 
-    chatScreen.style.display =
-      "none";
+    await setTyping(false);
 
-    currentChatId =
-      null;
+    chatScreen.style.display="none";
 
-    currentChatUser =
-      null;
+    currentChatId=null;
 
+    currentChatUser=null;
+
+    typingIndicator.style.display="none";
 
     if(unsubscribeMessages){
 
       unsubscribeMessages();
-
-      unsubscribeMessages =
-        null;
+      unsubscribeMessages=null;
 
     }
-
 
     if(unsubscribeUserStatus){
 
       unsubscribeUserStatus();
+      unsubscribeUserStatus=null;
 
-      unsubscribeUserStatus =
-        null;
+    }
+
+    if(unsubscribeTyping){
+
+      unsubscribeTyping();
+      unsubscribeTyping=null;
 
     }
 
@@ -3316,7 +2508,7 @@ backChatBtn.addEventListener(
 
 
 /* =========================
-   SEND
+   SEND BUTTON
 ========================= */
 
 sendMessageBtn.addEventListener(
@@ -3333,7 +2525,7 @@ messageInput.addEventListener(
   "keydown",
   event=>{
 
-    if(event.key === "Enter"){
+    if(event.key==="Enter"){
 
       event.preventDefault();
 
@@ -3355,52 +2547,54 @@ logoutBtn.addEventListener(
 
     try{
 
+      await setTyping(false);
+
       await setUserOffline();
 
       stopOnlineHeartbeat();
 
-      stopAllDeliveryListeners();
-
-
-      if(unsubscribeChats){
-
+      if(unsubscribeChats)
         unsubscribeChats();
 
-        unsubscribeChats =
-          null;
-
-      }
-
-
-      if(unsubscribeMessages){
-
+      if(unsubscribeMessages)
         unsubscribeMessages();
 
-        unsubscribeMessages =
-          null;
-
-      }
-
-
-      if(unsubscribeUserStatus){
-
+      if(unsubscribeUserStatus)
         unsubscribeUserStatus();
 
-        unsubscribeUserStatus =
-          null;
+      if(unsubscribeTyping)
+        unsubscribeTyping();
 
-      }
-
-
-      await signOut(
-        auth
-      );
+      await signOut(auth);
 
     }catch(error){
 
-      console.error(
-        error
-      );
+      console.error(error);
+
+    }
+
+  }
+);
+
+
+/* =========================
+   VISIBILITY
+========================= */
+
+document.addEventListener(
+  "visibilitychange",
+  ()=>{
+
+    if(!currentUser)
+      return;
+
+    if(document.hidden){
+
+      setUserOffline();
+
+    }else{
+
+      setUserOnline();
 
     }
 
@@ -3413,59 +2607,49 @@ logoutBtn.addEventListener(
 ========================= */
 
 document
-  .querySelectorAll(".tab")
-  .forEach(tab=>{
+.querySelectorAll(".tab")
+.forEach(tab=>{
 
-    tab.addEventListener(
-      "click",
-      ()=>{
+  tab.addEventListener(
+    "click",
+    ()=>{
 
-        document
-          .querySelectorAll(".tab")
-          .forEach(item=>
-            item.classList.remove(
-              "active"
-            )
-          );
+      document
+      .querySelectorAll(".tab")
+      .forEach(item=>
+        item.classList.remove("active")
+      );
 
-        tab.classList.add(
-          "active"
-        );
+      tab.classList.add("active");
 
-        const type =
-          tab.dataset.tab;
+      const type=tab.dataset.tab;
 
+      if(type==="groups"){
 
-        if(type === "groups"){
+        chatList.innerHTML=`
+          <div class="empty">
+            Groups coming soon 👥🔥
+          </div>
+        `;
 
-          chatList.innerHTML=`
+      }else if(type==="channels"){
 
-            <div class="empty">
-              Groups coming soon 👥🔥
-            </div>
+        chatList.innerHTML=`
+          <div class="empty">
+            Channels coming soon 📢🔥
+          </div>
+        `;
 
-          `;
+      }else{
 
-        }else if(type === "channels"){
-
-          chatList.innerHTML=`
-
-            <div class="empty">
-              Channels coming soon 📢🔥
-            </div>
-
-          `;
-
-        }else{
-
-          renderAllChats();
-
-        }
+        renderAllChats();
 
       }
-    );
 
-  });
+    }
+  );
+
+});
 
 
 /* =========================
@@ -3473,31 +2657,25 @@ document
 ========================= */
 
 document
-  .querySelectorAll(".nav-item")
-  .forEach(item=>{
+.querySelectorAll(".nav-item")
+.forEach(item=>{
 
-    item.addEventListener(
-      "click",
-      ()=>{
+  item.addEventListener(
+    "click",
+    ()=>{
 
-        document
-          .querySelectorAll(
-            ".nav-item"
-          )
-          .forEach(nav=>
-            nav.classList.remove(
-              "active"
-            )
-          );
+      document
+      .querySelectorAll(".nav-item")
+      .forEach(nav=>
+        nav.classList.remove("active")
+      );
 
-        item.classList.add(
-          "active"
-        );
+      item.classList.add("active");
 
-      }
-    );
+    }
+  );
 
-  });
+});
 
 
 /* =========================
@@ -3505,17 +2683,15 @@ document
 ========================= */
 
 document
-  .getElementById("searchBtn")
-  .addEventListener(
-    "click",
-    ()=>{
-
-      alert(
-        "Search feature coming next 🔎💬"
-      );
-
-    }
-  );
+.getElementById("searchBtn")
+.addEventListener(
+  "click",
+  ()=>{
+    alert(
+      "Search feature coming next 🔎💬"
+    );
+  }
+);
 
 
 /* =========================
@@ -3523,17 +2699,15 @@ document
 ========================= */
 
 document
-  .getElementById("moreBtn")
-  .addEventListener(
-    "click",
-    ()=>{
-
-      alert(
-        "Oii Chat Menu 💬\n\nMore features coming soon 🔥"
-      );
-
-    }
-  );
+.getElementById("moreBtn")
+.addEventListener(
+  "click",
+  ()=>{
+    alert(
+      "Oii Chat Menu 💬\n\nMore features coming soon 🔥"
+    );
+  }
+);
 
 </script>
 
