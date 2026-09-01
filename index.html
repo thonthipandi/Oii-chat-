@@ -98,16 +98,11 @@ button{
   font-size:20px;
 }
 
-#googleLoginBtn:disabled{
-  opacity:.65;
-}
-
 #loginError{
   display:none;
   margin-top:15px;
   color:#ff668f;
   font-size:12px;
-  line-height:1.5;
 }
 
 #appScreen{
@@ -203,8 +198,6 @@ button{
   font-size:11px;
 }
 
-/* STORIES */
-
 .stories-container{
   display:flex;
   gap:15px;
@@ -259,8 +252,6 @@ button{
   font-weight:bold;
 }
 
-/* TABS */
-
 .tabs{
   display:flex;
   gap:10px;
@@ -305,8 +296,6 @@ button{
   font-size:10px;
   font-weight:700;
 }
-
-/* CHAT LIST */
 
 .chat-list{
   padding:10px 20px;
@@ -426,8 +415,6 @@ button{
   font-size:13px;
 }
 
-/* FAB */
-
 .fab{
   position:fixed;
   bottom:80px;
@@ -446,8 +433,6 @@ button{
   cursor:pointer;
   z-index:90;
 }
-
-/* NAV */
 
 .nav{
   position:fixed;
@@ -480,8 +465,6 @@ button{
 .nav-item i{
   font-size:18px;
 }
-
-/* MODAL */
 
 .modal{
   display:none;
@@ -536,7 +519,6 @@ button{
   gap:12px;
   padding:12px;
   border-radius:14px;
-  cursor:pointer;
 }
 
 .user-card:hover{
@@ -566,7 +548,15 @@ button{
   font-size:10px;
 }
 
-/* CHAT */
+.unblock-small{
+  border:1px solid rgba(0,255,153,.3);
+  background:rgba(0,255,153,.1);
+  color:#00ff99;
+  border-radius:10px;
+  padding:7px 10px;
+  font-size:11px;
+  cursor:pointer;
+}
 
 #chatScreen{
   display:none;
@@ -622,9 +612,6 @@ button{
 .chat-header-name{
   font-size:14px;
   font-weight:600;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
 }
 
 .chat-header-status{
@@ -642,8 +629,6 @@ button{
   font-size:17px;
   cursor:pointer;
 }
-
-/* MESSAGES */
 
 .messages{
   flex:1;
@@ -725,10 +710,6 @@ button{
   color:#777;
 }
 
-#messageInput:disabled{
-  opacity:.5;
-}
-
 #sendMessageBtn{
   width:45px;
   height:45px;
@@ -743,8 +724,6 @@ button{
 #sendMessageBtn:disabled{
   opacity:.6;
 }
-
-/* MENU */
 
 .chat-action-menu{
   display:none;
@@ -801,17 +780,7 @@ button{
   text-align:center;
 }
 
-/* BLOCKED */
-
-.blocked-notice{
-  text-align:center;
-  padding:15px;
-  color:#ff6688;
-  font-size:11px;
-}
-
 @media(max-width:450px){
-
   .app-container{
     border:none;
   }
@@ -823,17 +792,13 @@ button{
   .fab{
     right:20px;
   }
-
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-
 <div id="loginScreen">
-
   <div class="login-box">
 
     <div class="login-logo">💬</div>
@@ -854,11 +819,8 @@ button{
     <div id="loginError"></div>
 
   </div>
-
 </div>
 
-
-<!-- APP -->
 
 <div id="appScreen">
 
@@ -995,11 +957,10 @@ button{
     </div>
 
   </div>
-
 </div>
 
 
-<!-- USERS MODAL -->
+<!-- NEW CHAT MODAL -->
 
 <div class="modal" id="usersModal">
 
@@ -1019,6 +980,35 @@ button{
 
       <div class="empty">
         Loading Oii Chat users...
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- BLOCKED ACCOUNTS -->
+
+<div class="modal" id="blockedModal">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h3>🚫 Blocked Accounts</h3>
+
+      <button class="close-btn" id="closeBlockedModal">
+        ×
+      </button>
+
+    </div>
+
+    <div class="users-list" id="blockedUsersList">
+
+      <div class="empty">
+        Loading blocked accounts... ⏳
       </div>
 
     </div>
@@ -1063,13 +1053,11 @@ button{
 
     </div>
 
-
     <div class="messages" id="messages"></div>
 
     <div class="typing-indicator" id="typingIndicator">
       🤔 Typing...
     </div>
-
 
     <div class="message-input-area">
 
@@ -1089,7 +1077,7 @@ button{
 </div>
 
 
-<!-- CHAT ACTION MENU -->
+<!-- CHAT MENU -->
 
 <div class="chat-action-menu" id="chatActionMenu">
 
@@ -1155,10 +1143,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-/* =========================
-   FIREBASE
-========================= */
-
 const firebaseConfig = {
 
   apiKey:
@@ -1181,26 +1165,14 @@ const firebaseConfig = {
 
   measurementId:
     "G-304SPRZSPL"
-
 };
 
 
-const app =
-  initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
 
-const auth =
-  getAuth(app);
-
-const db =
-  getFirestore(app);
-
-const provider =
-  new GoogleAuthProvider();
-
-
-/* =========================
-   ELEMENTS
-========================= */
 
 const loginScreen =
   document.getElementById("loginScreen");
@@ -1292,10 +1264,18 @@ const closeChatActionMenu =
 const chatActionTitle =
   document.getElementById("chatActionTitle");
 
+const blockedModal =
+  document.getElementById("blockedModal");
 
-/* =========================
-   VARIABLES
-========================= */
+const closeBlockedModal =
+  document.getElementById("closeBlockedModal");
+
+const blockedUsersList =
+  document.getElementById("blockedUsersList");
+
+const moreBtn =
+  document.getElementById("moreBtn");
+
 
 let currentUser = null;
 let currentChatId = null;
@@ -1311,146 +1291,40 @@ let allChats = [];
 let onlineTimer = null;
 let typingTimer = null;
 
-let notificationPermissionRequested = false;
-
 const ONLINE_TIMEOUT = 60000;
 
 
-/* =========================
-   NOTIFICATION
-========================= */
+function escapeHTML(value){
 
-async function requestNotificationPermission(){
+  const div =
+    document.createElement("div");
 
-  if(
-    !("Notification" in window) ||
-    notificationPermissionRequested
-  ){
-    return;
-  }
+  div.textContent =
+    value == null ? "" : String(value);
 
-  notificationPermissionRequested = true;
-
-  try{
-
-    if(
-      Notification.permission ===
-      "default"
-    ){
-
-      await Notification.requestPermission();
-
-    }
-
-  }catch(error){
-
-    console.log(
-      "Notification permission:",
-      error
-    );
-
-  }
-
+  return div.innerHTML;
 }
 
 
-function showNotification(
-  title,
-  body,
-  photo=""
-){
-
-  if(
-    !("Notification" in window) ||
-    Notification.permission !==
-    "granted"
-  ){
-    return;
-  }
-
-  if(
-    currentChatId &&
-    chatScreen.style.display ===
-    "block"
-  ){
-    return;
-  }
-
-  try{
-
-    const notification =
-      new Notification(
-        "😅 " + title,
-        {
-          body:body,
-          icon:
-            photo ||
-            "https://i.pravatar.cc/100"
-        }
-      );
-
-    notification.onclick = ()=>{
-
-      window.focus();
-
-      notification.close();
-
-    };
-
-  }catch(error){
-
-    console.log(
-      "Notification error:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================
-   CHAT ID
-========================= */
-
-function makeChatId(
-  uid1,
-  uid2
-){
+function makeChatId(uid1,uid2){
 
   return [
     uid1,
     uid2
-  ]
-  .sort()
-  .join("_");
+  ].sort().join("_");
 
 }
 
-
-/* =========================
-   TIME
-========================= */
 
 function formatTime(timestamp){
 
   if(!timestamp)
     return "";
 
-  let date;
-
-  try{
-
-    date =
-      timestamp.toDate
-        ? timestamp.toDate()
-        : new Date(timestamp);
-
-  }catch(error){
-
-    return "";
-
-  }
+  const date =
+    timestamp.toDate
+      ? timestamp.toDate()
+      : new Date(timestamp);
 
   return date.toLocaleTimeString(
     [],
@@ -1463,78 +1337,27 @@ function formatTime(timestamp){
 }
 
 
-/* =========================
-   ONLINE
-========================= */
-
 function isUserOnline(user){
 
-  if(!user)
-    return false;
-
-  if(user.online !== true)
+  if(!user || user.online !== true)
     return false;
 
   if(!user.lastSeen)
     return false;
 
-  let lastSeen;
+  const lastSeen =
+    user.lastSeen.toMillis
+      ? user.lastSeen.toMillis()
+      : new Date(user.lastSeen).getTime();
 
-  try{
-
-    lastSeen =
-      user.lastSeen.toMillis
-        ? user.lastSeen.toMillis()
-        : new Date(
-            user.lastSeen
-          ).getTime();
-
-  }catch(error){
-
-    return false;
-
-  }
-
-  return (
-    Date.now() -
-    lastSeen <
-    ONLINE_TIMEOUT
-  );
-
+  return Date.now() - lastSeen < ONLINE_TIMEOUT;
 }
 
-
-/* =========================
-   ESCAPE
-========================= */
-
-function escapeHTML(value){
-
-  const div =
-    document.createElement("div");
-
-  div.textContent =
-    value == null
-      ? ""
-      : String(value);
-
-  return div.innerHTML;
-
-}
-
-
-/* =========================
-   BLOCK CHECK
-========================= */
 
 async function isUserBlocked(uid){
 
-  if(
-    !currentUser ||
-    !uid
-  ){
+  if(!currentUser || !uid)
     return false;
-  }
 
   try{
 
@@ -1559,25 +1382,70 @@ async function isUserBlocked(uid){
     );
 
     return false;
-
   }
-
 }
 
 
-/* =========================
-   LOGIN
-========================= */
+async function requestNotificationPermission(){
+
+  if(
+    !("Notification" in window) ||
+    Notification.permission !== "default"
+  ){
+    return;
+  }
+
+  try{
+    await Notification.requestPermission();
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
+function showNotification(title,body,photo=""){
+
+  if(
+    !("Notification" in window) ||
+    Notification.permission !== "granted"
+  ){
+    return;
+  }
+
+  if(
+    currentChatId &&
+    chatScreen.style.display === "block"
+  ){
+    return;
+  }
+
+  try{
+
+    new Notification(
+      "😅 " + title,
+      {
+        body:body,
+        icon:
+          photo ||
+          "https://i.pravatar.cc/100"
+      }
+    );
+
+  }catch(error){
+
+    console.log(error);
+
+  }
+}
+
 
 googleLoginBtn.addEventListener(
   "click",
   async()=>{
 
-    loginError.style.display =
-      "none";
+    loginError.style.display = "none";
 
-    googleLoginBtn.disabled =
-      true;
+    googleLoginBtn.disabled = true;
 
     googleLoginBtn.innerHTML =
       '<i class="fas fa-spinner fa-spin"></i> Signing in...';
@@ -1593,32 +1461,24 @@ googleLoginBtn.addEventListener(
 
       console.error(error);
 
-      loginError.style.display =
-        "block";
+      loginError.style.display = "block";
 
       loginError.textContent =
         "Login failed: " +
         error.message;
 
-      googleLoginBtn.disabled =
-        false;
+      googleLoginBtn.disabled = false;
 
       googleLoginBtn.innerHTML =
         '<i class="fab fa-google"></i> Continue with Google';
-
     }
-
   }
 );
 
 
-/* =========================
-   SAVE USER
-========================= */
-
 async function saveUserProfile(user){
 
-  const userRef =
+  const ref =
     doc(
       db,
       "users",
@@ -1626,7 +1486,7 @@ async function saveUserProfile(user){
     );
 
   const existing =
-    await getDoc(userRef);
+    await getDoc(ref);
 
   const data = {
 
@@ -1651,30 +1511,20 @@ async function saveUserProfile(user){
 
     lastLogin:
       serverTimestamp()
-
   };
 
   if(!existing.exists()){
-
     data.createdAt =
       serverTimestamp();
-
   }
 
   await setDoc(
-    userRef,
+    ref,
     data,
-    {
-      merge:true
-    }
+    {merge:true}
   );
-
 }
 
-
-/* =========================
-   ONLINE
-========================= */
 
 async function setUserOnline(){
 
@@ -1691,23 +1541,14 @@ async function setUserOnline(){
       ),
       {
         online:true,
-        lastSeen:
-          serverTimestamp()
+        lastSeen:serverTimestamp()
       },
-      {
-        merge:true
-      }
+      {merge:true}
     );
 
   }catch(error){
-
-    console.error(
-      "Online:",
-      error
-    );
-
+    console.error(error);
   }
-
 }
 
 
@@ -1726,29 +1567,16 @@ async function setUserOffline(){
       ),
       {
         online:false,
-        lastSeen:
-          serverTimestamp()
+        lastSeen:serverTimestamp()
       },
-      {
-        merge:true
-      }
+      {merge:true}
     );
 
   }catch(error){
-
-    console.error(
-      "Offline:",
-      error
-    );
-
+    console.error(error);
   }
-
 }
 
-
-/* =========================
-   HEARTBEAT
-========================= */
 
 function startOnlineHeartbeat(){
 
@@ -1759,20 +1587,15 @@ function startOnlineHeartbeat(){
   onlineTimer =
     setInterval(
       ()=>{
-
         if(
           currentUser &&
           !document.hidden
         ){
-
           setUserOnline();
-
         }
-
       },
       20000
     );
-
 }
 
 
@@ -1780,20 +1603,12 @@ function stopOnlineHeartbeat(){
 
   if(onlineTimer){
 
-    clearInterval(
-      onlineTimer
-    );
+    clearInterval(onlineTimer);
 
     onlineTimer = null;
-
   }
-
 }
 
-
-/* =========================
-   TYPING
-========================= */
 
 async function setTyping(value){
 
@@ -1816,34 +1631,22 @@ async function setTyping(value){
       ),
       {
         typing:value,
-        updatedAt:
-          serverTimestamp()
+        updatedAt:serverTimestamp()
       },
-      {
-        merge:true
-      }
+      {merge:true}
     );
 
   }catch(error){
-
-    console.error(
-      "Typing:",
-      error
-    );
-
+    console.error(error);
   }
-
 }
 
 
 function startTypingListener(chatId){
 
   if(unsubscribeTyping){
-
     unsubscribeTyping();
-
     unsubscribeTyping = null;
-
   }
 
   if(!currentChatUser)
@@ -1866,7 +1669,6 @@ function startTypingListener(chatId){
             "none";
 
           return;
-
         }
 
         const data =
@@ -1880,16 +1682,13 @@ function startTypingListener(chatId){
           data.updatedAt.toMillis
         ){
 
-          const age =
+          if(
             Date.now() -
-            data.updatedAt.toMillis();
-
-          if(age > 5000){
-
+            data.updatedAt.toMillis()
+            > 5000
+          ){
             typing = false;
-
           }
-
         }
 
         typingIndicator.style.display =
@@ -1899,28 +1698,21 @@ function startTypingListener(chatId){
 
       },
       error=>{
-
         console.error(
-          "Typing listener:",
+          "Typing:",
           error
         );
-
       }
     );
-
 }
 
-
-/* =========================
-   DELIVERY
-========================= */
 
 function startDeliveryListener(chatId){
 
   if(!currentUser)
     return;
 
-  const messagesRef =
+  const ref =
     collection(
       db,
       "chats",
@@ -1928,17 +1720,14 @@ function startDeliveryListener(chatId){
       "messages"
     );
 
-  const messagesQuery =
+  const q =
     query(
-      messagesRef,
-      orderBy(
-        "createdAt",
-        "asc"
-      )
+      ref,
+      orderBy("createdAt","asc")
     );
 
   onSnapshot(
-    messagesQuery,
+    q,
     async snapshot=>{
 
       const updates = [];
@@ -1947,41 +1736,31 @@ function startDeliveryListener(chatId){
         .forEach(
           change=>{
 
-            if(
-              change.type !==
-              "added"
-            ){
+            if(change.type !== "added")
               return;
-            }
 
             const data =
               change.doc.data();
 
             if(
-              data.receiverId !==
-              currentUser.uid
-            ){
-              return;
-            }
-
-            if(
-              data.status ===
-              "sent"
+              data.receiverId ===
+              currentUser.uid &&
+              data.status === "sent"
             ){
 
               updates.push(
                 updateDoc(
                   change.doc.ref,
                   {
-                    status:
-                      "delivered"
+                    status:"delivered"
                   }
                 )
               );
-
             }
 
             if(
+              data.receiverId ===
+              currentUser.uid &&
               data.senderId !==
               currentUser.uid
             ){
@@ -1992,13 +1771,12 @@ function startDeliveryListener(chatId){
                   "users",
                   data.senderId
                 )
-              )
-              .then(
-                userSnap=>{
+              ).then(
+                snap=>{
 
                   const sender =
-                    userSnap.exists()
-                      ? userSnap.data()
+                    snap.exists()
+                      ? snap.data()
                       : {};
 
                   showNotification(
@@ -2009,65 +1787,39 @@ function startDeliveryListener(chatId){
                     sender.photoURL ||
                     ""
                   );
-
                 }
-              )
-              .catch(
-                ()=>{}
-              );
-
+              ).catch(()=>{});
             }
-
           }
         );
 
       if(updates.length){
 
         try{
-
-          await Promise.all(
-            updates
-          );
-
+          await Promise.all(updates);
         }catch(error){
-
-          console.error(
-            "Delivered:",
-            error
-          );
-
+          console.error(error);
         }
-
       }
-
     },
     error=>{
-
       console.error(
-        "Delivery listener:",
+        "Delivery:",
         error
       );
-
     }
   );
-
 }
 
 
-/* =========================
-   READ
-========================= */
-
-async function markMessagesRead(
-  chatId
-){
+async function markMessagesRead(chatId){
 
   if(!currentUser)
     return;
 
   try{
 
-    const messagesRef =
+    const ref =
       collection(
         db,
         "chats",
@@ -2077,11 +1829,8 @@ async function markMessagesRead(
 
     const q =
       query(
-        messagesRef,
-        orderBy(
-          "createdAt",
-          "asc"
-        )
+        ref,
+        orderBy("createdAt","asc")
       );
 
     const snap =
@@ -2099,10 +1848,8 @@ async function markMessagesRead(
           data.receiverId ===
           currentUser.uid &&
           (
-            data.status ===
-            "sent" ||
-            data.status ===
-            "delivered"
+            data.status === "sent" ||
+            data.status === "delivered"
           )
         ){
 
@@ -2114,35 +1861,22 @@ async function markMessagesRead(
               }
             )
           );
-
         }
-
       }
     );
 
     if(updates.length){
-
-      await Promise.all(
-        updates
-      );
-
+      await Promise.all(updates);
     }
 
   }catch(error){
-
     console.error(
       "Read:",
       error
     );
-
   }
-
 }
 
-
-/* =========================
-   AUTH
-========================= */
 
 async function startApp(){
 
@@ -2154,28 +1888,20 @@ async function startApp(){
     );
 
   }catch(error){
-
     console.error(error);
-
   }
 
   onAuthStateChanged(
     auth,
     async user=>{
 
-      currentUser =
-        user;
+      currentUser = user;
 
       if(user){
 
-        loginScreen.style.display =
-          "none";
-
-        appScreen.style.display =
-          "block";
-
-        chatScreen.style.display =
-          "none";
+        loginScreen.style.display = "none";
+        appScreen.style.display = "block";
+        chatScreen.style.display = "none";
 
         userName.textContent =
           user.displayName ||
@@ -2192,14 +1918,11 @@ async function startApp(){
 
           myStoryPhoto.src =
             user.photoURL;
-
         }
 
         try{
 
-          await saveUserProfile(
-            user
-          );
+          await saveUserProfile(user);
 
           requestNotificationPermission();
 
@@ -2209,90 +1932,59 @@ async function startApp(){
 
         }catch(error){
 
-          console.error(error);
-
           chatList.innerHTML = `
-
             <div class="empty">
-
               Firebase error 😕<br><br>
-
-              ${escapeHTML(
-                error.message
-              )}
-
+              ${escapeHTML(error.message)}
             </div>
-
           `;
-
         }
 
       }else{
 
         stopOnlineHeartbeat();
 
-        loginScreen.style.display =
-          "flex";
-
-        appScreen.style.display =
-          "none";
-
-        chatScreen.style.display =
-          "none";
-
+        loginScreen.style.display = "flex";
+        appScreen.style.display = "none";
+        chatScreen.style.display = "none";
       }
-
     }
   );
-
 }
+
 
 startApp();
 
 
-/* =========================
-   VISIBILITY
-========================= */
-
 document.addEventListener(
   "visibilitychange",
   ()=>{
-
     if(!currentUser)
       return;
 
     if(document.hidden){
-
       setUserOffline();
-
     }else{
-
       setUserOnline();
-
     }
-
   }
 );
 
-
-/* =========================
-   LOAD CHATS
-========================= */
 
 function loadMyChats(){
 
   if(!currentUser)
     return;
 
-  const chatsRef =
+  const ref =
     collection(
       db,
       "chats"
     );
 
-  const chatsQuery =
+  const q =
     query(
-      chatsRef,
+      ref,
       where(
         "participants",
         "array-contains",
@@ -2300,15 +1992,12 @@ function loadMyChats(){
       )
     );
 
-  if(unsubscribeChats){
-
+  if(unsubscribeChats)
     unsubscribeChats();
-
-  }
 
   unsubscribeChats =
     onSnapshot(
-      chatsQuery,
+      q,
       async snapshot=>{
 
         allChats = [];
@@ -2327,21 +2016,15 @@ function loadMyChats(){
               currentUser.uid
             ] === true
           ){
-
             continue;
-
           }
 
           const otherUid =
-            Array.isArray(
-              data.participants
-            )
-              ? data.participants.find(
-                  uid =>
-                    uid !==
-                    currentUser.uid
-                )
-              : null;
+            data.participants.find(
+              uid =>
+                uid !==
+                currentUser.uid
+            );
 
           if(!otherUid)
             continue;
@@ -2372,11 +2055,9 @@ function loadMyChats(){
 
               allChats.push({
 
-                id:
-                  chatDoc.id,
+                id:chatDoc.id,
 
-                user:
-                  otherUser,
+                user:otherUser,
 
                 lastMessage:
                   data.lastMessage ||
@@ -2390,61 +2071,38 @@ function loadMyChats(){
                   data.unread?.[
                     currentUser.uid
                   ] || 0
-
               });
-
             }
 
           }catch(error){
-
-            console.error(
-              error
-            );
-
+            console.error(error);
           }
-
         }
 
         renderAllChats();
 
         allChats.forEach(
           chat=>{
-
             startDeliveryListener(
               chat.id
             );
-
           }
         );
-
       },
       error=>{
 
         console.error(error);
 
         chatList.innerHTML = `
-
           <div class="empty">
-
             Unable to load chats 😕<br><br>
-
-            ${escapeHTML(
-              error.message
-            )}
-
+            ${escapeHTML(error.message)}
           </div>
-
         `;
-
       }
     );
-
 }
 
-
-/* =========================
-   RENDER CHATS
-========================= */
 
 function renderAllChats(){
 
@@ -2453,8 +2111,7 @@ function renderAllChats(){
   const totalUnread =
     allChats.reduce(
       (sum,chat)=>
-        sum +
-        (chat.unread || 0),
+        sum + (chat.unread || 0),
       0
     );
 
@@ -2472,40 +2129,31 @@ function renderAllChats(){
 
     unreadTabBadge.style.display =
       "none";
-
   }
 
   const activeTab =
-    document
-      .querySelector(
-        ".tab.active"
-      )
-      ?.dataset.tab ||
+    document.querySelector(
+      ".tab.active"
+    )?.dataset.tab ||
     "all";
+
+  if(
+    activeTab === "groups" ||
+    activeTab === "channels"
+  ){
+    return;
+  }
 
   let chats =
     [...allChats];
 
-  if(
-    activeTab ===
-    "unread"
-  ){
+  if(activeTab === "unread"){
 
     chats =
       chats.filter(
         chat =>
           (chat.unread || 0) > 0
       );
-
-  }
-
-  if(
-    activeTab === "groups" ||
-    activeTab === "channels"
-  ){
-
-    return;
-
   }
 
   chats.sort(
@@ -2521,41 +2169,30 @@ function renderAllChats(){
           ? b.updatedAt.toMillis()
           : 0;
 
-      return bTime-aTime;
-
+      return bTime - aTime;
     }
   );
 
   if(chats.length === 0){
 
     chatList.innerHTML = `
-
       <div class="empty">
-
         ${
           activeTab === "unread"
             ? "😢 No unread messages"
             : "No chats yet 💬<br><br>Tap + to start a new chat."
         }
-
       </div>
-
     `;
 
     return;
-
   }
 
   chats.forEach(
     renderChatCard
   );
-
 }
 
-
-/* =========================
-   CHAT CARD
-========================= */
 
 function renderChatCard(chat){
 
@@ -2565,13 +2202,8 @@ function renderChatCard(chat){
   div.className =
     "chat-card";
 
-  if(chat.unread > 0){
-
-    div.classList.add(
-      "has-unread"
-    );
-
-  }
+  if(chat.unread > 0)
+    div.classList.add("has-unread");
 
   const photo =
     chat.user.photoURL ||
@@ -2587,7 +2219,7 @@ function renderChatCard(chat){
     <div class="avatar">
 
       <img
-        src="${escapeHTML(photo)}"
+        src="${photo}"
         alt="User"
       >
 
@@ -2604,31 +2236,25 @@ function renderChatCard(chat){
       <div class="chat-top">
 
         <span class="chat-name">
-
           ${escapeHTML(
             chat.user.name ||
             "Oii User"
           )}
-
         </span>
 
         <span class="chat-time">
-
           ${formatTime(
             chat.updatedAt
           )}
-
         </span>
 
       </div>
 
       <div class="chat-msg">
-
         ${escapeHTML(
           chat.lastMessage ||
           "Start chatting 💬"
         )}
-
       </div>
 
     </div>
@@ -2637,51 +2263,37 @@ function renderChatCard(chat){
       chat.unread > 0
         ? `
           <div class="unread-count">
-
             ${
               chat.unread > 99
                 ? "99+"
                 : chat.unread
             }
-
           </div>
         `
         : ""
     }
-
   `;
 
   div.addEventListener(
     "click",
     ()=>{
-
       openChat(
         chat.id,
         chat.user
       );
-
     }
   );
 
-  chatList.appendChild(
-    div
-  );
-
+  chatList.appendChild(div);
 }
 
-
-/* =========================
-   USERS
-========================= */
 
 async function loadUsers(){
 
   usersList.innerHTML = `
-
     <div class="empty">
       Loading Oii Chat users... ⏳
     </div>
-
   `;
 
   try{
@@ -2709,17 +2321,13 @@ async function loadUsers(){
           user.uid ===
           currentUser.uid
         ){
-
           return;
-
         }
 
         count++;
 
         const div =
-          document.createElement(
-            "div"
-          );
+          document.createElement("div");
 
         div.className =
           "user-card";
@@ -2729,16 +2337,14 @@ async function loadUsers(){
           "https://i.pravatar.cc/100";
 
         const online =
-          isUserOnline(
-            user
-          );
+          isUserOnline(user);
 
         div.innerHTML = `
 
           <div style="position:relative">
 
             <img
-              src="${escapeHTML(photo)}"
+              src="${photo}"
               alt="User"
             >
 
@@ -2753,90 +2359,56 @@ async function loadUsers(){
           <div class="user-card-info">
 
             <div class="user-card-name">
-
               ${escapeHTML(
                 user.name ||
                 "Oii User"
               )}
-
             </div>
 
             <div class="user-card-email">
-
               ${
                 online
                   ? "👀 Online"
                   : "🫣 Offline"
               }
-
             </div>
 
           </div>
-
         `;
 
         div.addEventListener(
           "click",
           ()=>{
-
-            startPrivateChat(
-              user
-            );
-
+            startPrivateChat(user);
           }
         );
 
-        usersList.appendChild(
-          div
-        );
-
+        usersList.appendChild(div);
       }
     );
 
     if(count === 0){
 
       usersList.innerHTML = `
-
         <div class="empty">
-
           வேறு Oii Chat users இன்னும் இல்லை 💙
-
         </div>
-
       `;
-
     }
 
   }catch(error){
 
-    console.error(error);
-
     usersList.innerHTML = `
-
       <div class="empty">
-
         Users load ஆகவில்லை 😕<br><br>
-
-        ${escapeHTML(
-          error.message
-        )}
-
+        ${escapeHTML(error.message)}
       </div>
-
     `;
-
   }
-
 }
 
 
-/* =========================
-   CREATE CHAT
-========================= */
-
-async function startPrivateChat(
-  otherUser
-){
+async function startPrivateChat(otherUser){
 
   if(!currentUser)
     return;
@@ -2853,7 +2425,6 @@ async function startPrivateChat(
     );
 
     return;
-
   }
 
   const chatId =
@@ -2872,16 +2443,13 @@ async function startPrivateChat(
   try{
 
     const existing =
-      await getDoc(
-        chatRef
-      );
+      await getDoc(chatRef);
 
     if(!existing.exists()){
 
       await setDoc(
         chatRef,
         {
-
           participants:[
             currentUser.uid,
             otherUser.uid
@@ -2901,7 +2469,6 @@ async function startPrivateChat(
           },
 
           deletedFor:{}
-
         }
       );
 
@@ -2914,7 +2481,6 @@ async function startPrivateChat(
             false
         }
       );
-
     }
 
     usersModal.style.display =
@@ -2927,32 +2493,18 @@ async function startPrivateChat(
 
   }catch(error){
 
-    console.error(error);
-
     alert(
       "Chat create failed 😕\n\n" +
-      error.code +
-      "\n\n" +
       error.message
     );
-
   }
-
 }
 
 
-/* =========================
-   CHAT STATUS
-========================= */
-
-function updateChatStatus(
-  user
-){
+function updateChatStatus(user){
 
   const online =
-    isUserOnline(
-      user
-    );
+    isUserOnline(user);
 
   chatUserStatus.textContent =
     online
@@ -2963,13 +2515,8 @@ function updateChatStatus(
     online
       ? "#00ff66"
       : "#888";
-
 }
 
-
-/* =========================
-   OPEN CHAT
-========================= */
 
 async function openChat(
   chatId,
@@ -2990,19 +2537,15 @@ async function openChat(
     otherUser.photoURL ||
     "https://i.pravatar.cc/100";
 
-  updateChatStatus(
-    otherUser
-  );
+  updateChatStatus(otherUser);
 
   chatScreen.style.display =
     "block";
 
   messages.innerHTML = `
-
     <div class="empty">
       Loading messages... 💬
     </div>
-
   `;
 
   messageInput.value = "";
@@ -3010,16 +2553,12 @@ async function openChat(
   typingIndicator.style.display =
     "none";
 
-
   const blocked =
     await isUserBlocked(
       otherUser.uid
     );
 
-  updateBlockUI(
-    blocked
-  );
-
+  updateBlockUI(blocked);
 
   try{
 
@@ -3036,26 +2575,16 @@ async function openChat(
     );
 
   }catch(error){
-
-    console.error(
-      "Unread clear:",
-      error
-    );
-
+    console.error(error);
   }
 
-
-  startTypingListener(
-    chatId
-  );
-
+  startTypingListener(chatId);
 
   if(unsubscribeUserStatus){
 
     unsubscribeUserStatus();
 
     unsubscribeUserStatus = null;
-
   }
 
   unsubscribeUserStatus =
@@ -3070,35 +2599,28 @@ async function openChat(
         if(!snapshot.exists())
           return;
 
-        const freshUser =
+        const fresh =
           snapshot.data();
 
         currentChatUser = {
-
-          ...freshUser,
-
-          uid:
-            otherUser.uid
-
+          ...fresh,
+          uid:otherUser.uid
         };
 
         updateChatStatus(
           currentChatUser
         );
-
       }
     );
-
 
   if(unsubscribeMessages){
 
     unsubscribeMessages();
 
     unsubscribeMessages = null;
-
   }
 
-  const messagesRef =
+  const ref =
     collection(
       db,
       "chats",
@@ -3106,9 +2628,9 @@ async function openChat(
       "messages"
     );
 
-  const messagesQuery =
+  const q =
     query(
-      messagesRef,
+      ref,
       orderBy(
         "createdAt",
         "asc"
@@ -3117,7 +2639,7 @@ async function openChat(
 
   unsubscribeMessages =
     onSnapshot(
-      messagesQuery,
+      q,
       snapshot=>{
 
         messages.innerHTML = "";
@@ -3125,59 +2647,38 @@ async function openChat(
         if(snapshot.empty){
 
           messages.innerHTML = `
-
             <div class="empty">
               Say Hi 👋
             </div>
-
           `;
 
           return;
-
         }
 
         snapshot.forEach(
           messageDoc=>{
-
             renderMessage(
               messageDoc.data()
             );
-
           }
         );
 
         scrollMessages();
 
         if(!blocked){
-
-          markMessagesRead(
-            chatId
-          );
-
+          markMessagesRead(chatId);
         }
-
       },
       error=>{
 
-        console.error(error);
-
         messages.innerHTML = `
-
           <div class="empty">
-
             Messages load ஆகவில்லை 😕<br><br>
-
-            ${escapeHTML(
-              error.message
-            )}
-
+            ${escapeHTML(error.message)}
           </div>
-
         `;
-
       }
     );
-
 
   setTimeout(
     ()=>{
@@ -3185,52 +2686,33 @@ async function openChat(
     },
     100
   );
-
 }
 
 
-/* =========================
-   BLOCK UI
-========================= */
-
-function updateBlockUI(
-  blocked
-){
+function updateBlockUI(blocked){
 
   if(blocked){
 
-    messageInput.disabled =
-      true;
+    messageInput.disabled = true;
 
-    sendMessageBtn.disabled =
-      true;
+    sendMessageBtn.disabled = true;
 
     messageInput.placeholder =
       "🚫 User blocked";
 
   }else{
 
-    messageInput.disabled =
-      false;
+    messageInput.disabled = false;
 
-    sendMessageBtn.disabled =
-      false;
+    sendMessageBtn.disabled = false;
 
     messageInput.placeholder =
       "Type a message...";
-
   }
-
 }
 
 
-/* =========================
-   STATUS ICON
-========================= */
-
-function getMessageStatusIcon(
-  status
-){
+function getMessageStatusIcon(status){
 
   if(status === "read")
     return "💞";
@@ -3239,22 +2721,13 @@ function getMessageStatusIcon(
     return "💓";
 
   return "🚀";
-
 }
 
 
-/* =========================
-   RENDER MESSAGE
-========================= */
-
-function renderMessage(
-  data
-){
+function renderMessage(data){
 
   const row =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
   row.className =
     "message-row";
@@ -3264,42 +2737,29 @@ function renderMessage(
     data.senderId ===
     currentUser.uid;
 
-  if(mine){
-
-    row.classList.add(
-      "mine"
-    );
-
-  }
+  if(mine)
+    row.classList.add("mine");
 
   const bubble =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
   bubble.className =
     "message";
 
   const text =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
   text.textContent =
     data.text || "";
 
   const meta =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
   meta.className =
     "message-meta";
 
   const time =
-    document.createElement(
-      "span"
-    );
+    document.createElement("span");
 
   time.className =
     "message-time";
@@ -3309,16 +2769,12 @@ function renderMessage(
       data.createdAt
     );
 
-  meta.appendChild(
-    time
-  );
+  meta.appendChild(time);
 
   if(mine){
 
     const status =
-      document.createElement(
-        "span"
-      );
+      document.createElement("span");
 
     status.className =
       "message-status";
@@ -3328,34 +2784,15 @@ function renderMessage(
         data.status
       );
 
-    meta.appendChild(
-      status
-    );
-
+    meta.appendChild(status);
   }
 
-  bubble.appendChild(
-    text
-  );
-
-  bubble.appendChild(
-    meta
-  );
-
-  row.appendChild(
-    bubble
-  );
-
-  messages.appendChild(
-    row
-  );
-
+  bubble.appendChild(text);
+  bubble.appendChild(meta);
+  row.appendChild(bubble);
+  messages.appendChild(row);
 }
 
-
-/* =========================
-   SEND MESSAGE
-========================= */
 
 async function sendMessage(){
 
@@ -3368,21 +2805,12 @@ async function sendMessage(){
     !currentChatId ||
     !currentChatUser
   ){
-
     return;
-
   }
 
-
-  sendMessageBtn.disabled =
-    true;
-
+  sendMessageBtn.disabled = true;
 
   try{
-
-    /* =========================
-       ONLY CHECK MY BLOCK
-    ========================= */
 
     const blocked =
       await isUserBlocked(
@@ -3395,18 +2823,10 @@ async function sendMessage(){
         "இந்த user-ஐ நீ block பண்ணியிருக்கிறாய் 🚫"
       );
 
-      updateBlockUI(
-        true
-      );
+      updateBlockUI(true);
 
       return;
-
     }
-
-
-    /* =========================
-       CHAT REF
-    ========================= */
 
     const chatRef =
       doc(
@@ -3416,39 +2836,22 @@ async function sendMessage(){
       );
 
     const chatSnap =
-      await getDoc(
-        chatRef
-      );
+      await getDoc(chatRef);
 
     if(!chatSnap.exists()){
 
       throw new Error(
         "Chat does not exist."
       );
-
     }
 
     const chatData =
       chatSnap.data();
 
-
-    /* =========================
-       PARTICIPANT CHECK
-    ========================= */
-
     if(
       !Array.isArray(
         chatData.participants
-      )
-    ){
-
-      throw new Error(
-        "Invalid chat participants."
-      );
-
-    }
-
-    if(
+      ) ||
       !chatData.participants.includes(
         currentUser.uid
       )
@@ -3457,7 +2860,6 @@ async function sendMessage(){
       throw new Error(
         "You are not a participant."
       );
-
     }
 
     if(
@@ -3469,37 +2871,9 @@ async function sendMessage(){
       throw new Error(
         "Receiver is not in this chat."
       );
-
     }
 
-
-    /* =========================
-       IMPORTANT:
-       NO RECEIVER BLOCK READ HERE
-    ========================= */
-
-    /*
-      OLD CODE REMOVED:
-
-      getDoc(
-        users/receiver/blocked/myUid
-      )
-
-      This was causing:
-      permission-denied
-    */
-
-
-    /* =========================
-       STOP TYPING
-    ========================= */
-
     await setTyping(false);
-
-
-    /* =========================
-       ADD MESSAGE
-    ========================= */
 
     await addDoc(
       collection(
@@ -3516,22 +2890,15 @@ async function sendMessage(){
         receiverId:
           currentChatUser.uid,
 
-        text:
-          text,
+        text:text,
 
         createdAt:
           serverTimestamp(),
 
         status:
           "sent"
-
       }
     );
-
-
-    /* =========================
-       UPDATE CHAT
-    ========================= */
 
     await updateDoc(
       chatRef,
@@ -3554,17 +2921,10 @@ async function sendMessage(){
 
         [`deletedFor.${currentChatUser.uid}`]:
           false
-
       }
     );
 
-
-    /* =========================
-       CLEAR INPUT
-    ========================= */
-
     messageInput.value = "";
-
 
   }catch(error){
 
@@ -3585,38 +2945,22 @@ async function sendMessage(){
 
   }finally{
 
-    let stillBlocked = false;
-
     if(currentChatUser){
 
-      stillBlocked =
+      const stillBlocked =
         await isUserBlocked(
           currentChatUser.uid
         );
 
-    }
-
-    updateBlockUI(
-      stillBlocked
-    );
-
-    if(!stillBlocked){
-
-      sendMessageBtn.disabled =
-        false;
-
+      updateBlockUI(
+        stillBlocked
+      );
     }
 
     messageInput.focus();
-
   }
-
 }
 
-
-/* =========================
-   SEND BUTTON
-========================= */
 
 sendMessageBtn.addEventListener(
   "click",
@@ -3624,28 +2968,16 @@ sendMessageBtn.addEventListener(
 );
 
 
-/* =========================
-   TYPING
-========================= */
-
 messageInput.addEventListener(
   "input",
   ()=>{
 
-    if(
-      !currentChatId ||
-      messageInput.disabled
-    ){
-
+    if(!currentChatId)
       return;
-
-    }
 
     setTyping(true);
 
-    clearTimeout(
-      typingTimer
-    );
+    clearTimeout(typingTimer);
 
     typingTimer =
       setTimeout(
@@ -3654,74 +2986,47 @@ messageInput.addEventListener(
         },
         1500
       );
-
   }
 );
 
-
-/* =========================
-   ENTER
-========================= */
 
 messageInput.addEventListener(
   "keydown",
   event=>{
 
-    if(
-      event.key ===
-      "Enter"
-    ){
+    if(event.key === "Enter"){
 
       event.preventDefault();
 
       sendMessage();
-
     }
-
   }
 );
 
-
-/* =========================
-   SCROLL
-========================= */
 
 function scrollMessages(){
 
   messages.scrollTop =
     messages.scrollHeight;
-
 }
 
-
-/* =========================
-   NEW CHAT
-========================= */
 
 newChatBtn.addEventListener(
   "click",
   ()=>{
-
     usersModal.style.display =
       "flex";
 
     loadUsers();
-
   }
 );
 
 
-/* =========================
-   CLOSE USERS
-========================= */
-
 closeUsersModal.addEventListener(
   "click",
   ()=>{
-
     usersModal.style.display =
       "none";
-
   }
 );
 
@@ -3730,23 +3035,14 @@ usersModal.addEventListener(
   "click",
   event=>{
 
-    if(
-      event.target ===
-      usersModal
-    ){
+    if(event.target === usersModal){
 
       usersModal.style.display =
         "none";
-
     }
-
   }
 );
 
-
-/* =========================
-   DELETE CHAT
-========================= */
 
 async function deleteCurrentChat(){
 
@@ -3754,22 +3050,18 @@ async function deleteCurrentChat(){
     !currentUser ||
     !currentChatId
   ){
-
     return;
-
   }
 
   const name =
     currentChatUser?.name ||
     "இந்த user";
 
-  const ok =
-    confirm(
-      `${name}-உடன் chat-ஐ delete பண்ணலாமா? 🗑️\n\nஉன் Chat list-லிருந்து மட்டும் இது மறையும்.`
-    );
-
-  if(!ok)
+  if(!confirm(
+    `${name}-உடன் chat-ஐ delete பண்ணலாமா? 🗑️`
+  )){
     return;
+  }
 
   try{
 
@@ -3780,77 +3072,51 @@ async function deleteCurrentChat(){
         currentChatId
       ),
       {
-
         [`deletedFor.${currentUser.uid}`]:
           true,
 
         [`unread.${currentUser.uid}`]:
           0
-
       }
     );
-
 
     chatActionMenu.style.display =
       "none";
 
     await setTyping(false);
 
-
     if(unsubscribeMessages){
-
       unsubscribeMessages();
-
       unsubscribeMessages = null;
-
     }
 
     if(unsubscribeUserStatus){
-
       unsubscribeUserStatus();
-
       unsubscribeUserStatus = null;
-
     }
 
     if(unsubscribeTyping){
-
       unsubscribeTyping();
-
       unsubscribeTyping = null;
-
     }
-
 
     chatScreen.style.display =
       "none";
 
     currentChatId = null;
-
     currentChatUser = null;
+
+    loadMyChats();
 
   }catch(error){
 
-    console.error(
-      "Delete chat:",
-      error
-    );
-
     alert(
       "Chat delete failed 😕\n\n" +
-      error.code +
-      "\n\n" +
       error.message
     );
-
   }
-
 }
 
-
-/* =========================
-   BLOCK
-========================= */
 
 async function blockCurrentUser(){
 
@@ -3858,22 +3124,18 @@ async function blockCurrentUser(){
     !currentUser ||
     !currentChatUser
   ){
-
     return;
-
   }
 
   const name =
     currentChatUser.name ||
     "இந்த user";
 
-  const ok =
-    confirm(
-      `${name}-ஐ block பண்ணலாமா? 🚫\n\nBlock செய்த பிறகு message அனுப்ப முடியாது.`
-    );
-
-  if(!ok)
+  if(!confirm(
+    `${name}-ஐ block பண்ணலாமா? 🚫`
+  )){
     return;
+  }
 
   try{
 
@@ -3894,81 +3156,54 @@ async function blockCurrentUser(){
           currentChatUser.name ||
           "Oii User",
 
+        photoURL:
+          currentChatUser.photoURL ||
+          "",
+
         blockedAt:
           serverTimestamp()
-
       }
     );
 
-
-    updateBlockUI(
-      true
-    );
+    updateBlockUI(true);
 
     chatActionMenu.style.display =
       "none";
 
-    alert(
-      "User blocked 🚫"
-    );
-
     await setTyping(false);
 
-
     if(unsubscribeMessages){
-
       unsubscribeMessages();
-
       unsubscribeMessages = null;
-
     }
 
     if(unsubscribeUserStatus){
-
       unsubscribeUserStatus();
-
       unsubscribeUserStatus = null;
-
     }
 
     if(unsubscribeTyping){
-
       unsubscribeTyping();
-
       unsubscribeTyping = null;
-
     }
-
 
     chatScreen.style.display =
       "none";
 
     currentChatId = null;
-
     currentChatUser = null;
+
+    loadMyChats();
 
   }catch(error){
 
-    console.error(
-      "Block:",
-      error
-    );
-
     alert(
       "Block failed 😕\n\n" +
-      error.code +
-      "\n\n" +
       error.message
     );
-
   }
-
 }
 
-
-/* =========================
-   UNBLOCK
-========================= */
 
 async function unblockCurrentUser(){
 
@@ -3976,22 +3211,18 @@ async function unblockCurrentUser(){
     !currentUser ||
     !currentChatUser
   ){
-
     return;
-
   }
 
   const name =
     currentChatUser.name ||
     "இந்த user";
 
-  const ok =
-    confirm(
-      `${name}-ஐ unblock பண்ணலாமா? 🔓`
-    );
-
-  if(!ok)
+  if(!confirm(
+    `${name}-ஐ unblock பண்ணலாமா? 🔓`
+  )){
     return;
+  }
 
   try{
 
@@ -4005,42 +3236,22 @@ async function unblockCurrentUser(){
       )
     );
 
-
-    updateBlockUI(
-      false
-    );
+    updateBlockUI(false);
 
     chatActionMenu.style.display =
       "none";
-
-    alert(
-      "User unblocked 🔓"
-    );
 
     loadMyChats();
 
   }catch(error){
 
-    console.error(
-      "Unblock:",
-      error
-    );
-
     alert(
       "Unblock failed 😕\n\n" +
-      error.code +
-      "\n\n" +
       error.message
     );
-
   }
-
 }
 
-
-/* =========================
-   MENU
-========================= */
 
 async function updateChatActionMenu(){
 
@@ -4048,59 +3259,43 @@ async function updateChatActionMenu(){
     !currentUser ||
     !currentChatUser
   ){
-
     return;
-
   }
 
-  try{
-
-    const blocked =
-      await isUserBlocked(
-        currentChatUser.uid
-      );
-
-    chatActionTitle.textContent =
-      currentChatUser.name ||
-      "Chat options";
-
-
-    if(blocked){
-
-      blockUserBtn.textContent =
-        "🔓 Unblock User";
-
-      blockUserBtn.className =
-        "chat-action unblock";
-
-      blockUserBtn.onclick =
-        unblockCurrentUser;
-
-    }else{
-
-      blockUserBtn.textContent =
-        "🚫 Block User";
-
-      blockUserBtn.className =
-        "chat-action block";
-
-      blockUserBtn.onclick =
-        blockCurrentUser;
-
-    }
-
-    chatActionMenu.style.display =
-      "flex";
-
-  }catch(error){
-
-    console.error(
-      "Menu:",
-      error
+  const blocked =
+    await isUserBlocked(
+      currentChatUser.uid
     );
 
+  chatActionTitle.textContent =
+    currentChatUser.name ||
+    "Chat options";
+
+  if(blocked){
+
+    blockUserBtn.textContent =
+      "🔓 Unblock User";
+
+    blockUserBtn.className =
+      "chat-action unblock";
+
+    blockUserBtn.onclick =
+      unblockCurrentUser;
+
+  }else{
+
+    blockUserBtn.textContent =
+      "🚫 Block User";
+
+    blockUserBtn.className =
+      "chat-action block";
+
+    blockUserBtn.onclick =
+      blockCurrentUser;
   }
 
+  chatActionMenu.style.display =
+    "flex";
 }
 
 
@@ -4119,10 +3314,8 @@ deleteChatBtn.addEventListener(
 closeChatActionMenu.addEventListener(
   "click",
   ()=>{
-
     chatActionMenu.style.display =
       "none";
-
   }
 );
 
@@ -4131,23 +3324,14 @@ chatActionMenu.addEventListener(
   "click",
   event=>{
 
-    if(
-      event.target ===
-      chatActionMenu
-    ){
+    if(event.target === chatActionMenu){
 
       chatActionMenu.style.display =
         "none";
-
     }
-
   }
 );
 
-
-/* =========================
-   BACK
-========================= */
 
 backChatBtn.addEventListener(
   "click",
@@ -4159,7 +3343,6 @@ backChatBtn.addEventListener(
       "none";
 
     currentChatId = null;
-
     currentChatUser = null;
 
     typingIndicator.style.display =
@@ -4168,38 +3351,23 @@ backChatBtn.addEventListener(
     chatActionMenu.style.display =
       "none";
 
-
     if(unsubscribeMessages){
-
       unsubscribeMessages();
-
       unsubscribeMessages = null;
-
     }
 
     if(unsubscribeUserStatus){
-
       unsubscribeUserStatus();
-
       unsubscribeUserStatus = null;
-
     }
 
     if(unsubscribeTyping){
-
       unsubscribeTyping();
-
       unsubscribeTyping = null;
-
     }
-
   }
 );
 
-
-/* =========================
-   LOGOUT
-========================= */
 
 logoutBtn.addEventListener(
   "click",
@@ -4213,202 +3381,311 @@ logoutBtn.addEventListener(
 
       stopOnlineHeartbeat();
 
-
       if(unsubscribeChats){
-
         unsubscribeChats();
-
         unsubscribeChats = null;
-
       }
 
       if(unsubscribeMessages){
-
         unsubscribeMessages();
-
         unsubscribeMessages = null;
-
       }
 
       if(unsubscribeUserStatus){
-
         unsubscribeUserStatus();
-
         unsubscribeUserStatus = null;
-
       }
 
       if(unsubscribeTyping){
-
         unsubscribeTyping();
-
         unsubscribeTyping = null;
-
       }
 
-      await signOut(
-        auth
-      );
+      await signOut(auth);
 
     }catch(error){
-
-      console.error(
-        error
-      );
-
+      console.error(error);
     }
+  }
+);
 
+
+document
+.querySelectorAll(".tab")
+.forEach(
+  tab=>{
+
+    tab.addEventListener(
+      "click",
+      ()=>{
+
+        document
+        .querySelectorAll(".tab")
+        .forEach(
+          item=>
+            item.classList.remove(
+              "active"
+            )
+        );
+
+        tab.classList.add("active");
+
+        const type =
+          tab.dataset.tab;
+
+        if(type === "groups"){
+
+          chatList.innerHTML = `
+            <div class="empty">
+              Groups coming soon 👥🔥
+            </div>
+          `;
+
+        }else if(type === "channels"){
+
+          chatList.innerHTML = `
+            <div class="empty">
+              Channels coming soon 📢🔥
+            </div>
+          `;
+
+        }else{
+
+          renderAllChats();
+        }
+      }
+    );
+  }
+);
+
+
+document
+.querySelectorAll(".nav-item")
+.forEach(
+  item=>{
+
+    item.addEventListener(
+      "click",
+      ()=>{
+
+        document
+        .querySelectorAll(".nav-item")
+        .forEach(
+          nav=>
+            nav.classList.remove(
+              "active"
+            )
+        );
+
+        item.classList.add("active");
+      }
+    );
   }
 );
 
 
 /* =========================
-   TABS
+   HOME MORE MENU
 ========================= */
 
-document
-  .querySelectorAll(
-    ".tab"
-  )
-  .forEach(
-    tab=>{
+moreBtn.addEventListener(
+  "click",
+  ()=>{
+    loadBlockedAccounts();
+  }
+);
 
-      tab.addEventListener(
-        "click",
-        ()=>{
 
-          document
-            .querySelectorAll(
-              ".tab"
-            )
-            .forEach(
-              item=>
-                item.classList.remove(
-                  "active"
-                )
-            );
+async function loadBlockedAccounts(){
 
-          tab.classList.add(
-            "active"
+  blockedModal.style.display =
+    "flex";
+
+  blockedUsersList.innerHTML = `
+    <div class="empty">
+      Loading blocked accounts... ⏳
+    </div>
+  `;
+
+  if(!currentUser)
+    return;
+
+  try{
+
+    const ref =
+      collection(
+        db,
+        "users",
+        currentUser.uid,
+        "blocked"
+      );
+
+    const snapshot =
+      await getDocs(ref);
+
+    blockedUsersList.innerHTML = "";
+
+    if(snapshot.empty){
+
+      blockedUsersList.innerHTML = `
+        <div class="empty">
+          No blocked accounts 💙
+        </div>
+      `;
+
+      return;
+    }
+
+    snapshot.forEach(
+      blockedDoc=>{
+
+        const user =
+          blockedDoc.data();
+
+        const div =
+          document.createElement("div");
+
+        div.className =
+          "user-card";
+
+        const photo =
+          user.photoURL ||
+          "https://i.pravatar.cc/100";
+
+        div.innerHTML = `
+
+          <img
+            src="${photo}"
+            alt="User"
+          >
+
+          <div class="user-card-info">
+
+            <div class="user-card-name">
+              ${escapeHTML(
+                user.name ||
+                "Oii User"
+              )}
+            </div>
+
+            <div class="user-card-email">
+              Blocked account 🚫
+            </div>
+
+          </div>
+
+          <button
+            class="unblock-small"
+            data-uid="${escapeHTML(
+              user.uid ||
+              blockedDoc.id
+            )}"
+          >
+            🔓 Unblock
+          </button>
+        `;
+
+        const button =
+          div.querySelector(
+            ".unblock-small"
           );
 
-          const type =
-            tab.dataset.tab;
+        button.addEventListener(
+          "click",
+          async()=>{
 
-          if(
-            type ===
-            "groups"
-          ){
+            button.disabled = true;
 
-            chatList.innerHTML = `
+            try{
 
-              <div class="empty">
-                Groups coming soon 👥🔥
-              </div>
+              await deleteDoc(
+                doc(
+                  db,
+                  "users",
+                  currentUser.uid,
+                  "blocked",
+                  user.uid ||
+                  blockedDoc.id
+                )
+              );
 
-            `;
+              div.remove();
 
-          }else if(
-            type ===
-            "channels"
-          ){
+              if(
+                blockedUsersList.children.length === 0
+              ){
 
-            chatList.innerHTML = `
+                blockedUsersList.innerHTML = `
+                  <div class="empty">
+                    No blocked accounts 💙
+                  </div>
+                `;
+              }
 
-              <div class="empty">
-                Channels coming soon 📢🔥
-              </div>
+              loadMyChats();
 
-            `;
+            }catch(error){
 
-          }else{
+              button.disabled = false;
 
-            renderAllChats();
-
+              alert(
+                "Unblock failed 😕\n\n" +
+                error.message
+              );
+            }
           }
+        );
 
-        }
-      );
+        blockedUsersList.appendChild(div);
+      }
+    );
 
+  }catch(error){
+
+    console.error(error);
+
+    blockedUsersList.innerHTML = `
+      <div class="empty">
+        Blocked accounts load ஆகவில்லை 😕<br><br>
+        ${escapeHTML(error.message)}
+      </div>
+    `;
+  }
+}
+
+
+closeBlockedModal.addEventListener(
+  "click",
+  ()=>{
+    blockedModal.style.display =
+      "none";
+  }
+);
+
+
+blockedModal.addEventListener(
+  "click",
+  event=>{
+
+    if(event.target === blockedModal){
+
+      blockedModal.style.display =
+        "none";
     }
-  );
+  }
+);
 
-
-/* =========================
-   NAV
-========================= */
 
 document
-  .querySelectorAll(
-    ".nav-item"
-  )
-  .forEach(
-    item=>{
-
-      item.addEventListener(
-        "click",
-        ()=>{
-
-          document
-            .querySelectorAll(
-              ".nav-item"
-            )
-            .forEach(
-              nav=>
-                nav.classList.remove(
-                  "active"
-                )
-            );
-
-          item.classList.add(
-            "active"
-          );
-
-        }
-      );
-
-    }
-  );
-
-
-/* =========================
-   SEARCH
-========================= */
-
-document
-  .getElementById(
-    "searchBtn"
-  )
-  .addEventListener(
-    "click",
-    ()=>{
-
-      alert(
-        "Search feature coming next 🔎💬"
-      );
-
-    }
-  );
-
-
-/* =========================
-   MORE
-========================= */
-
-document
-  .getElementById(
-    "moreBtn"
-  )
-  .addEventListener(
-    "click",
-    ()=>{
-
-      alert(
-        "Oii Chat Menu 💬\n\nMore features coming soon 🔥"
-      );
-
-    }
-  );
+.getElementById("searchBtn")
+.addEventListener(
+  "click",
+  ()=>{
+    alert(
+      "Search feature coming next 🔎💬"
+    );
+  }
+);
 
 </script>
 
