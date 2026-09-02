@@ -2,1290 +2,967 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
 <title>Oii Chat 💬</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet">
 
 <style>
 *{
+  box-sizing:border-box;
   margin:0;
   padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
+  font-family:Poppins,sans-serif;
 }
 
 body{
-  background:#050515;
-  color:white;
-  min-height:100vh;
+  background:#f2f4f7;
+  color:#222;
+  overflow:hidden;
 }
 
 button{
-  font-family:inherit;
+  border:0;
+  outline:0;
+  cursor:pointer;
 }
 
-/* ================= LOGIN ================= */
+input{
+  outline:0;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* LOGIN */
 
 #loginScreen{
-  min-height:100vh;
-  display:none;
+  width:100%;
+  height:100vh;
+  display:flex;
   align-items:center;
   justify-content:center;
-  padding:20px;
-  background:
-    radial-gradient(circle at top,rgba(0,212,255,.18),transparent 35%),
-    radial-gradient(circle at bottom,rgba(255,0,127,.15),transparent 35%),
-    #050515;
+  background:linear-gradient(135deg,#6c63ff,#8f7cff);
 }
 
-.login-box{
-  width:100%;
+.loginBox{
+  width:90%;
   max-width:380px;
+  background:#fff;
+  border-radius:24px;
   padding:35px 25px;
   text-align:center;
-  background:rgba(15,15,45,.88);
-  border:1px solid rgba(0,212,255,.25);
-  border-radius:25px;
-  box-shadow:0 0 35px rgba(0,212,255,.12);
-  backdrop-filter:blur(15px);
+  box-shadow:0 15px 45px rgba(0,0,0,.18);
 }
 
-.login-logo{
-  width:80px;
-  height:80px;
-  margin:0 auto 18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:22px;
-  font-size:42px;
-  background:linear-gradient(45deg,#00d4ff,#ff007f);
-}
-
-.login-title{
-  font-size:30px;
+.logo{
+  font-size:38px;
   font-weight:700;
-  background:linear-gradient(45deg,#00d4ff,#ff007f);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
+  margin-bottom:8px;
 }
 
-.login-subtitle{
-  color:#aaa;
+.loginBox p{
+  color:#777;
   font-size:14px;
-  margin:8px 0 28px;
+  margin-bottom:25px;
 }
 
-#googleLoginBtn{
+.googleBtn{
   width:100%;
   padding:14px;
-  border:none;
-  border-radius:14px;
-  background:white;
-  color:#222;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid #ddd;
   font-size:15px;
   font-weight:600;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
 }
 
-#googleLoginBtn i{
-  color:#4285F4;
-  font-size:20px;
-}
+/* APP */
 
-#loginError{
-  display:none;
-  margin-top:15px;
-  color:#ff668f;
-  font-size:12px;
-}
-
-/* ================= APP ================= */
-
-#appScreen{
-  display:none;
-}
-
-.app-container{
+#chatApp{
   width:100%;
-  max-width:450px;
-  min-height:100vh;
-  margin:auto;
-  background:#080820;
-  position:relative;
-  padding-bottom:80px;
-  border-left:1px solid rgba(0,212,255,.2);
-  border-right:1px solid rgba(0,212,255,.2);
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:#f6f7fb;
 }
 
-.header{
-  padding:15px 20px;
+/* HEADER */
+
+.appHeader{
+  height:65px;
+  background:#fff;
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  background:rgba(10,10,35,.95);
-  position:sticky;
-  top:0;
-  z-index:100;
+  justify-content:space-between;
+  padding:0 15px;
+  border-bottom:1px solid #eee;
+  flex-shrink:0;
 }
 
-.logo-text{
-  font-size:20px;
+.appTitle{
+  font-size:21px;
   font-weight:700;
-  background:linear-gradient(45deg,#00d4ff,#ff007f);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
 }
 
-.header-icons{
-  display:flex;
-  gap:18px;
-  color:#00d4ff;
-  font-size:18px;
-}
-
-.header-icons i{
-  cursor:pointer;
-}
-
-.user-profile{
+.headerRight{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:14px 20px 8px;
 }
 
-.user-profile img{
-  width:45px;
-  height:45px;
+.iconBtn{
+  width:40px;
+  height:40px;
   border-radius:50%;
-  border:2px solid #00d4ff;
+  background:#f1f2f6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
+}
+
+.profileMini{
+  width:40px;
+  height:40px;
+  border-radius:50%;
   object-fit:cover;
 }
 
-.user-details{
+/* HOME */
+
+#homeScreen{
   flex:1;
-  min-width:0;
+  overflow-y:auto;
+  padding-bottom:70px;
 }
 
-.user-name{
-  font-size:14px;
+.storySection{
+  background:#fff;
+  padding:12px;
+  border-bottom:1px solid #eee;
+}
+
+.storyTitle{
   font-weight:600;
+  margin-bottom:10px;
 }
 
-.user-email{
-  margin-top:2px;
-  font-size:10px;
-  color:#777;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.logout-btn{
-  background:rgba(255,0,127,.12);
-  color:#ff4f9a;
-  border:1px solid rgba(255,0,127,.25);
-  border-radius:10px;
-  padding:7px 10px;
-  cursor:pointer;
-  font-size:11px;
-}
-
-.stories-container{
+.storyRow{
   display:flex;
-  gap:15px;
-  padding:15px 20px;
+  gap:13px;
   overflow-x:auto;
-  scrollbar-width:none;
-}
-
-.stories-container::-webkit-scrollbar{
-  display:none;
 }
 
 .story{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:5px;
-  font-size:12px;
-  flex-shrink:0;
-}
-
-.story-avatar{
-  width:60px;
-  height:60px;
-  padding:3px;
-  border-radius:50%;
-  background:linear-gradient(45deg,#00d4ff,#ff007f);
-  position:relative;
-}
-
-.story-avatar img{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid #080820;
-}
-
-.add-story{
-  position:absolute;
-  bottom:0;
-  right:0;
-  width:18px;
-  height:18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  background:#00d4ff;
-  color:black;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.tabs{
-  display:flex;
-  gap:10px;
-  padding:10px 20px;
-  overflow-x:auto;
-  scrollbar-width:none;
-}
-
-.tabs::-webkit-scrollbar{
-  display:none;
-}
-
-.tab{
-  padding:7px 16px;
-  border-radius:20px;
-  font-size:13px;
-  white-space:nowrap;
-  background:rgba(255,255,255,.05);
-  color:#aaa;
-  border:1px solid rgba(255,255,255,.1);
-  cursor:pointer;
-}
-
-.tab.active{
-  background:linear-gradient(45deg,#00d4ff,#ff007f);
-  color:white;
-  font-weight:600;
-  border:none;
-}
-
-.unread-badge{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:18px;
-  height:18px;
-  margin-left:5px;
-  padding:0 5px;
-  border-radius:10px;
-  background:#ff3b81;
-  color:white;
-  font-size:10px;
-  font-weight:700;
-}
-
-.chat-list{
-  padding:10px 20px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.chat-card{
-  display:flex;
-  align-items:center;
-  gap:15px;
-  padding:12px;
-  background:rgba(20,20,50,.6);
-  border-radius:16px;
-  border:1px solid rgba(0,212,255,.2);
-  cursor:pointer;
-}
-
-.avatar{
-  width:50px;
-  height:50px;
-  flex-shrink:0;
-  border-radius:50%;
-  border:2px solid #ff007f;
-  position:relative;
-}
-
-.avatar img{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  object-fit:cover;
-}
-
-.online-dot,
-.offline-dot{
-  position:absolute;
-  right:-1px;
-  bottom:0;
-  width:14px;
-  height:14px;
-  border-radius:50%;
-  border:2px solid #080820;
-}
-
-.online-dot{
-  background:#00ff66;
-}
-
-.offline-dot{
-  background:#555;
-}
-
-.chat-info{
-  flex:1;
-  min-width:0;
-}
-
-.chat-top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:4px;
-}
-
-.chat-name{
-  font-weight:600;
-  font-size:15px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.chat-time{
-  font-size:10px;
-  color:#888;
-}
-
-.chat-msg{
-  font-size:13px;
-  color:#aaa;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.chat-card.has-unread .chat-msg{
-  color:white;
-  font-weight:600;
-}
-
-.unread-count{
-  min-width:20px;
-  height:20px;
-  padding:0 6px;
-  border-radius:50%;
-  background:#ff007f;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:10px;
-  font-weight:700;
-}
-
-.empty{
+  min-width:65px;
   text-align:center;
-  color:#777;
-  padding:40px 20px;
-  font-size:13px;
-}
-
-.fab{
-  position:fixed;
-  bottom:80px;
-  right:max(20px,calc((100vw - 450px)/2 + 20px));
-  width:55px;
-  height:55px;
-  border:none;
-  border-radius:50%;
-  background:linear-gradient(45deg,#00d4ff,#ff007f);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:22px;
-  cursor:pointer;
-}
-
-.nav{
-  position:fixed;
-  bottom:0;
-  width:100%;
-  max-width:450px;
-  height:65px;
-  background:rgba(10,10,35,.97);
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  border-top:1px solid rgba(255,255,255,.1);
-  z-index:100;
-}
-
-.nav-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:3px;
-  font-size:10px;
-  color:#666;
-  cursor:pointer;
-}
-
-.nav-item.active{
-  color:#00d4ff;
-}
-
-.nav-item i{
-  font-size:18px;
-}
-
-/* ================= MODAL ================= */
-
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.75);
-  z-index:500;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.modal-box{
-  width:100%;
-  max-width:400px;
-  max-height:80vh;
-  overflow:hidden;
-  background:#10102d;
-  border:1px solid rgba(0,212,255,.25);
-  border-radius:22px;
-}
-
-.modal-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:18px 20px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.modal-header h3{
-  font-size:18px;
-}
-
-.close-btn{
-  background:none;
-  border:none;
-  color:#aaa;
-  font-size:20px;
-  cursor:pointer;
-}
-
-.users-list{
-  padding:10px;
-  max-height:60vh;
-  overflow-y:auto;
-}
-
-.user-card,
-.blocked-user{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:12px;
-  border-radius:14px;
-  cursor:pointer;
-}
-
-.user-card img,
-.blocked-user img{
-  width:45px;
-  height:45px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid #00d4ff;
-}
-
-.user-card-info,
-.blocked-info{
-  flex:1;
-  min-width:0;
-}
-
-.user-card-name,
-.blocked-name{
-  font-size:14px;
-  font-weight:600;
-}
-
-.user-card-email,
-.blocked-email{
-  color:#777;
-  font-size:10px;
-}
-
-.unblock-small{
-  border:1px solid rgba(0,255,153,.3);
-  background:rgba(0,255,153,.1);
-  color:#00ff99;
-  border-radius:10px;
-  padding:7px 10px;
-  font-size:10px;
-  cursor:pointer;
-}
-
-/* ================= CHAT ================= */
-
-#chatScreen{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:#080820;
-  z-index:300;
-}
-
-.chat-page{
-  width:100%;
-  max-width:450px;
-  height:100%;
-  margin:auto;
-  display:flex;
-  flex-direction:column;
-  background:#080820;
-}
-
-.chat-header{
-  height:65px;
-  flex-shrink:0;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:10px 15px;
-  background:#0d0d2b;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.back-btn{
-  width:35px;
-  height:35px;
-  border:none;
-  background:none;
-  color:white;
-  font-size:20px;
-}
-
-.chat-header img{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  object-fit:cover;
-}
-
-.chat-header-info{
-  flex:1;
-  min-width:0;
-}
-
-.chat-header-name{
-  font-size:14px;
-  font-weight:600;
-}
-
-.chat-header-status{
-  color:#888;
-  font-size:10px;
-}
-
-.chat-more-btn{
-  width:38px;
-  height:38px;
-  border:none;
-  border-radius:50%;
-  background:rgba(255,255,255,.06);
-  color:white;
-  font-size:17px;
-}
-
-.messages{
-  flex:1;
-  overflow-y:auto;
-  padding:20px 15px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.message-row{
-  display:flex;
-  width:100%;
-}
-
-.message-row.mine{
-  justify-content:flex-end;
-}
-
-.message{
-  max-width:75%;
-  padding:9px 12px;
-  border-radius:15px;
-  font-size:13px;
-  word-wrap:break-word;
-  background:#1b1b42;
-}
-
-.message-row.mine .message{
-  background:linear-gradient(45deg,#007ea0,#a90055);
-}
-
-.message-meta{
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  gap:4px;
-  margin-top:3px;
-}
-
-.message-time{
-  font-size:8px;
-  color:rgba(255,255,255,.55);
-}
-
-.message-status{
   font-size:11px;
 }
 
-.typing-indicator{
-  display:none;
-  padding:4px 15px 7px;
-  color:#00d4ff;
-  font-size:10px;
-  font-style:italic;
+.story img{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #6c63ff;
 }
 
-/* ================= MESSAGE BAR ================= */
-
-.message-input-area{
+.storyAdd{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:#eee;
   display:flex;
   align-items:center;
-  gap:7px;
-  padding:9px;
-  background:#0d0d2b;
-  border-top:1px solid rgba(255,255,255,.08);
+  justify-content:center;
+  font-size:25px;
+  margin:auto;
 }
 
-#emojiBtn,
-#attachBtn,
-#cameraBtn,
-#voiceBtn{
+/* TABS */
+
+.chatTabs{
+  display:flex;
+  background:#fff;
+  padding:8px;
+  gap:5px;
+  border-bottom:1px solid #eee;
+}
+
+.chatTab{
+  flex:1;
+  padding:9px 5px;
+  border-radius:10px;
+  background:transparent;
+  font-size:12px;
+}
+
+.chatTab.active{
+  background:#6c63ff;
+  color:white;
+}
+
+/* CHAT LIST */
+
+#chatList{
+  padding:5px 0;
+}
+
+.chatItem{
+  background:#fff;
+  padding:12px 15px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border-bottom:1px solid #f0f0f0;
+}
+
+.chatAvatar{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#ddd;
+}
+
+.chatInfo{
+  flex:1;
+  min-width:0;
+}
+
+.chatTop{
+  display:flex;
+  justify-content:space-between;
+}
+
+.chatName{
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.chatTime{
+  font-size:10px;
+  color:#999;
+}
+
+.chatLast{
+  color:#888;
+  font-size:12px;
+  margin-top:3px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.unreadBadge{
+  min-width:20px;
+  height:20px;
+  padding:0 5px;
+  border-radius:20px;
+  background:#6c63ff;
+  color:#fff;
+  font-size:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* BOTTOM NAV */
+
+.bottomNav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:62px;
+  background:#fff;
+  border-top:1px solid #eee;
+  display:flex;
+  z-index:50;
+}
+
+.navBtn{
+  flex:1;
+  background:#fff;
+  font-size:11px;
+  color:#777;
+}
+
+.navBtn span{
+  display:block;
+  font-size:21px;
+  margin-bottom:1px;
+}
+
+.navBtn.active{
+  color:#6c63ff;
+}
+
+/* CHAT SCREEN */
+
+#chatScreen{
+  position:fixed;
+  inset:0;
+  background:#e9eef3;
+  z-index:100;
+  display:none;
+  flex-direction:column;
+}
+
+.chatHeader{
+  height:62px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  padding:0 10px;
+  gap:8px;
+  border-bottom:1px solid #eee;
+  flex-shrink:0;
+}
+
+.backBtn{
   width:40px;
   height:40px;
-  flex-shrink:0;
-  border:none;
+  background:transparent;
+  font-size:24px;
+}
+
+.chatUserAvatar{
+  width:42px;
+  height:42px;
   border-radius:50%;
-  background:rgba(255,255,255,.06);
-  color:#00d4ff;
-  font-size:18px;
-  cursor:pointer;
+  object-fit:cover;
+}
+
+.chatUserInfo{
+  flex:1;
+  min-width:0;
+}
+
+.chatUserName{
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.chatStatus{
+  font-size:10px;
+  color:#777;
+}
+
+.chatHeaderMenu{
+  width:40px;
+  height:40px;
+  background:transparent;
+  font-size:22px;
+}
+
+/* MESSAGES */
+
+#messages{
+  flex:1;
+  overflow-y:auto;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.messageRow{
+  display:flex;
+  width:100%;
+}
+
+.messageRow.mine{
+  justify-content:flex-end;
+}
+
+.messageBubble{
+  max-width:78%;
+  padding:8px 10px 5px;
+  border-radius:13px;
+  background:#fff;
+  box-shadow:0 1px 2px rgba(0,0,0,.08);
+  word-break:break-word;
+}
+
+.messageRow.mine .messageBubble{
+  background:#d9fdd3;
+  border-top-right-radius:4px;
+}
+
+.messageRow:not(.mine) .messageBubble{
+  border-top-left-radius:4px;
+}
+
+.messageText{
+  font-size:14px;
+  white-space:pre-wrap;
+}
+
+.messageMeta{
+  text-align:right;
+  font-size:9px;
+  color:#888;
+  margin-top:2px;
+}
+
+.statusTicks{
+  font-size:10px;
+  margin-left:2px;
+}
+
+/* MESSAGE BAR */
+
+.messageBar{
+  min-height:62px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:8px;
+  border-top:1px solid #ddd;
+}
+
+.emojiButton,
+.attachButton,
+.cameraButton,
+.voiceButton,
+.sendButton{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.emojiButton{
+  background:#f1f2f6;
+}
+
+.attachButton{
+  background:#f1f2f6;
+}
+
+.cameraButton{
+  background:#f1f2f6;
+}
+
+.voiceButton{
+  background:#f1f2f6;
+}
+
+.sendButton{
+  background:#6c63ff;
+  color:#fff;
 }
 
 #messageInput{
   flex:1;
   min-width:0;
-  border:1px solid rgba(0,212,255,.2);
-  outline:none;
+  border:0;
+  background:#f1f2f6;
   border-radius:22px;
   padding:11px 14px;
-  background:#151535;
-  color:white;
-  font-size:13px;
+  font-size:14px;
 }
 
-#messageInput::placeholder{
-  color:#777;
-}
-
-#sendMessageBtn{
-  width:43px;
-  height:43px;
-  flex-shrink:0;
-  border:none;
-  border-radius:50%;
-  background:linear-gradient(45deg,#00d4ff,#ff007f);
-  color:white;
-  cursor:pointer;
-}
-
-/* ================= ATTACHMENT SHEET ================= */
+/* ATTACHMENT */
 
 #attachmentSheet{
-  display:none;
   position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.65);
-  z-index:800;
-  align-items:flex-end;
-  justify-content:center;
-}
-
-.attachment-box{
-  width:100%;
-  max-width:450px;
-  padding:14px 14px 25px;
-  background:#10102d;
-  border-radius:24px 24px 0 0;
-  border-top:1px solid rgba(0,212,255,.25);
-}
-
-.attachment-title{
-  text-align:center;
-  color:#aaa;
-  font-size:12px;
-  margin-bottom:15px;
-}
-
-.attachment-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-}
-
-.attach-option{
-  border:none;
-  background:transparent;
-  color:white;
-  cursor:pointer;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:7px;
-  font-size:10px;
-}
-
-.attach-icon{
-  width:52px;
-  height:52px;
-  border-radius:17px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:22px;
-  background:linear-gradient(45deg,#00d4ff,#ff007f);
-}
-
-.attach-cancel{
-  width:100%;
-  margin-top:18px;
-  padding:12px;
-  border:none;
-  border-radius:14px;
-  background:rgba(255,255,255,.07);
-  color:#00d4ff;
-  cursor:pointer;
-}
-
-/* ================= EMOJI ================= */
-
-#emojiPanel{
-  display:none;
-  position:absolute;
   bottom:65px;
   left:8px;
   right:8px;
-  background:#10102d;
-  border:1px solid rgba(0,212,255,.2);
+  background:#fff;
   border-radius:18px;
   padding:12px;
-  z-index:900;
+  box-shadow:0 8px 30px rgba(0,0,0,.18);
+  z-index:200;
+  display:none;
 }
 
-.emoji-grid{
+.attachmentGrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+
+.attachOption{
+  background:#f6f6f8;
+  border-radius:14px;
+  padding:12px 5px;
+  text-align:center;
+  font-size:11px;
+}
+
+.attachIcon{
+  font-size:25px;
+  margin-bottom:4px;
+}
+
+/* EMOJI */
+
+#emojiPanel{
+  position:fixed;
+  bottom:62px;
+  left:0;
+  right:0;
+  height:250px;
+  background:#fff;
+  border-top:1px solid #ddd;
+  z-index:190;
+  display:none;
+  overflow-y:auto;
+  padding:12px;
+}
+
+.emojiGrid{
   display:grid;
   grid-template-columns:repeat(8,1fr);
-  gap:7px;
-  max-height:190px;
+  gap:12px;
+}
+
+.emojiItem{
+  font-size:24px;
+  text-align:center;
+}
+
+/* MODALS */
+
+.modalOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:300;
+  display:none;
+  align-items:flex-end;
+}
+
+.modalBox{
+  width:100%;
+  max-height:80vh;
+  background:#fff;
+  border-radius:22px 22px 0 0;
+  padding:18px;
   overflow-y:auto;
 }
 
-.emoji-item{
-  border:none;
-  background:none;
-  font-size:23px;
-  cursor:pointer;
-  padding:4px;
+.modalTitle{
+  font-size:18px;
+  font-weight:600;
+  margin-bottom:15px;
 }
 
-/* ================= CHAT ACTION ================= */
+.closeModal{
+  float:right;
+  background:#eee;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+}
 
-.chat-action-menu{
-  display:none;
+/* USER LIST */
+
+.userItem{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 0;
+  border-bottom:1px solid #eee;
+}
+
+.userItem img{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.userInfo{
+  flex:1;
+}
+
+.userName{
+  font-weight:600;
+}
+
+.userEmail{
+  font-size:10px;
+  color:#888;
+}
+
+/* MENU */
+
+#chatMenu{
   position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  z-index:700;
-  align-items:flex-end;
-  justify-content:center;
+  top:58px;
+  right:8px;
+  background:#fff;
+  border-radius:13px;
+  box-shadow:0 8px 25px rgba(0,0,0,.2);
+  z-index:250;
+  display:none;
+  overflow:hidden;
+  min-width:160px;
 }
 
-.chat-action-box{
+.menuItem{
+  display:block;
   width:100%;
-  max-width:450px;
-  background:#10102d;
-  border-radius:22px 22px 0 0;
-  padding:10px 10px 20px;
-}
-
-.chat-action-title{
-  text-align:center;
-  color:#777;
-  font-size:11px;
-  padding:10px;
-}
-
-.chat-action{
-  width:100%;
-  padding:15px;
-  border:none;
-  background:transparent;
-  color:white;
+  background:#fff;
   text-align:left;
-  font-size:14px;
-  border-radius:12px;
-  cursor:pointer;
+  padding:12px 15px;
+  font-size:13px;
 }
 
-.chat-action.delete{
-  color:#ff4f7b;
+.menuItem:hover{
+  background:#f5f5f5;
 }
 
-.chat-action.block{
-  color:#ff6688;
-}
-
-.chat-action.unblock{
-  color:#00ff99;
-}
-
-.chat-action.cancel{
-  color:#00d4ff;
+.empty{
   text-align:center;
+  padding:35px 15px;
+  color:#999;
+  font-size:13px;
 }
 
-@media(max-width:450px){
+.onlineDot{
+  color:#22b573;
+}
 
-  .app-container{
-    border:none;
-  }
-
-  .nav{
-    max-width:100%;
-  }
-
-  .fab{
-    right:20px;
-  }
+.offlineDot{
+  color:#aaa;
 }
 </style>
 </head>
 
 <body>
 
-<!-- ================= LOGIN ================= -->
+<!-- LOGIN -->
 
 <div id="loginScreen">
+  <div class="loginBox">
+    <div class="logo">Oii Chat 💬</div>
+    <p>Chat with your friends</p>
 
-  <div class="login-box">
-
-    <div class="login-logo">💬</div>
-
-    <div class="login-title">Oii Chat</div>
-
-    <div class="login-subtitle">
-      Tamil First Chat App 💙
-    </div>
-
-    <button id="googleLoginBtn">
-      <i class="fab fa-google"></i>
-      Continue with Google
+    <button id="googleLoginBtn" class="googleBtn">
+      🔵 Continue with Google
     </button>
-
-    <div id="loginError"></div>
-
   </div>
-
 </div>
 
 
-<!-- ================= APP ================= -->
+<!-- APP -->
 
-<div id="appScreen">
+<div id="chatApp" style="display:none">
 
-  <div class="app-container">
+  <header class="appHeader">
 
-    <div class="header">
-
-      <div class="logo-text">
-        Oii Chat 💬
-      </div>
-
-      <div class="header-icons">
-
-        <i class="fas fa-search" id="searchBtn"></i>
-
-        <i class="fas fa-ellipsis-v" id="moreBtn"></i>
-
-      </div>
-
+    <div class="appTitle">
+      Oii Chat 💬
     </div>
 
+    <div class="headerRight">
+      <button id="newChatBtn" class="iconBtn">＋</button>
+      <button id="blockedBtn" class="iconBtn">🚫</button>
+      <img id="myProfileImg"
+           class="profileMini"
+           src=""
+           alt="">
+    </div>
 
-    <div class="user-profile">
+  </header>
 
-      <img id="userPhoto"
-           src="https://i.pravatar.cc/100">
 
-      <div class="user-details">
+  <main id="homeScreen">
 
-        <div class="user-name" id="userName">
-          Oii User
+    <section class="storySection">
+      <div class="storyTitle">My Story</div>
+
+      <div class="storyRow">
+
+        <div class="story">
+          <div class="storyAdd">＋</div>
+          <div>My Story</div>
         </div>
 
-        <div class="user-email" id="userEmail">
-          Loading...
+        <div class="story">
+          <img src="https://ui-avatars.com/api/?name=Sobiya">
+          <div>Sobiya ❤️</div>
+        </div>
+
+        <div class="story">
+          <img src="https://ui-avatars.com/api/?name=Kavi">
+          <div>Kavi 😎</div>
+        </div>
+
+        <div class="story">
+          <img src="https://ui-avatars.com/api/?name=Vijay">
+          <div>Vijay 🔥</div>
         </div>
 
       </div>
+    </section>
 
-      <button class="logout-btn" id="logoutBtn">
-        Logout
+
+    <div class="chatTabs">
+      <button class="chatTab active" data-tab="all">
+        All Chats <span id="allCount"></span>
       </button>
 
-    </div>
+      <button class="chatTab" data-tab="unread">
+        Unread <span id="unreadCount"></span>
+      </button>
 
-
-    <div class="stories-container">
-
-      <div class="story">
-
-        <div class="story-avatar">
-
-          <img id="myStoryPhoto"
-               src="https://i.pravatar.cc/100">
-
-          <div class="add-story">+</div>
-
-        </div>
-
-        <span>My Story</span>
-
-      </div>
-
-    </div>
-
-
-    <div class="tabs">
-
-      <div class="tab active" data-tab="all">
-        All Chats
-      </div>
-
-      <div class="tab" data-tab="unread">
-        Unread
-        <span id="unreadTabBadge"
-              class="unread-badge"
-              style="display:none">
-          0
-        </span>
-      </div>
-
-      <div class="tab" data-tab="groups">
+      <button class="chatTab" data-tab="groups">
         Groups
-      </div>
+      </button>
 
-      <div class="tab" data-tab="channels">
+      <button class="chatTab" data-tab="channels">
         Channels
-      </div>
-
+      </button>
     </div>
 
 
-    <div class="chat-list" id="chatList">
-
+    <div id="chatList">
       <div class="empty">
-        Loading chats... 💬
+        No chats yet 💬
       </div>
-
     </div>
 
+  </main>
 
-    <button class="fab" id="newChatBtn">
-      <i class="fas fa-plus"></i>
+
+  <nav class="bottomNav">
+
+    <button class="navBtn active">
+      <span>💬</span>
+      Chats
     </button>
 
+    <button class="navBtn" id="peopleNav">
+      <span>👥</span>
+      People
+    </button>
 
-    <div class="nav">
+    <button class="navBtn">
+      <span>📞</span>
+      Calls
+    </button>
 
-      <div class="nav-item active">
-        <i class="fas fa-comment-dots"></i>
-        <span>Chats</span>
-      </div>
+    <button class="navBtn">
+      <span>⚙️</span>
+      Settings
+    </button>
 
-      <div class="nav-item">
-        <i class="fas fa-phone-alt"></i>
-        <span>Calls</span>
-      </div>
+  </nav>
 
-      <div class="nav-item">
-        <i class="fas fa-circle-notch"></i>
-        <span>Status</span>
-      </div>
+</div>
 
-      <div class="nav-item">
-        <i class="fas fa-users"></i>
-        <span>Communities</span>
-      </div>
 
-      <div class="nav-item">
-        <i class="fas fa-cog"></i>
-        <span>Settings</span>
-      </div>
+<!-- NEW CHAT MODAL -->
 
+<div id="newChatModal" class="modalOverlay">
+
+  <div class="modalBox">
+
+    <button class="closeModal" id="closeNewChat">
+      ✕
+    </button>
+
+    <div class="modalTitle">
+      New Chat
     </div>
+
+    <input id="userSearch"
+           type="text"
+           placeholder="Search users..."
+           style="
+             width:100%;
+             padding:12px;
+             border:1px solid #ddd;
+             border-radius:12px;
+             margin-bottom:10px;
+           ">
+
+    <div id="userList"></div>
 
   </div>
 
 </div>
 
 
-<!-- ================= NEW CHAT ================= -->
+<!-- BLOCKED MODAL -->
 
-<div class="modal" id="usersModal">
+<div id="blockedModal" class="modalOverlay">
 
-  <div class="modal-box">
+  <div class="modalBox">
 
-    <div class="modal-header">
+    <button class="closeModal" id="closeBlocked">
+      ✕
+    </button>
 
-      <h3>New Chat 💬</h3>
-
-      <button class="close-btn" id="closeUsersModal">
-        ×
-      </button>
-
+    <div class="modalTitle">
+      Blocked Accounts 🚫
     </div>
 
-    <div class="users-list" id="usersList">
-
-      <div class="empty">
-        Loading Oii Chat users...
-      </div>
-
-    </div>
+    <div id="blockedList"></div>
 
   </div>
 
 </div>
 
 
-<!-- ================= BLOCKED ================= -->
-
-<div class="modal" id="blockedModal">
-
-  <div class="modal-box">
-
-    <div class="modal-header">
-
-      <h3>Blocked Accounts 🚫</h3>
-
-      <button class="close-btn" id="closeBlockedModal">
-        ×
-      </button>
-
-    </div>
-
-    <div class="users-list" id="blockedList"></div>
-
-  </div>
-
-</div>
-
-
-<!-- ================= CHAT ================= -->
+<!-- CHAT SCREEN -->
 
 <div id="chatScreen">
 
-  <div class="chat-page">
+  <header class="chatHeader">
 
-    <div class="chat-header">
+    <button id="backBtn" class="backBtn">
+      ‹
+    </button>
 
-      <button class="back-btn" id="backChatBtn">
-        <i class="fas fa-arrow-left"></i>
-      </button>
+    <img id="chatAvatar"
+         class="chatUserAvatar"
+         src=""
+         alt="">
 
-      <img id="chatUserPhoto"
-           src="https://i.pravatar.cc/100">
+    <div class="chatUserInfo">
 
-      <div class="chat-header-info">
-
-        <div class="chat-header-name"
-             id="chatUserName">
-          User
-        </div>
-
-        <div class="chat-header-status"
-             id="chatUserStatus">
-          🫣 Offline
-        </div>
-
+      <div id="chatName" class="chatUserName">
+        User
       </div>
 
-      <button class="chat-more-btn" id="chatMoreBtn">
-        <i class="fas fa-ellipsis-v"></i>
-      </button>
+      <div id="chatStatus" class="chatStatus">
+        Offline
+      </div>
 
     </div>
 
+    <button id="chatMenuBtn" class="chatHeaderMenu">
+      ⋮
+    </button>
 
-    <div class="messages" id="messages"></div>
-
-    <div class="typing-indicator" id="typingIndicator">
-      🤔 Typing...
-    </div>
-
-
-    <!-- EMOJI PANEL -->
-
-    <div id="emojiPanel">
-
-      <div class="emoji-grid" id="emojiGrid"></div>
-
-    </div>
+  </header>
 
 
-    <!-- MESSAGE BAR -->
+  <div id="messages"></div>
 
-    <div class="message-input-area">
 
-      <button id="emojiBtn"
-              title="Emoji">
-        😊
+  <!-- ATTACHMENT SHEET -->
+
+  <div id="attachmentSheet">
+
+    <div class="attachmentGrid">
+
+      <button id="galleryOption"
+              class="attachOption">
+        <div class="attachIcon">🖼️</div>
+        Gallery
       </button>
 
-      <input type="text"
-             id="messageInput"
-             placeholder="Message..."
-             autocomplete="off">
-
-      <button id="attachBtn"
-              title="More">
-        📱
+      <button id="documentOption"
+              class="attachOption">
+        <div class="attachIcon">📄</div>
+        Document
       </button>
 
-      <button id="cameraBtn"
-              title="Camera">
-        📷
+      <button id="locationOption"
+              class="attachOption">
+        <div class="attachIcon">📍</div>
+        Location
       </button>
 
-      <button id="voiceBtn"
-              title="Voice message">
-        🎙️
-      </button>
-
-      <button id="sendMessageBtn"
-              title="Send">
-        <i class="fas fa-paper-plane"></i>
+      <button id="contactOption"
+              class="attachOption">
+        <div class="attachIcon">👤</div>
+        Contact
       </button>
 
     </div>
 
   </div>
 
-</div>
+
+  <!-- EMOJI -->
+
+  <div id="emojiPanel">
+
+    <div id="emojiGrid"
+         class="emojiGrid"></div>
+
+  </div>
 
 
-<!-- ================= ATTACHMENT SHEET ================= -->
+  <!-- CHAT MENU -->
 
-<div id="attachmentSheet">
+  <div id="chatMenu">
 
-  <div class="attachment-box">
+    <button id="blockUserBtn"
+            class="menuItem">
+      🚫 Block
+    </button>
 
-    <div class="attachment-title">
-      Oii Chat Attachments 💬
-    </div>
+    <button id="unblockUserBtn"
+            class="menuItem"
+            style="display:none">
+      ✅ Unblock
+    </button>
 
-    <div class="attachment-grid">
+    <button id="deleteChatBtn"
+            class="menuItem">
+      🗑️ Delete Chat
+    </button>
 
-      <button class="attach-option"
-              id="galleryOption">
-
-        <div class="attach-icon">
-          🖼️
-        </div>
-
-        <span>Gallery</span>
-
-      </button>
-
-
-      <button class="attach-option"
-              id="documentOption">
-
-        <div class="attach-icon">
-          📄
-        </div>
-
-        <span>Document</span>
-
-      </button>
+  </div>
 
 
-      <button class="attach-option"
-              id="locationOption">
+  <!-- MESSAGE BAR -->
 
-        <div class="attach-icon">
-          📍
-        </div>
+  <div class="messageBar">
 
-        <span>Location</span>
+    <button id="emojiBtn"
+            class="emojiButton">
+      😊
+    </button>
 
-      </button>
+    <input id="messageInput"
+           type="text"
+           placeholder="Type a message...">
 
+    <button id="attachBtn"
+            class="attachButton">
+      📱
+    </button>
 
-      <button class="attach-option"
-              id="contactOption">
+    <button id="cameraBtn"
+            class="cameraButton">
+      📷
+    </button>
 
-        <div class="attach-icon">
-          👤
-        </div>
+    <button id="voiceBtn"
+            class="voiceButton">
+      🎙️
+    </button>
 
-        <span>Contact</span>
-
-      </button>
-
-    </div>
-
-
-    <button class="attach-cancel"
-            id="closeAttachment">
-      Cancel
+    <button id="sendMessageBtn"
+            class="sendButton">
+      ➤
     </button>
 
   </div>
@@ -1295,58 +972,26 @@ button{
 
 <!-- HIDDEN FILE INPUTS -->
 
-<input type="file"
-       id="galleryInput"
+<input id="galleryInput"
+       type="file"
        accept="image/*,video/*"
-       multiple
        style="display:none">
 
-<input type="file"
-       id="documentInput"
+<input id="documentInput"
+       type="file"
        accept="*/*"
-       multiple
        style="display:none">
 
-<input type="file"
-       id="cameraInput"
+<input id="cameraInput"
+       type="file"
        accept="image/*"
        capture="environment"
        style="display:none">
 
 
-<!-- ================= CHAT MENU ================= -->
-
-<div class="chat-action-menu"
-     id="chatActionMenu">
-
-  <div class="chat-action-box">
-
-    <div class="chat-action-title"
-         id="chatActionTitle">
-      Chat options
-    </div>
-
-    <button class="chat-action delete"
-            id="deleteChatBtn">
-      🗑️ Delete Chat
-    </button>
-
-    <button class="chat-action block"
-            id="blockUserBtn">
-      🚫 Block User
-    </button>
-
-    <button class="chat-action cancel"
-            id="closeChatActionMenu">
-      Cancel
-    </button>
-
-  </div>
-
-</div>
-
-
 <script type="module">
+
+/* FIREBASE */
 
 import {
   initializeApp
@@ -1357,36 +1002,31 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
-  signOut,
-  setPersistence,
-  browserLocalPersistence
+  signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
   getFirestore,
+  collection,
   doc,
   setDoc,
   getDoc,
-  deleteDoc,
-  collection,
-  query,
-  where,
   getDocs,
   addDoc,
-  onSnapshot,
-  orderBy,
-  serverTimestamp,
   updateDoc,
-  increment
+  deleteDoc,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-
-/* ================= FIREBASE ================= */
 
 const firebaseConfig = {
 
   apiKey:
-    "AIzaSyCzPOAjXI0dJ33RJCVIUyCCFGyeI50Dvd0",
+    "AIzaSyCzPOAjXI0dJ33RJCFGyeI50Dvd0",
 
   authDomain:
     "oii-chat-8802e.firebaseapp.com",
@@ -1405,89 +1045,49 @@ const firebaseConfig = {
 
   measurementId:
     "G-304SPRZSPL"
-
 };
 
-const app =
-  initializeApp(firebaseConfig);
 
-const auth =
-  getAuth(app);
+const app = initializeApp(firebaseConfig);
 
-const db =
-  getFirestore(app);
+const auth = getAuth(app);
 
-const provider =
-  new GoogleAuthProvider();
+const db = getFirestore(app);
+
+const provider = new GoogleAuthProvider();
 
 
-/* ================= ELEMENTS ================= */
+/* VARIABLES */
+
+let currentUser = null;
+let currentChatUser = null;
+let currentChatId = null;
+
+let unsubscribeMessages = null;
+let unsubscribeChats = null;
+
+let blockedUsers = [];
+
+
+/* ELEMENTS */
 
 const loginScreen =
   document.getElementById("loginScreen");
 
-const appScreen =
-  document.getElementById("appScreen");
-
-const chatScreen =
-  document.getElementById("chatScreen");
+const chatApp =
+  document.getElementById("chatApp");
 
 const googleLoginBtn =
   document.getElementById("googleLoginBtn");
 
-const loginError =
-  document.getElementById("loginError");
+const myProfileImg =
+  document.getElementById("myProfileImg");
 
-const logoutBtn =
-  document.getElementById("logoutBtn");
+const chatScreen =
+  document.getElementById("chatScreen");
 
-const userName =
-  document.getElementById("userName");
-
-const userEmail =
-  document.getElementById("userEmail");
-
-const userPhoto =
-  document.getElementById("userPhoto");
-
-const myStoryPhoto =
-  document.getElementById("myStoryPhoto");
-
-const chatList =
-  document.getElementById("chatList");
-
-const newChatBtn =
-  document.getElementById("newChatBtn");
-
-const usersModal =
-  document.getElementById("usersModal");
-
-const closeUsersModal =
-  document.getElementById("closeUsersModal");
-
-const usersList =
-  document.getElementById("usersList");
-
-const blockedModal =
-  document.getElementById("blockedModal");
-
-const closeBlockedModal =
-  document.getElementById("closeBlockedModal");
-
-const blockedList =
-  document.getElementById("blockedList");
-
-const backChatBtn =
-  document.getElementById("backChatBtn");
-
-const chatUserPhoto =
-  document.getElementById("chatUserPhoto");
-
-const chatUserName =
-  document.getElementById("chatUserName");
-
-const chatUserStatus =
-  document.getElementById("chatUserStatus");
+const homeScreen =
+  document.getElementById("homeScreen");
 
 const messages =
   document.getElementById("messages");
@@ -1498,41 +1098,26 @@ const messageInput =
 const sendMessageBtn =
   document.getElementById("sendMessageBtn");
 
-const typingIndicator =
-  document.getElementById("typingIndicator");
-
-const unreadTabBadge =
-  document.getElementById("unreadTabBadge");
-
-const chatMoreBtn =
-  document.getElementById("chatMoreBtn");
-
-const chatActionMenu =
-  document.getElementById("chatActionMenu");
-
-const deleteChatBtn =
-  document.getElementById("deleteChatBtn");
-
-const blockUserBtn =
-  document.getElementById("blockUserBtn");
-
-const closeChatActionMenu =
-  document.getElementById("closeChatActionMenu");
-
-const chatActionTitle =
-  document.getElementById("chatActionTitle");
-
-
-/* ATTACHMENT */
-
 const attachBtn =
   document.getElementById("attachBtn");
 
 const attachmentSheet =
   document.getElementById("attachmentSheet");
 
-const closeAttachment =
-  document.getElementById("closeAttachment");
+const emojiBtn =
+  document.getElementById("emojiBtn");
+
+const emojiPanel =
+  document.getElementById("emojiPanel");
+
+const emojiGrid =
+  document.getElementById("emojiGrid");
+
+const cameraBtn =
+  document.getElementById("cameraBtn");
+
+const voiceBtn =
+  document.getElementById("voiceBtn");
 
 const galleryOption =
   document.getElementById("galleryOption");
@@ -1546,164 +1131,12 @@ const locationOption =
 const contactOption =
   document.getElementById("contactOption");
 
-const galleryInput =
-  document.getElementById("galleryInput");
 
-const documentInput =
-  document.getElementById("documentInput");
-
-const cameraInput =
-  document.getElementById("cameraInput");
-
-const cameraBtn =
-  document.getElementById("cameraBtn");
-
-const voiceBtn =
-  document.getElementById("voiceBtn");
-
-const emojiBtn =
-  document.getElementById("emojiBtn");
-
-const emojiPanel =
-  document.getElementById("emojiPanel");
-
-const emojiGrid =
-  document.getElementById("emojiGrid");
-
-
-/* ================= VARIABLES ================= */
-
-let currentUser = null;
-let currentChatId = null;
-let currentChatUser = null;
-
-let unsubscribeMessages = null;
-let unsubscribeChats = null;
-let unsubscribeUserStatus = null;
-let unsubscribeTyping = null;
-
-let onlineTimer = null;
-let typingTimer = null;
-
-let allChats = [];
-
-const ONLINE_TIMEOUT = 60000;
-
-
-/* ================= HELPERS ================= */
-
-function makeChatId(uid1,uid2){
-
-  return [
-    uid1,
-    uid2
-  ].sort().join("_");
-
-}
-
-
-function escapeHTML(value){
-
-  const div =
-    document.createElement("div");
-
-  div.textContent =
-    value == null ? "" : String(value);
-
-  return div.innerHTML;
-
-}
-
-
-function formatTime(timestamp){
-
-  if(!timestamp)
-    return "";
-
-  const date =
-    timestamp.toDate
-      ? timestamp.toDate()
-      : new Date(timestamp);
-
-  return date.toLocaleTimeString(
-    [],
-    {
-      hour:"numeric",
-      minute:"2-digit"
-    }
-  );
-
-}
-
-
-function isUserOnline(user){
-
-  if(!user)
-    return false;
-
-  if(user.online !== true)
-    return false;
-
-  if(!user.lastSeen)
-    return false;
-
-  const lastSeen =
-    user.lastSeen.toMillis
-      ? user.lastSeen.toMillis()
-      : new Date(user.lastSeen).getTime();
-
-  return Date.now() - lastSeen <
-         ONLINE_TIMEOUT;
-
-}
-
-
-/* ================= BLOCK ================= */
-
-async function isUserBlocked(uid){
-
-  if(!currentUser || !uid)
-    return false;
-
-  try{
-
-    const snap =
-      await getDoc(
-        doc(
-          db,
-          "users",
-          currentUser.uid,
-          "blocked",
-          uid
-        )
-      );
-
-    return snap.exists();
-
-  }catch(error){
-
-    console.error(error);
-    return false;
-
-  }
-
-}
-
-
-/* ================= LOGIN ================= */
+/* LOGIN */
 
 googleLoginBtn.addEventListener(
   "click",
-  async()=>{
-
-    loginError.style.display =
-      "none";
-
-    googleLoginBtn.disabled =
-      true;
-
-    googleLoginBtn.innerHTML =
-      '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+  async ()=>{
 
     try{
 
@@ -1716,18 +1149,10 @@ googleLoginBtn.addEventListener(
 
       console.error(error);
 
-      loginError.style.display =
-        "block";
-
-      loginError.textContent =
-        "Login failed: " +
-        error.message;
-
-      googleLoginBtn.disabled =
-        false;
-
-      googleLoginBtn.innerHTML =
-        '<i class="fab fa-google"></i> Continue with Google';
+      alert(
+        "Google login failed.\n\n" +
+        error.message
+      );
 
     }
 
@@ -1735,475 +1160,233 @@ googleLoginBtn.addEventListener(
 );
 
 
-/* ================= SAVE USER ================= */
+/* AUTH */
 
-async function saveUserProfile(user){
+onAuthStateChanged(
+  auth,
+  async user=>{
 
-  const ref =
-    doc(
-      db,
-      "users",
-      user.uid
-    );
-
-  const existing =
-    await getDoc(ref);
-
-  const data = {
-
-    uid:user.uid,
-
-    name:
-      user.displayName ||
-      "Oii User",
-
-    email:
-      user.email ||
-      "",
-
-    photoURL:
-      user.photoURL ||
-      "",
-
-    online:true,
-
-    lastSeen:
-      serverTimestamp(),
-
-    lastLogin:
-      serverTimestamp()
-
-  };
-
-  if(!existing.exists())
-    data.createdAt =
-      serverTimestamp();
-
-  await setDoc(
-    ref,
-    data,
-    {merge:true}
-  );
-
-}
-
-
-/* ================= ONLINE ================= */
-
-async function setUserOnline(){
-
-  if(!currentUser)
-    return;
-
-  try{
-
-    await setDoc(
-      doc(
-        db,
-        "users",
-        currentUser.uid
-      ),
-      {
-        online:true,
-        lastSeen:
-          serverTimestamp()
-      },
-      {merge:true}
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-}
-
-
-async function setUserOffline(){
-
-  if(!currentUser)
-    return;
-
-  try{
-
-    await setDoc(
-      doc(
-        db,
-        "users",
-        currentUser.uid
-      ),
-      {
-        online:false,
-        lastSeen:
-          serverTimestamp()
-      },
-      {merge:true}
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-}
-
-
-function startOnlineHeartbeat(){
-
-  if(onlineTimer)
-    clearInterval(onlineTimer);
-
-  setUserOnline();
-
-  onlineTimer =
-    setInterval(
-      ()=>{
-        if(
-          currentUser &&
-          !document.hidden
-        ){
-          setUserOnline();
-        }
-      },
-      20000
-    );
-
-}
-
-
-/* ================= TYPING ================= */
-
-async function setTyping(value){
-
-  if(
-    !currentUser ||
-    !currentChatId
-  ){
-    return;
-  }
-
-  try{
-
-    await setDoc(
-      doc(
-        db,
-        "chats",
-        currentChatId,
-        "typing",
-        currentUser.uid
-      ),
-      {
-        typing:value,
-        updatedAt:
-          serverTimestamp()
-      },
-      {merge:true}
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-}
-
-
-function startTypingListener(chatId){
-
-  if(unsubscribeTyping){
-
-    unsubscribeTyping();
-    unsubscribeTyping = null;
-
-  }
-
-  if(!currentChatUser)
-    return;
-
-  unsubscribeTyping =
-    onSnapshot(
-      doc(
-        db,
-        "chats",
-        chatId,
-        "typing",
-        currentChatUser.uid
-      ),
-      snapshot=>{
-
-        if(!snapshot.exists()){
-
-          typingIndicator.style.display =
-            "none";
-
-          return;
-
-        }
-
-        const data =
-          snapshot.data();
-
-        let typing =
-          data.typing === true;
-
-        if(
-          data.updatedAt &&
-          data.updatedAt.toMillis &&
-          Date.now() -
-          data.updatedAt.toMillis() > 5000
-        ){
-
-          typing = false;
-
-        }
-
-        typingIndicator.style.display =
-          typing
-            ? "block"
-            : "none";
-
-      },
-      error=>{
-        console.error(error);
-      }
-    );
-
-}
-
-
-/* ================= AUTH ================= */
-
-async function startApp(){
-
-  try{
-
-    await setPersistence(
-      auth,
-      browserLocalPersistence
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-  onAuthStateChanged(
-    auth,
-    async user=>{
+    if(user){
 
       currentUser = user;
 
-      if(user){
+      loginScreen.style.display =
+        "none";
 
-        loginScreen.style.display =
-          "none";
+      chatApp.style.display =
+        "flex";
 
-        appScreen.style.display =
-          "block";
+      myProfileImg.src =
+        user.photoURL ||
+        "https://ui-avatars.com/api/?name=User";
 
-        chatScreen.style.display =
-          "none";
+      await saveUser();
 
-        userName.textContent =
-          user.displayName ||
-          "Oii User";
+      await loadBlockedUsers();
 
-        userEmail.textContent =
-          user.email ||
-          "";
+      loadMyChats();
 
-        if(user.photoURL){
+    }else{
 
-          userPhoto.src =
-            user.photoURL;
+      currentUser = null;
 
-          myStoryPhoto.src =
-            user.photoURL;
+      loginScreen.style.display =
+        "flex";
 
-        }
+      chatApp.style.display =
+        "none";
 
-        try{
-
-          await saveUserProfile(user);
-
-          startOnlineHeartbeat();
-
-          loadMyChats();
-
-        }catch(error){
-
-          chatList.innerHTML = `
-            <div class="empty">
-              Firebase error 😕<br><br>
-              ${escapeHTML(error.message)}
-            </div>
-          `;
-
-        }
-
-      }else{
-
-        if(onlineTimer)
-          clearInterval(onlineTimer);
-
-        loginScreen.style.display =
-          "flex";
-
-        appScreen.style.display =
-          "none";
-
-        chatScreen.style.display =
-          "none";
-
-      }
+      chatScreen.style.display =
+        "none";
 
     }
-  );
-
-}
-
-startApp();
-
-
-/* ================= VISIBILITY ================= */
-
-document.addEventListener(
-  "visibilitychange",
-  ()=>{
-
-    if(!currentUser)
-      return;
-
-    if(document.hidden)
-      setUserOffline();
-    else
-      setUserOnline();
 
   }
 );
 
 
-/* ================= LOAD CHATS ================= */
+/* SAVE USER */
+
+async function saveUser(){
+
+  if(!currentUser) return;
+
+  const userRef =
+    doc(
+      db,
+      "users",
+      currentUser.uid
+    );
+
+  await setDoc(
+    userRef,
+    {
+      uid: currentUser.uid,
+      name:
+        currentUser.displayName ||
+        "User",
+      email:
+        currentUser.email || "",
+      photoURL:
+        currentUser.photoURL || "",
+      online: true,
+      lastSeen: serverTimestamp()
+    },
+    {
+      merge:true
+    }
+  );
+
+}
+
+
+/* CHAT ID */
+
+function makeChatId(uid1,uid2){
+
+  return [
+    uid1,
+    uid2
+  ].sort().join("_");
+
+}
+
+
+/* ESCAPE HTML */
+
+function escapeHTML(text){
+
+  if(text === undefined ||
+     text === null){
+
+    return "";
+
+  }
+
+  return String(text)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* TIME */
+
+function formatTime(timestamp){
+
+  if(!timestamp) return "";
+
+  try{
+
+    const date =
+      timestamp.toDate
+        ? timestamp.toDate()
+        : new Date(timestamp);
+
+    return date.toLocaleTimeString(
+      [],
+      {
+        hour:"2-digit",
+        minute:"2-digit"
+      }
+    );
+
+  }catch{
+
+    return "";
+
+  }
+
+}
+
+
+/* LOAD BLOCKED */
+
+async function loadBlockedUsers(){
+
+  if(!currentUser) return;
+
+  try{
+
+    const ref =
+      collection(
+        db,
+        "users",
+        currentUser.uid,
+        "blocked"
+      );
+
+    const snap =
+      await getDocs(ref);
+
+    blockedUsers =
+      snap.docs.map(
+        d=>d.id
+      );
+
+  }catch(error){
+
+    console.log(
+      "Blocked users:",
+      error
+    );
+
+  }
+
+}
+
+
+/* IS BLOCKED */
+
+function isBlocked(uid){
+
+  return blockedUsers.includes(uid);
+
+}
+
+
+/* LOAD CHATS */
 
 function loadMyChats(){
 
-  if(!currentUser)
-    return;
+  if(!currentUser) return;
+
+  const chatsRef =
+    collection(db,"chats");
 
   const q =
     query(
-      collection(db,"chats"),
+      chatsRef,
       where(
-        "participants",
+        "members",
         "array-contains",
         currentUser.uid
       )
     );
 
-  if(unsubscribeChats)
+  if(unsubscribeChats){
     unsubscribeChats();
+  }
 
   unsubscribeChats =
     onSnapshot(
       q,
-      async snapshot=>{
+      snapshot=>{
 
-        allChats = [];
-
-        for(
-          const chatDoc
-          of snapshot.docs
-        ){
-
-          const data =
-            chatDoc.data();
-
-          if(
-            data.deletedFor &&
-            data.deletedFor[
-              currentUser.uid
-            ] === true
-          ){
-            continue;
-          }
-
-          const otherUid =
-            data.participants.find(
-              uid =>
-                uid !== currentUser.uid
-            );
-
-          if(!otherUid)
-            continue;
-
-          if(
-            await isUserBlocked(otherUid)
-          ){
-            continue;
-          }
-
-          try{
-
-            const userSnap =
-              await getDoc(
-                doc(
-                  db,
-                  "users",
-                  otherUid
-                )
-              );
-
-            if(userSnap.exists()){
-
-              const otherUser =
-                userSnap.data();
-
-              allChats.push({
-
-                id:chatDoc.id,
-
-                user:otherUser,
-
-                lastMessage:
-                  data.lastMessage || "",
-
-                updatedAt:
-                  data.updatedAt || null,
-
-                unread:
-                  data.unread?.[
-                    currentUser.uid
-                  ] || 0
-
-              });
-
-            }
-
-          }catch(error){
-
-            console.error(error);
-
-          }
-
-        }
-
-        renderAllChats();
+        renderAllChats(
+          snapshot.docs
+        );
 
       },
       error=>{
 
-        console.error(error);
-
-        chatList.innerHTML = `
-          <div class="empty">
-            Unable to load chats 😕<br><br>
-            ${escapeHTML(error.message)}
-          </div>
-        `;
+        console.error(
+          "Chats error:",
+          error
+        );
 
       }
     );
@@ -2211,308 +1394,289 @@ function loadMyChats(){
 }
 
 
-/* ================= RENDER CHATS ================= */
+/* RENDER CHATS */
 
-function renderAllChats(){
+async function renderAllChats(docs){
 
-  chatList.innerHTML = "";
+  const chatList =
+    document.getElementById("chatList");
 
-  const totalUnread =
-    allChats.reduce(
-      (sum,chat)=>
-        sum+(chat.unread || 0),
-      0
-    );
+  if(!docs.length){
 
-  if(totalUnread){
+    chatList.innerHTML =
+      `<div class="empty">
+        No chats yet 💬
+      </div>`;
 
-    unreadTabBadge.style.display =
-      "inline-flex";
-
-    unreadTabBadge.textContent =
-      totalUnread > 99
-        ? "99+"
-        : totalUnread;
-
-  }else{
-
-    unreadTabBadge.style.display =
-      "none";
-
-  }
-
-  const activeTab =
-    document.querySelector(
-      ".tab.active"
-    )?.dataset.tab || "all";
-
-  if(
-    activeTab === "groups" ||
-    activeTab === "channels"
-  ){
     return;
+
   }
 
-  let chats =
-    [...allChats];
+  const chats = [];
 
-  if(activeTab === "unread"){
+  for(const item of docs){
 
-    chats =
-      chats.filter(
-        c => c.unread > 0
+    const data =
+      item.data();
+
+    const otherId =
+      data.members.find(
+        id=>id !== currentUser.uid
       );
+
+    if(!otherId) continue;
+
+    if(isBlocked(otherId)) continue;
+
+    const userSnap =
+      await getDoc(
+        doc(
+          db,
+          "users",
+          otherId
+        )
+      );
+
+    if(!userSnap.exists()) continue;
+
+    chats.push({
+      id:item.id,
+      data,
+      user:userSnap.data()
+    });
 
   }
 
   chats.sort(
     (a,b)=>{
 
-      const at =
-        a.updatedAt?.toMillis
-          ? a.updatedAt.toMillis()
-          : 0;
+      const ta =
+        a.data.updatedAt?.seconds || 0;
 
-      const bt =
-        b.updatedAt?.toMillis
-          ? b.updatedAt.toMillis()
-          : 0;
+      const tb =
+        b.data.updatedAt?.seconds || 0;
 
-      return bt-at;
+      return tb-ta;
 
     }
   );
+
 
   if(!chats.length){
 
-    chatList.innerHTML = `
-      <div class="empty">
-        ${
-          activeTab === "unread"
-            ? "😢 No unread messages"
-            : "No chats yet 💬<br><br>Tap + to start a new chat."
-        }
-      </div>
-    `;
+    chatList.innerHTML =
+      `<div class="empty">
+        No chats yet 💬
+      </div>`;
 
     return;
 
   }
 
-  chats.forEach(renderChatCard);
 
-}
+  chatList.innerHTML =
+    chats.map(chat=>{
 
+      const user =
+        chat.user;
 
-function renderChatCard(chat){
+      return `
+        <div class="chatItem"
+             data-chat-id="${chat.id}"
+             data-user-id="${user.uid}">
 
-  const div =
-    document.createElement("div");
+          <img class="chatAvatar"
+               src="${escapeHTML(
+                 user.photoURL ||
+                 "https://ui-avatars.com/api/?name="+
+                 encodeURIComponent(user.name || "User")
+               )}">
 
-  div.className =
-    "chat-card";
+          <div class="chatInfo">
 
-  if(chat.unread > 0)
-    div.classList.add("has-unread");
+            <div class="chatTop">
 
-  const photo =
-    chat.user.photoURL ||
-    "https://i.pravatar.cc/100";
+              <div class="chatName">
+                ${escapeHTML(
+                  user.name || "User"
+                )}
+              </div>
 
-  const online =
-    isUserOnline(chat.user);
+              <div class="chatTime">
+                ${formatTime(
+                  chat.data.updatedAt
+                )}
+              </div>
 
-  div.innerHTML = `
+            </div>
 
-    <div class="avatar">
-
-      <img src="${photo}">
-
-      <span class="${
-        online
-          ? "online-dot"
-          : "offline-dot"
-      }"></span>
-
-    </div>
-
-    <div class="chat-info">
-
-      <div class="chat-top">
-
-        <span class="chat-name">
-          ${escapeHTML(
-            chat.user.name || "Oii User"
-          )}
-        </span>
-
-        <span class="chat-time">
-          ${formatTime(chat.updatedAt)}
-        </span>
-
-      </div>
-
-      <div class="chat-msg">
-        ${escapeHTML(
-          chat.lastMessage ||
-          "Start chatting 💬"
-        )}
-      </div>
-
-    </div>
-
-    ${
-      chat.unread > 0
-        ? `
-          <div class="unread-count">
-            ${
-              chat.unread > 99
-                ? "99+"
-                : chat.unread
-            }
-          </div>
-        `
-        : ""
-    }
-
-  `;
-
-  div.addEventListener(
-    "click",
-    ()=>{
-      openChat(
-        chat.id,
-        chat.user
-      );
-    }
-  );
-
-  chatList.appendChild(div);
-
-}
-
-
-/* ================= USERS ================= */
-
-async function loadUsers(){
-
-  usersList.innerHTML = `
-    <div class="empty">
-      Loading Oii Chat users... ⏳
-    </div>
-  `;
-
-  try{
-
-    const snapshot =
-      await getDocs(
-        collection(db,"users")
-      );
-
-    usersList.innerHTML = "";
-
-    let count = 0;
-
-    snapshot.forEach(
-      userDoc=>{
-
-        const user =
-          userDoc.data();
-
-        if(
-          !currentUser ||
-          user.uid === currentUser.uid
-        ){
-          return;
-        }
-
-        count++;
-
-        const div =
-          document.createElement("div");
-
-        div.className =
-          "user-card";
-
-        const photo =
-          user.photoURL ||
-          "https://i.pravatar.cc/100";
-
-        const online =
-          isUserOnline(user);
-
-        div.innerHTML = `
-
-          <img src="${photo}">
-
-          <div class="user-card-info">
-
-            <div class="user-card-name">
+            <div class="chatLast">
               ${escapeHTML(
-                user.name || "Oii User"
+                chat.data.lastMessage ||
+                ""
               )}
             </div>
 
-            <div class="user-card-email">
-
-              ${
-                online
-                  ? "👀 Online"
-                  : "🫣 Offline"
-              }
-
-            </div>
-
           </div>
 
-        `;
-
-        div.addEventListener(
-          "click",
-          ()=>{
-            startPrivateChat(user);
-          }
-        );
-
-        usersList.appendChild(div);
-
-      }
-    );
-
-    if(!count){
-
-      usersList.innerHTML = `
-        <div class="empty">
-          வேறு Oii Chat users இன்னும் இல்லை 💙
         </div>
       `;
 
-    }
+    }).join("");
+
+
+  document
+    .querySelectorAll(".chatItem")
+    .forEach(item=>{
+
+      item.addEventListener(
+        "click",
+        async()=>{
+
+          const uid =
+            item.dataset.userId;
+
+          await openChat(uid);
+
+        }
+      );
+
+    });
+
+}
+
+
+/* LOAD USERS */
+
+async function loadUsers(){
+
+  const userList =
+    document.getElementById("userList");
+
+  userList.innerHTML =
+    `<div class="empty">
+      Loading users...
+    </div>`;
+
+  try{
+
+    const snap =
+      await getDocs(
+        collection(
+          db,
+          "users"
+        )
+      );
+
+    const users =
+      snap.docs
+        .map(d=>d.data())
+        .filter(
+          u=>
+            u.uid !== currentUser.uid &&
+            !isBlocked(u.uid)
+        );
+
+    renderUsers(users);
 
   }catch(error){
 
-    usersList.innerHTML = `
-      <div class="empty">
-        Users load ஆகவில்லை 😕<br><br>
-        ${escapeHTML(error.message)}
-      </div>
-    `;
+    console.error(error);
+
+    userList.innerHTML =
+      `<div class="empty">
+        Unable to load users.
+      </div>`;
 
   }
 
 }
 
 
-/* ================= CREATE CHAT ================= */
+/* RENDER USERS */
 
-async function startPrivateChat(otherUser){
+function renderUsers(users){
 
-  if(!currentUser)
+  const userList =
+    document.getElementById("userList");
+
+  if(!users.length){
+
+    userList.innerHTML =
+      `<div class="empty">
+        No users found.
+      </div>`;
+
     return;
 
-  if(
-    await isUserBlocked(otherUser.uid)
-  ){
+  }
+
+  userList.innerHTML =
+    users.map(user=>`
+
+      <div class="userItem"
+           data-uid="${user.uid}">
+
+        <img src="${escapeHTML(
+          user.photoURL ||
+          "https://ui-avatars.com/api/?name="+
+          encodeURIComponent(user.name || "User")
+        )}">
+
+        <div class="userInfo">
+
+          <div class="userName">
+            ${escapeHTML(
+              user.name || "User"
+            )}
+          </div>
+
+          <div class="userEmail">
+            ${escapeHTML(
+              user.email || ""
+            )}
+          </div>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+
+  document
+    .querySelectorAll(".userItem")
+    .forEach(item=>{
+
+      item.addEventListener(
+        "click",
+        async()=>{
+
+          await openChat(
+            item.dataset.uid
+          );
+
+          document
+            .getElementById(
+              "newChatModal"
+            )
+            .style.display="none";
+
+        }
+      );
+
+    });
+
+}
+
+
+/* OPEN CHAT */
+
+async function openChat(uid){
+
+  if(!currentUser) return;
+
+  if(isBlocked(uid)){
 
     alert(
       "இந்த user-ஐ நீ block பண்ணியிருக்கிறாய் 🚫"
@@ -2522,194 +1686,128 @@ async function startPrivateChat(otherUser){
 
   }
 
-  const chatId =
-    makeChatId(
-      currentUser.uid,
-      otherUser.uid
+  const snap =
+    await getDoc(
+      doc(
+        db,
+        "users",
+        uid
+      )
     );
 
-  const chatRef =
-    doc(
-      db,
-      "chats",
-      chatId
-    );
-
-  try{
-
-    const existing =
-      await getDoc(chatRef);
-
-    if(!existing.exists()){
-
-      await setDoc(
-        chatRef,
-        {
-
-          participants:[
-            currentUser.uid,
-            otherUser.uid
-          ],
-
-          createdAt:
-            serverTimestamp(),
-
-          updatedAt:
-            serverTimestamp(),
-
-          lastMessage:"",
-
-          unread:{
-            [currentUser.uid]:0,
-            [otherUser.uid]:0
-          },
-
-          deletedFor:{}
-
-        }
-      );
-
-    }else{
-
-      await updateDoc(
-        chatRef,
-        {
-          [`deletedFor.${currentUser.uid}`]:
-            false
-        }
-      );
-
-    }
-
-    usersModal.style.display =
-      "none";
-
-    openChat(
-      chatId,
-      otherUser
-    );
-
-  }catch(error){
+  if(!snap.exists()){
 
     alert(
-      "Chat create failed 😕\n\n" +
-      error.message
+      "User not found."
     );
+
+    return;
+
+  }
+
+  currentChatUser =
+    snap.data();
+
+  currentChatId =
+    makeChatId(
+      currentUser.uid,
+      uid
+    );
+
+
+  document.getElementById(
+    "chatName"
+  ).textContent =
+    currentChatUser.name ||
+    "User";
+
+
+  document.getElementById(
+    "chatAvatar"
+  ).src =
+    currentChatUser.photoURL ||
+    "https://ui-avatars.com/api/?name="+
+    encodeURIComponent(
+      currentChatUser.name || "User"
+    );
+
+
+  updateChatStatus();
+
+
+  homeScreen.style.display =
+    "none";
+
+  chatScreen.style.display =
+    "flex";
+
+
+  attachmentSheet.style.display =
+    "none";
+
+  emojiPanel.style.display =
+    "none";
+
+  document.getElementById(
+    "chatMenu"
+  ).style.display =
+    "none";
+
+
+  loadMessages();
+
+}
+
+
+/* CHAT STATUS */
+
+async function updateChatStatus(){
+
+  if(!currentChatUser) return;
+
+  const status =
+    document.getElementById(
+      "chatStatus"
+    );
+
+  if(currentChatUser.online){
+
+    status.innerHTML =
+      `<span class="onlineDot">●</span> Online`;
+
+  }else{
+
+    status.innerHTML =
+      `<span class="offlineDot">●</span> Offline`;
 
   }
 
 }
 
 
-/* ================= OPEN CHAT ================= */
+/* LOAD MESSAGES */
 
-async function openChat(chatId,otherUser){
+function loadMessages(){
 
-  if(!currentUser)
-    return;
+  if(!currentChatId) return;
 
-  currentChatId =
-    chatId;
+  if(unsubscribeMessages){
 
-  currentChatUser =
-    {
-      ...otherUser,
-      uid:otherUser.uid
-    };
-
-  chatUserName.textContent =
-    otherUser.name || "Oii User";
-
-  chatUserPhoto.src =
-    otherUser.photoURL ||
-    "https://i.pravatar.cc/100";
-
-  updateChatStatus(otherUser);
-
-  chatScreen.style.display =
-    "block";
-
-  messages.innerHTML = `
-    <div class="empty">
-      Loading messages... 💬
-    </div>
-  `;
-
-  messageInput.value = "";
-
-  const blocked =
-    await isUserBlocked(
-      otherUser.uid
-    );
-
-  updateBlockUI(blocked);
-
-  try{
-
-    await updateDoc(
-      doc(
-        db,
-        "chats",
-        chatId
-      ),
-      {
-        [`unread.${currentUser.uid}`]:
-          0
-      }
-    );
-
-  }catch(error){
-
-    console.error(error);
+    unsubscribeMessages();
 
   }
 
-  startTypingListener(chatId);
-
-  if(unsubscribeUserStatus)
-    unsubscribeUserStatus();
-
-  unsubscribeUserStatus =
-    onSnapshot(
-      doc(
-        db,
-        "users",
-        otherUser.uid
-      ),
-      snapshot=>{
-
-        if(!snapshot.exists())
-          return;
-
-        const fresh =
-          snapshot.data();
-
-        currentChatUser = {
-          ...fresh,
-          uid:otherUser.uid
-        };
-
-        updateChatStatus(
-          currentChatUser
-        );
-
-      }
-    );
-
-  if(unsubscribeMessages)
-    unsubscribeMessages();
-
-  const messagesRef =
+  const ref =
     collection(
       db,
       "chats",
-      chatId,
+      currentChatId,
       "messages"
     );
 
   const q =
     query(
-      messagesRef,
+      ref,
       orderBy(
         "createdAt",
         "asc"
@@ -2721,239 +1819,120 @@ async function openChat(chatId,otherUser){
       q,
       snapshot=>{
 
-        messages.innerHTML = "";
+        messages.innerHTML="";
 
-        if(snapshot.empty){
+        snapshot.docs.forEach(
+          d=>{
 
-          messages.innerHTML = `
-            <div class="empty">
-              Say Hi 👋
-            </div>
-          `;
-
-          return;
-
-        }
-
-        snapshot.forEach(
-          messageDoc=>{
             renderMessage(
-              messageDoc.data()
+              d.data()
             );
+
           }
         );
 
-        scrollMessages();
-
-        if(!blocked)
-          markMessagesRead(chatId);
+        setTimeout(
+          ()=>{
+            messages.scrollTop =
+              messages.scrollHeight;
+          },
+          50
+        );
 
       },
       error=>{
 
-        messages.innerHTML = `
-          <div class="empty">
-            Messages load ஆகவில்லை 😕<br><br>
-            ${escapeHTML(error.message)}
-          </div>
-        `;
+        console.error(
+          "Messages error:",
+          error
+        );
 
       }
     );
 
-  messageInput.focus();
-
 }
 
 
-/* ================= STATUS ================= */
-
-function updateChatStatus(user){
-
-  const online =
-    isUserOnline(user);
-
-  chatUserStatus.textContent =
-    online
-      ? "👀 Online"
-      : "🫣 Offline";
-
-  chatUserStatus.style.color =
-    online
-      ? "#00ff66"
-      : "#888";
-
-}
-
-
-/* ================= BLOCK UI ================= */
-
-function updateBlockUI(blocked){
-
-  messageInput.disabled =
-    blocked;
-
-  sendMessageBtn.disabled =
-    blocked;
-
-  if(blocked){
-
-    messageInput.placeholder =
-      "🚫 User blocked";
-
-  }else{
-
-    messageInput.placeholder =
-      "Message...";
-
-  }
-
-}
-
-
-/* ================= READ ================= */
-
-async function markMessagesRead(chatId){
-
-  if(!currentUser)
-    return;
-
-  try{
-
-    const snap =
-      await getDocs(
-        query(
-          collection(
-            db,
-            "chats",
-            chatId,
-            "messages"
-          ),
-          orderBy(
-            "createdAt",
-            "asc"
-          )
-        )
-      );
-
-    const updates = [];
-
-    snap.forEach(
-      messageDoc=>{
-
-        const data =
-          messageDoc.data();
-
-        if(
-          data.receiverId === currentUser.uid &&
-          (
-            data.status === "sent" ||
-            data.status === "delivered"
-          )
-        ){
-
-          updates.push(
-            updateDoc(
-              messageDoc.ref,
-              {
-                status:"read"
-              }
-            )
-          );
-
-        }
-
-      }
-    );
-
-    if(updates.length)
-      await Promise.all(updates);
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-}
-
-
-/* ================= RENDER MESSAGE ================= */
-
-function getMessageStatusIcon(status){
-
-  if(status === "read")
-    return "💞";
-
-  if(status === "delivered")
-    return "💓";
-
-  return "🚀";
-
-}
-
+/* RENDER MESSAGE */
 
 function renderMessage(data){
 
-  const row =
-    document.createElement("div");
-
-  row.className =
-    "message-row";
-
   const mine =
-    currentUser &&
     data.senderId ===
     currentUser.uid;
 
-  if(mine)
-    row.classList.add("mine");
+  const row =
+    document.createElement(
+      "div"
+    );
+
+  row.className =
+    "messageRow " +
+    (mine ? "mine" : "");
+
 
   const bubble =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   bubble.className =
-    "message";
+    "messageBubble";
+
 
   const text =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
+  text.className =
+    "messageText";
 
   text.textContent =
     data.text || "";
 
+
   const meta =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   meta.className =
-    "message-meta";
+    "messageMeta";
 
-  const time =
-    document.createElement("span");
+  meta.textContent =
+    formatTime(
+      data.createdAt
+    );
 
-  time.className =
-    "message-time";
-
-  time.textContent =
-    formatTime(data.createdAt);
-
-  meta.appendChild(time);
 
   if(mine){
 
-    const status =
-      document.createElement("span");
+    let tick =
+      "✓";
 
-    status.className =
-      "message-status";
+    if(data.status === "delivered"){
 
-    status.textContent =
-      getMessageStatusIcon(
-        data.status
-      );
+      tick = "✓✓";
 
-    meta.appendChild(status);
+    }
+
+    if(data.status === "read"){
+
+      tick = "✓✓";
+
+    }
+
+    meta.innerHTML =
+      escapeHTML(
+        formatTime(data.createdAt)
+      ) +
+      ` <span class="statusTicks">
+        ${tick}
+      </span>`;
 
   }
+
 
   bubble.appendChild(text);
   bubble.appendChild(meta);
@@ -2965,42 +1944,43 @@ function renderMessage(data){
 }
 
 
-/* ================= SEND MESSAGE ================= */
+/* SEND MESSAGE */
 
 async function sendMessage(){
+
+  if(!currentUser ||
+     !currentChatUser ||
+     !currentChatId){
+
+    return;
+
+  }
 
   const text =
     messageInput.value.trim();
 
+  if(!text) return;
+
+
   if(
-    !text ||
-    !currentUser ||
-    !currentChatId ||
-    !currentChatUser
+    isBlocked(
+      currentChatUser.uid
+    )
   ){
+
+    alert(
+      "இந்த user-ஐ நீ block பண்ணியிருக்கிறாய் 🚫"
+    );
+
     return;
+
   }
 
-  sendMessageBtn.disabled =
-    true;
+
+  messageInput.value="";
+
 
   try{
-
-    if(
-      await isUserBlocked(
-        currentChatUser.uid
-      )
-    ){
-
-      updateBlockUI(true);
-
-      alert(
-        "இந்த user-ஐ நீ block பண்ணியிருக்கிறாய் 🚫"
-      );
-
-      return;
-
-    }
 
     const chatRef =
       doc(
@@ -3009,45 +1989,23 @@ async function sendMessage(){
         currentChatId
       );
 
-    const chatSnap =
-      await getDoc(chatRef);
 
-    if(!chatSnap.exists())
-      throw new Error(
-        "Chat does not exist."
-      );
+    await setDoc(
+      chatRef,
+      {
+        members:[
+          currentUser.uid,
+          currentChatUser.uid
+        ],
+        lastMessage:text,
+        updatedAt:
+          serverTimestamp()
+      },
+      {
+        merge:true
+      }
+    );
 
-    const chatData =
-      chatSnap.data();
-
-    if(
-      !Array.isArray(
-        chatData.participants
-      ) ||
-      !chatData.participants.includes(
-        currentUser.uid
-      )
-    ){
-
-      throw new Error(
-        "You are not a participant."
-      );
-
-    }
-
-    if(
-      !chatData.participants.includes(
-        currentChatUser.uid
-      )
-    ){
-
-      throw new Error(
-        "Receiver is not in this chat."
-      );
-
-    }
-
-    await setTyping(false);
 
     await addDoc(
       collection(
@@ -3057,7 +2015,6 @@ async function sendMessage(){
         "messages"
       ),
       {
-
         senderId:
           currentUser.uid,
 
@@ -3070,67 +2027,22 @@ async function sendMessage(){
           serverTimestamp(),
 
         status:"sent"
-
       }
     );
-
-    await updateDoc(
-      chatRef,
-      {
-
-        lastMessage:text,
-
-        updatedAt:
-          serverTimestamp(),
-
-        [`unread.${currentChatUser.uid}`]:
-          increment(1),
-
-        [`unread.${currentUser.uid}`]:
-          0,
-
-        [`deletedFor.${currentUser.uid}`]:
-          false,
-
-        [`deletedFor.${currentChatUser.uid}`]:
-          false
-
-      }
-    );
-
-    messageInput.value = "";
 
   }catch(error){
 
     console.error(error);
 
-    messageInput.value =
-      text;
-
     alert(
-      "Message send failed 😕\n\n" +
+      "Message send failed.\n\n"+
       error.message
     );
-
-  }finally{
-
-    sendMessageBtn.disabled =
-      false;
-
-    const blocked =
-      currentChatUser
-        ? await isUserBlocked(
-            currentChatUser.uid
-          )
-        : false;
-
-    updateBlockUI(blocked);
-
-    messageInput.focus();
 
   }
 
 }
+
 
 sendMessageBtn.addEventListener(
   "click",
@@ -3138,38 +2050,13 @@ sendMessageBtn.addEventListener(
 );
 
 
-/* ================= TYPING INPUT ================= */
-
-messageInput.addEventListener(
-  "input",
-  ()=>{
-
-    if(!currentChatId)
-      return;
-
-    setTyping(true);
-
-    clearTimeout(typingTimer);
-
-    typingTimer =
-      setTimeout(
-        ()=>{
-          setTyping(false);
-        },
-        1500
-      );
-
-  }
-);
-
-
 messageInput.addEventListener(
   "keydown",
-  event=>{
+  e=>{
 
-    if(event.key === "Enter"){
+    if(e.key === "Enter"){
 
-      event.preventDefault();
+      e.preventDefault();
 
       sendMessage();
 
@@ -3179,133 +2066,20 @@ messageInput.addEventListener(
 );
 
 
-/* ================= SCROLL ================= */
-
-function scrollMessages(){
-
-  messages.scrollTop =
-    messages.scrollHeight;
-
-}
-
-
-/* ================= EMOJI ================= */
-
-const emojis = [
-"😀","😃","😄","😁","😆","😅","😂","🤣",
-"😊","😇","🙂","🙃","😉","😌","😍","🥰",
-"😘","😗","😙","😚","😋","😛","😝","😜",
-"🤪","🤨","🧐","🤓","😎","🥳","🤩","🥺",
-"😢","😭","😤","😡","🤬","😱","😳","🥶",
-"❤️","🧡","💛","💚","💙","💜","🖤","🤍",
-"💕","💞","💓","💗","💖","💘","💝","💋",
-"👍","👎","👏","🙏","🔥","✨","🎉","💯"
-];
-
-emojis.forEach(
-  emoji=>{
-
-    const button =
-      document.createElement("button");
-
-    button.className =
-      "emoji-item";
-
-    button.textContent =
-      emoji;
-
-    button.addEventListener(
-      "click",
-      ()=>{
-
-        const start =
-          messageInput.selectionStart;
-
-        const end =
-          messageInput.selectionEnd;
-
-        const value =
-          messageInput.value;
-
-        messageInput.value =
-          value.slice(0,start) +
-          emoji +
-          value.slice(end);
-
-        messageInput.focus();
-
-        const position =
-          start + emoji.length;
-
-        messageInput.setSelectionRange(
-          position,
-          position
-        );
-
-      }
-    );
-
-    emojiGrid.appendChild(button);
-
-  }
-);
-
-
-emojiBtn.addEventListener(
-  "click",
-  event=>{
-
-    event.stopPropagation();
-
-    emojiPanel.style.display =
-      emojiPanel.style.display === "block"
-        ? "none"
-        : "block";
-
-  }
-);
-
-
-/* ================= ATTACHMENT ================= */
+/* ATTACHMENT OPEN */
 
 attachBtn.addEventListener(
   "click",
-  event=>{
-
-    event.stopPropagation();
+  ()=>{
 
     emojiPanel.style.display =
       "none";
 
     attachmentSheet.style.display =
-      "flex";
-
-  }
-);
-
-
-closeAttachment.addEventListener(
-  "click",
-  ()=>{
-    attachmentSheet.style.display =
-      "none";
-  }
-);
-
-
-attachmentSheet.addEventListener(
-  "click",
-  event=>{
-
-    if(
-      event.target ===
-      attachmentSheet
-    ){
-
-      attachmentSheet.style.display =
-        "none";
-
-    }
+      attachmentSheet.style.display ===
+      "block"
+        ? "none"
+        : "block";
 
   }
 );
@@ -3320,28 +2094,38 @@ galleryOption.addEventListener(
     attachmentSheet.style.display =
       "none";
 
-    galleryInput.click();
+    document
+      .getElementById(
+        "galleryInput"
+      )
+      .click();
 
   }
 );
 
 
-galleryInput.addEventListener(
-  "change",
-  ()=>{
+document
+  .getElementById(
+    "galleryInput"
+  )
+  .addEventListener(
+    "change",
+    ()=>{
+      if(
+        document.getElementById(
+          "galleryInput"
+        ).files.length
+      ){
 
-    if(galleryInput.files.length){
+        alert(
+          "🖼️ Gallery selected.\n\n" +
+          "Firebase Storage upload next step."
+        );
 
-      alert(
-        "Gallery selected 🖼️\n\nPhoto/File sending-ஐ next step-ல Firebase Storage-க்கு connect பண்ணலாம்."
-      );
+      }
 
     }
-
-    galleryInput.value = "";
-
-  }
-);
+  );
 
 
 /* DOCUMENT */
@@ -3353,58 +2137,38 @@ documentOption.addEventListener(
     attachmentSheet.style.display =
       "none";
 
-    documentInput.click();
+    document
+      .getElementById(
+        "documentInput"
+      )
+      .click();
 
   }
 );
 
 
-documentInput.addEventListener(
-  "change",
-  ()=>{
+document
+  .getElementById(
+    "documentInput"
+  )
+  .addEventListener(
+    "change",
+    ()=>{
+      if(
+        document.getElementById(
+          "documentInput"
+        ).files.length
+      ){
 
-    if(documentInput.files.length){
+        alert(
+          "📄 Document selected.\n\n" +
+          "Firebase Storage upload next step."
+        );
 
-      alert(
-        "Document selected 📄\n\nFile sending-ஐ next step-ல Firebase Storage-க்கு connect பண்ணலாம்."
-      );
+      }
 
     }
-
-    documentInput.value = "";
-
-  }
-);
-
-
-/* CAMERA */
-
-cameraBtn.addEventListener(
-  "click",
-  ()=>{
-
-    cameraInput.click();
-
-  }
-);
-
-
-cameraInput.addEventListener(
-  "change",
-  ()=>{
-
-    if(cameraInput.files.length){
-
-      alert(
-        "Camera photo selected 📷\n\nCamera image sending-ஐ next step-ல Firebase Storage-க்கு connect பண்ணலாம்."
-      );
-
-    }
-
-    cameraInput.value = "";
-
-  }
-);
+  );
 
 
 /* LOCATION */
@@ -3426,6 +2190,7 @@ locationOption.addEventListener(
 
     }
 
+
     navigator.geolocation.getCurrentPosition(
       position=>{
 
@@ -3435,24 +2200,24 @@ locationOption.addEventListener(
         const lng =
           position.coords.longitude;
 
-        const text =
-          `📍 My Location\n${lat}, ${lng}`;
 
         messageInput.value =
-          text;
+          "📍 My Location\n" +
+          lat.toFixed(6) +
+          ", " +
+          lng.toFixed(6);
 
-        messageInput.focus();
 
         alert(
-          "Location ready 📍\nSend button அழுத்தி அனுப்பு."
+          "📍 Location ready.\n\n" +
+          "Send button அழுத்தி அனுப்பு."
         );
 
       },
       error=>{
 
         alert(
-          "Location கிடைக்கவில்லை 😕\n" +
-          error.message
+          "Location permission allow பண்ணு."
         );
 
       }
@@ -3462,63 +2227,271 @@ locationOption.addEventListener(
 );
 
 
-/* CONTACT */
+/* =====================================================
+   CONTACT
+   REAL ANDROID CONTACT PICKER
+   ===================================================== */
 
 contactOption.addEventListener(
   "click",
-  ()=>{
+  async()=>{
 
     attachmentSheet.style.display =
       "none";
 
-    alert(
-      "Contact sharing UI ready 👤\n\nContact picker-ஐ அடுத்த step-ல add பண்ணலாம்."
-    );
 
-  }
-);
+    /*
+      Android Chrome / supported browsers
+      மட்டும் Contact Picker support பண்ணும்.
+    */
 
+    if(
+      !navigator.contacts ||
+      typeof navigator.contacts.select !==
+      "function"
+    ){
 
-/* ================= VOICE ================= */
-
-let mediaRecorder = null;
-let audioChunks = [];
-let recording = false;
-
-voiceBtn.addEventListener(
-  "click",
-  async()=>{
-
-    if(recording){
-
-      if(mediaRecorder)
-        mediaRecorder.stop();
+      alert(
+        "📱 Contact Picker இந்த browser-ல் support இல்லை.\n\n" +
+        "Android Chrome-ல் Oii Chat-ஐ open பண்ணி try பண்ணு."
+      );
 
       return;
 
     }
 
+
+    try{
+
+      const contacts =
+        await navigator.contacts.select(
+          [
+            "name",
+            "tel",
+            "email"
+          ],
+          {
+            multiple:false
+          }
+        );
+
+
+      if(
+        !contacts ||
+        !contacts.length
+      ){
+
+        return;
+
+      }
+
+
+      const contact =
+        contacts[0];
+
+
+      let name =
+        "";
+
+      let phone =
+        "";
+
+      let email =
+        "";
+
+
+      if(
+        contact.name &&
+        contact.name.length
+      ){
+
+        name =
+          contact.name[0] || "";
+
+      }
+
+
+      if(
+        contact.tel &&
+        contact.tel.length
+      ){
+
+        phone =
+          contact.tel[0] || "";
+
+      }
+
+
+      if(
+        contact.email &&
+        contact.email.length
+      ){
+
+        email =
+          contact.email[0] || "";
+
+      }
+
+
+      let contactText =
+        "👤 Contact\n";
+
+
+      if(name){
+
+        contactText +=
+          "Name: " +
+          name +
+          "\n";
+
+      }
+
+
+      if(phone){
+
+        contactText +=
+          "📞 Phone: " +
+          phone +
+          "\n";
+
+      }
+
+
+      if(email){
+
+        contactText +=
+          "✉️ Email: " +
+          email;
+
+      }
+
+
+      messageInput.value =
+        contactText.trim();
+
+
+      messageInput.focus();
+
+
+    }catch(error){
+
+      console.error(
+        "Contact Picker:",
+        error
+      );
+
+
+      if(
+        error.name ===
+        "AbortError"
+      ){
+
+        return;
+
+      }
+
+
+      alert(
+        "📱 Contact select பண்ண முடியவில்லை.\n\n" +
+        error.message
+      );
+
+    }
+
+  }
+);
+
+
+/* CAMERA */
+
+cameraBtn.addEventListener(
+  "click",
+  ()=>{
+
+    document
+      .getElementById(
+        "cameraInput"
+      )
+      .click();
+
+  }
+);
+
+
+document
+  .getElementById(
+    "cameraInput"
+  )
+  .addEventListener(
+    "change",
+    ()=>{
+      if(
+        document.getElementById(
+          "cameraInput"
+        ).files.length
+      ){
+
+        alert(
+          "📷 Photo selected.\n\n" +
+          "Firebase Storage upload next step."
+        );
+
+      }
+
+    }
+  );
+
+
+/* VOICE */
+
+let mediaRecorder = null;
+let audioChunks = [];
+
+
+voiceBtn.addEventListener(
+  "click",
+  async()=>{
+
+    if(mediaRecorder &&
+       mediaRecorder.state === "recording"){
+
+      mediaRecorder.stop();
+
+      return;
+
+    }
+
+
     try{
 
       const stream =
-        await navigator.mediaDevices.getUserMedia(
-          {audio:true}
-        );
+        await navigator.mediaDevices
+          .getUserMedia({
+            audio:true
+          });
+
 
       mediaRecorder =
-        new MediaRecorder(stream);
+        new MediaRecorder(
+          stream
+        );
 
-      audioChunks = [];
+      audioChunks=[];
+
 
       mediaRecorder.ondataavailable =
-        event=>{
+        e=>{
 
-          if(event.data.size)
+          if(e.data.size > 0){
+
             audioChunks.push(
-              event.data
+              e.data
             );
 
+          }
+
         };
+
 
       mediaRecorder.onstop =
         ()=>{
@@ -3530,31 +2503,25 @@ voiceBtn.addEventListener(
                 track.stop()
             );
 
-          recording = false;
-
-          voiceBtn.textContent =
-            "🎙️";
 
           alert(
-            "Voice message recorded 🎙️\n\nFirebase Storage connect பண்ணின பிறகு இதை actual voice message-ஆ send பண்ணலாம்."
+            "🎙️ Voice recorded.\n\n" +
+            "Firebase Storage upload next step."
           );
 
         };
 
-      mediaRecorder.start();
 
-      recording = true;
+      mediaRecorder.start();
 
       voiceBtn.textContent =
         "⏹️";
 
+
     }catch(error){
 
-      console.error(error);
-
       alert(
-        "Microphone permission தேவை 🎙️\n\n" +
-        error.message
+        "Microphone permission allow பண்ணு."
       );
 
     }
@@ -3563,87 +2530,371 @@ voiceBtn.addEventListener(
 );
 
 
-/* ================= CHAT MENU ================= */
+/* EMOJI */
 
-async function updateChatActionMenu(){
+const emojis = [
+  "😀","😃","😄","😁","😆","😅","😂","🤣",
+  "😊","😇","🙂","🙃","😉","😌","😍","🥰",
+  "😘","😗","😙","😚","😋","😛","😝","😜",
+  "🤪","🤨","🧐","🤓","😎","🤩","🥳","😏",
+  "😢","😭","😤","😡","🤬","😱","😳","🤗",
+  "❤️","🧡","💛","💚","💙","💜","🖤","🤍",
+  "👍","👎","👏","🙏","🔥","💯","🎉","🥰"
+];
 
-  if(
-    !currentUser ||
-    !currentChatUser
-  ){
-    return;
-  }
 
-  const blocked =
-    await isUserBlocked(
-      currentChatUser.uid
+emojiGrid.innerHTML =
+  emojis.map(
+    emoji=>
+      `<button class="emojiItem"
+               data-emoji="${emoji}">
+        ${emoji}
+      </button>`
+  ).join("");
+
+
+document
+  .querySelectorAll(".emojiItem")
+  .forEach(btn=>{
+
+    btn.addEventListener(
+      "click",
+      ()=>{
+
+        messageInput.value +=
+          btn.dataset.emoji;
+
+        messageInput.focus();
+
+      }
     );
 
-  chatActionTitle.textContent =
-    currentChatUser.name ||
-    "Chat options";
+  });
 
-  if(blocked){
 
-    blockUserBtn.textContent =
-      "🔓 Unblock User";
+emojiBtn.addEventListener(
+  "click",
+  ()=>{
 
-    blockUserBtn.className =
-      "chat-action unblock";
+    attachmentSheet.style.display =
+      "none";
 
-    blockUserBtn.onclick =
-      unblockCurrentUser;
+    emojiPanel.style.display =
+      emojiPanel.style.display ===
+      "block"
+        ? "none"
+        : "block";
 
-  }else{
+  }
+);
 
-    blockUserBtn.textContent =
-      "🚫 Block User";
 
-    blockUserBtn.className =
-      "chat-action block";
+/* BACK */
 
-    blockUserBtn.onclick =
-      blockCurrentUser;
+document
+  .getElementById(
+    "backBtn"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      if(unsubscribeMessages){
+
+        unsubscribeMessages();
+
+        unsubscribeMessages =
+          null;
+
+      }
+
+      currentChatUser =
+        null;
+
+      currentChatId =
+        null;
+
+      chatScreen.style.display =
+        "none";
+
+      homeScreen.style.display =
+        "block";
+
+      attachmentSheet.style.display =
+        "none";
+
+      emojiPanel.style.display =
+        "none";
+
+    }
+  );
+
+
+/* NEW CHAT */
+
+document
+  .getElementById(
+    "newChatBtn"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      document
+        .getElementById(
+          "newChatModal"
+        )
+        .style.display =
+        "flex";
+
+      loadUsers();
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "closeNewChat"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      document
+        .getElementById(
+          "newChatModal"
+        )
+        .style.display =
+        "none";
+
+    }
+  );
+
+
+/* SEARCH USERS */
+
+document
+  .getElementById(
+    "userSearch"
+  )
+  .addEventListener(
+    "input",
+    async e=>{
+
+      const text =
+        e.target.value
+          .toLowerCase()
+          .trim();
+
+
+      const snap =
+        await getDocs(
+          collection(
+            db,
+            "users"
+          )
+        );
+
+
+      const users =
+        snap.docs
+          .map(
+            d=>d.data()
+          )
+          .filter(
+            u=>
+              u.uid !== currentUser.uid &&
+              !isBlocked(u.uid) &&
+              (
+                (u.name || "")
+                  .toLowerCase()
+                  .includes(text) ||
+                (u.email || "")
+                  .toLowerCase()
+                  .includes(text)
+              )
+          );
+
+
+      renderUsers(users);
+
+    }
+  );
+
+
+/* BLOCKED MODAL */
+
+document
+  .getElementById(
+    "blockedBtn"
+  )
+  .addEventListener(
+    "click",
+    async()=>{
+
+      await loadBlockedUsers();
+
+      renderBlockedUsers();
+
+      document
+        .getElementById(
+          "blockedModal"
+        )
+        .style.display =
+        "flex";
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "closeBlocked"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      document
+        .getElementById(
+          "blockedModal"
+        )
+        .style.display =
+        "none";
+
+    }
+  );
+
+
+/* RENDER BLOCKED */
+
+async function renderBlockedUsers(){
+
+  const list =
+    document.getElementById(
+      "blockedList"
+    );
+
+
+  if(!blockedUsers.length){
+
+    list.innerHTML =
+      `<div class="empty">
+        No blocked accounts 🚫
+      </div>`;
+
+    return;
 
   }
 
-  chatActionMenu.style.display =
-    "flex";
+
+  list.innerHTML =
+    `<div class="empty">
+      Loading...
+    </div>`;
+
+
+  const users=[];
+
+
+  for(
+    const uid of blockedUsers
+  ){
+
+    const snap =
+      await getDoc(
+        doc(
+          db,
+          "users",
+          uid
+        )
+      );
+
+    if(snap.exists()){
+
+      users.push(
+        snap.data()
+      );
+
+    }
+
+  }
+
+
+  list.innerHTML =
+    users.map(
+      user=>`
+
+        <div class="userItem">
+
+          <img src="${escapeHTML(
+            user.photoURL ||
+            "https://ui-avatars.com/api/?name="+
+            encodeURIComponent(
+              user.name || "User"
+            )
+          )}">
+
+          <div class="userInfo">
+
+            <div class="userName">
+              ${escapeHTML(
+                user.name || "User"
+              )}
+            </div>
+
+          </div>
+
+          <button
+            class="unblockFromList"
+            data-uid="${user.uid}"
+            style="
+              background:#6c63ff;
+              color:white;
+              padding:8px 12px;
+              border-radius:10px;
+              font-size:11px;
+            ">
+            Unblock
+          </button>
+
+        </div>
+
+      `
+    ).join("");
+
+
+  document
+    .querySelectorAll(
+      ".unblockFromList"
+    )
+    .forEach(btn=>{
+
+      btn.addEventListener(
+        "click",
+        async()=>{
+
+          await unblockUser(
+            btn.dataset.uid
+          );
+
+          renderBlockedUsers();
+
+        }
+      );
+
+    });
 
 }
 
 
-chatMoreBtn.addEventListener(
-  "click",
-  updateChatActionMenu
-);
+/* BLOCK USER */
 
+async function blockUser(uid){
 
-closeChatActionMenu.addEventListener(
-  "click",
-  ()=>{
-    chatActionMenu.style.display =
-      "none";
-  }
-);
+  if(!currentUser || !uid) return;
 
-
-/* ================= BLOCK ================= */
-
-async function blockCurrentUser(){
-
-  if(
-    !currentUser ||
-    !currentChatUser
-  )
-    return;
-
-  if(
-    !confirm(
-      `${currentChatUser.name || "இந்த user"}-ஐ block பண்ணலாமா? 🚫`
-    )
-  )
-    return;
 
   try{
 
@@ -3653,49 +2904,41 @@ async function blockCurrentUser(){
         "users",
         currentUser.uid,
         "blocked",
-        currentChatUser.uid
+        uid
       ),
       {
-
-        uid:currentChatUser.uid,
-
-        name:
-          currentChatUser.name ||
-          "Oii User",
-
-        email:
-          currentChatUser.email ||
-          "",
-
-        photoURL:
-          currentChatUser.photoURL ||
-          "",
-
         blockedAt:
           serverTimestamp()
-
       }
     );
 
-    chatActionMenu.style.display =
-      "none";
 
-    chatScreen.style.display =
-      "none";
+    blockedUsers.push(uid);
 
-    currentChatId = null;
-    currentChatUser = null;
 
-    loadMyChats();
+    if(
+      currentChatUser &&
+      currentChatUser.uid === uid
+    ){
 
-    alert(
-      "User blocked 🚫"
-    );
+      alert(
+        "User blocked 🚫"
+      );
+
+      document
+        .getElementById(
+          "backBtn"
+        )
+        .click();
+
+    }
 
   }catch(error){
 
+    console.error(error);
+
     alert(
-      "Block failed 😕\n\n" +
+      "Block failed.\n\n"+
       error.message
     );
 
@@ -3704,20 +2947,12 @@ async function blockCurrentUser(){
 }
 
 
-async function unblockCurrentUser(){
+/* UNBLOCK USER */
 
-  if(
-    !currentUser ||
-    !currentChatUser
-  )
-    return;
+async function unblockUser(uid){
 
-  if(
-    !confirm(
-      `${currentChatUser.name || "இந்த user"}-ஐ unblock பண்ணலாமா? 🔓`
-    )
-  )
-    return;
+  if(!currentUser || !uid) return;
+
 
   try{
 
@@ -3727,25 +2962,27 @@ async function unblockCurrentUser(){
         "users",
         currentUser.uid,
         "blocked",
-        currentChatUser.uid
+        uid
       )
     );
 
-    chatActionMenu.style.display =
-      "none";
 
-    updateBlockUI(false);
+    blockedUsers =
+      blockedUsers.filter(
+        id=>id !== uid
+      );
 
-    loadMyChats();
 
     alert(
-      "User unblocked 🔓"
+      "User unblocked ✅"
     );
 
   }catch(error){
 
+    console.error(error);
+
     alert(
-      "Unblock failed 😕\n\n" +
+      "Unblock failed.\n\n"+
       error.message
     );
 
@@ -3754,419 +2991,340 @@ async function unblockCurrentUser(){
 }
 
 
-/* ================= DELETE CHAT ================= */
-
-async function deleteCurrentChat(){
-
-  if(
-    !currentUser ||
-    !currentChatId
-  )
-    return;
-
-  if(
-    !confirm(
-      `${currentChatUser?.name || "இந்த user"}-உடன் chat-ஐ delete பண்ணலாமா? 🗑️`
-    )
-  )
-    return;
-
-  try{
-
-    await updateDoc(
-      doc(
-        db,
-        "chats",
-        currentChatId
-      ),
-      {
-        [`deletedFor.${currentUser.uid}`]:
-          true,
-
-        [`unread.${currentUser.uid}`]:
-          0
-      }
-    );
-
-    chatActionMenu.style.display =
-      "none";
-
-    chatScreen.style.display =
-      "none";
-
-    currentChatId = null;
-    currentChatUser = null;
-
-    loadMyChats();
-
-  }catch(error){
-
-    alert(
-      "Chat delete failed 😕\n\n" +
-      error.message
-    );
-
-  }
-
-}
-
-
-deleteChatBtn.addEventListener(
-  "click",
-  deleteCurrentChat
-);
-
-
-/* ================= BACK ================= */
-
-backChatBtn.addEventListener(
-  "click",
-  async()=>{
-
-    await setTyping(false);
-
-    chatScreen.style.display =
-      "none";
-
-    currentChatId = null;
-    currentChatUser = null;
-
-    emojiPanel.style.display =
-      "none";
-
-    attachmentSheet.style.display =
-      "none";
-
-    chatActionMenu.style.display =
-      "none";
-
-    if(unsubscribeMessages){
-
-      unsubscribeMessages();
-      unsubscribeMessages = null;
-
-    }
-
-    if(unsubscribeUserStatus){
-
-      unsubscribeUserStatus();
-      unsubscribeUserStatus = null;
-
-    }
-
-    if(unsubscribeTyping){
-
-      unsubscribeTyping();
-      unsubscribeTyping = null;
-
-    }
-
-  }
-);
-
-
-/* ================= NEW CHAT ================= */
-
-newChatBtn.addEventListener(
-  "click",
-  ()=>{
-
-    usersModal.style.display =
-      "flex";
-
-    loadUsers();
-
-  }
-);
-
-
-closeUsersModal.addEventListener(
-  "click",
-  ()=>{
-    usersModal.style.display =
-      "none";
-  }
-);
-
-
-/* ================= BLOCKED HOME ================= */
+/* CHAT MENU */
 
 document
-  .getElementById("moreBtn")
+  .getElementById(
+    "chatMenuBtn"
+  )
   .addEventListener(
     "click",
     ()=>{
 
-      blockedModal.style.display =
-        "flex";
+      const menu =
+        document.getElementById(
+          "chatMenu"
+        );
 
-      loadBlockedAccounts();
+      if(
+        menu.style.display ===
+        "block"
+      ){
 
-    }
-  );
+        menu.style.display =
+          "none";
+
+      }else{
+
+        menu.style.display =
+          "block";
+
+      }
 
 
-async function loadBlockedAccounts(){
-
-  blockedList.innerHTML = `
-    <div class="empty">
-      Loading blocked accounts... ⏳
-    </div>
-  `;
-
-  try{
-
-    const snap =
-      await getDocs(
-        collection(
-          db,
-          "users",
-          currentUser.uid,
-          "blocked"
+      if(
+        currentChatUser &&
+        isBlocked(
+          currentChatUser.uid
         )
-      );
+      ){
 
-    blockedList.innerHTML = "";
-
-    if(snap.empty){
-
-      blockedList.innerHTML = `
-        <div class="empty">
-          Blocked accounts இல்லை 💙
-        </div>
-      `;
-
-      return;
-
-    }
-
-    snap.forEach(
-      blockedDoc=>{
-
-        const data =
-          blockedDoc.data();
-
-        const div =
-          document.createElement("div");
-
-        div.className =
-          "blocked-user";
-
-        div.innerHTML = `
-
-          <img src="${
-            data.photoURL ||
-            "https://i.pravatar.cc/100"
-          }">
-
-          <div class="blocked-info">
-
-            <div class="blocked-name">
-              ${escapeHTML(
-                data.name || "Oii User"
-              )}
-            </div>
-
-            <div class="blocked-email">
-              🚫 Blocked
-            </div>
-
-          </div>
-
-          <button class="unblock-small">
-            Unblock
-          </button>
-
-        `;
-
-        div
-          .querySelector(
-            ".unblock-small"
+        document
+          .getElementById(
+            "blockUserBtn"
           )
-          .addEventListener(
-            "click",
-            async()=>{
+          .style.display =
+          "none";
 
-              await deleteDoc(
-                doc(
-                  db,
-                  "users",
-                  currentUser.uid,
-                  "blocked",
-                  blockedDoc.id
-                )
-              );
+        document
+          .getElementById(
+            "unblockUserBtn"
+          )
+          .style.display =
+          "block";
 
-              loadBlockedAccounts();
-              loadMyChats();
+      }else{
 
-            }
-          );
+        document
+          .getElementById(
+            "blockUserBtn"
+          )
+          .style.display =
+          "block";
 
-        blockedList.appendChild(div);
+        document
+          .getElementById(
+            "unblockUserBtn"
+          )
+          .style.display =
+          "none";
 
       }
-    );
-
-  }catch(error){
-
-    blockedList.innerHTML = `
-      <div class="empty">
-        ${escapeHTML(error.message)}
-      </div>
-    `;
-
-  }
-
-}
-
-
-closeBlockedModal.addEventListener(
-  "click",
-  ()=>{
-    blockedModal.style.display =
-      "none";
-  }
-);
-
-
-/* ================= LOGOUT ================= */
-
-logoutBtn.addEventListener(
-  "click",
-  async()=>{
-
-    try{
-
-      await setUserOffline();
-
-      if(onlineTimer)
-        clearInterval(onlineTimer);
-
-      await signOut(auth);
-
-    }catch(error){
-
-      console.error(error);
-
-    }
-
-  }
-);
-
-
-/* ================= TABS ================= */
-
-document
-  .querySelectorAll(".tab")
-  .forEach(
-    tab=>{
-
-      tab.addEventListener(
-        "click",
-        ()=>{
-
-          document
-            .querySelectorAll(".tab")
-            .forEach(
-              item=>
-                item.classList.remove(
-                  "active"
-                )
-            );
-
-          tab.classList.add("active");
-
-          if(
-            tab.dataset.tab ===
-            "groups"
-          ){
-
-            chatList.innerHTML = `
-              <div class="empty">
-                Groups coming soon 👥🔥
-              </div>
-            `;
-
-          }else if(
-            tab.dataset.tab ===
-            "channels"
-          ){
-
-            chatList.innerHTML = `
-              <div class="empty">
-                Channels coming soon 📢🔥
-              </div>
-            `;
-
-          }else{
-
-            renderAllChats();
-
-          }
-
-        }
-      );
 
     }
   );
 
 
-/* ================= NAV ================= */
-
 document
-  .querySelectorAll(".nav-item")
-  .forEach(
-    item=>{
-
-      item.addEventListener(
-        "click",
-        ()=>{
-
-          document
-            .querySelectorAll(".nav-item")
-            .forEach(
-              nav=>
-                nav.classList.remove(
-                  "active"
-                )
-            );
-
-          item.classList.add("active");
-
-        }
-      );
-
-    }
-  );
-
-
-/* ================= SEARCH ================= */
-
-document
-  .getElementById("searchBtn")
+  .getElementById(
+    "blockUserBtn"
+  )
   .addEventListener(
     "click",
-    ()=>{
-      alert(
-        "Search feature coming next 🔎💬"
+    async()=>{
+
+      if(!currentChatUser) return;
+
+      document
+        .getElementById(
+          "chatMenu"
+        )
+        .style.display =
+        "none";
+
+      await blockUser(
+        currentChatUser.uid
       );
+
     }
   );
 
 
-/* ================= OUTSIDE CLICK ================= */
+document
+  .getElementById(
+    "unblockUserBtn"
+  )
+  .addEventListener(
+    "click",
+    async()=>{
+
+      if(!currentChatUser) return;
+
+      document
+        .getElementById(
+          "chatMenu"
+        )
+        .style.display =
+        "none";
+
+      await unblockUser(
+        currentChatUser.uid
+      );
+
+    }
+  );
+
+
+/* DELETE CHAT */
+
+document
+  .getElementById(
+    "deleteChatBtn"
+  )
+  .addEventListener(
+    "click",
+    async()=>{
+
+      if(!currentChatId) return;
+
+
+      const ok =
+        confirm(
+          "இந்த chat-ஐ delete பண்ணவா?"
+        );
+
+
+      if(!ok) return;
+
+
+      try{
+
+        await updateDoc(
+          doc(
+            db,
+            "chats",
+            currentChatId
+          ),
+          {
+            deletedFor: [
+              currentUser.uid
+            ]
+          }
+        );
+
+
+        document
+          .getElementById(
+            "chatMenu"
+          )
+          .style.display =
+          "none";
+
+
+        alert(
+          "Chat deleted 🗑️"
+        );
+
+
+        document
+          .getElementById(
+            "backBtn"
+          )
+          .click();
+
+
+      }catch(error){
+
+        console.error(error);
+
+        alert(
+          "Delete failed.\n\n"+
+          error.message
+        );
+
+      }
+
+    }
+  );
+
+
+/* OUTSIDE CLICK */
 
 document.addEventListener(
   "click",
-  event=>{
+  e=>{
 
     if(
-      !emojiPanel.contains(event.target) &&
-      event.target !== emojiBtn
+      !e.target.closest(
+        "#attachmentSheet"
+      ) &&
+      !e.target.closest(
+        "#attachBtn"
+      )
+    ){
+
+      attachmentSheet.style.display =
+        "none";
+
+    }
+
+
+    if(
+      !e.target.closest(
+        "#emojiPanel"
+      ) &&
+      !e.target.closest(
+        "#emojiBtn"
+      )
     ){
 
       emojiPanel.style.display =
+        "none";
+
+    }
+
+
+    if(
+      !e.target.closest(
+        "#chatMenu"
+      ) &&
+      !e.target.closest(
+        "#chatMenuBtn"
+      )
+    ){
+
+      document
+        .getElementById(
+          "chatMenu"
+        )
+        .style.display =
+        "none";
+
+    }
+
+  }
+);
+
+
+/* ONLINE HEARTBEAT */
+
+setInterval(
+  async()=>{
+
+    if(!currentUser) return;
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "users",
+          currentUser.uid
+        ),
+        {
+          online:true,
+          lastSeen:
+            serverTimestamp()
+        }
+      );
+
+    }catch(error){
+
+      console.log(error);
+
+    }
+
+  },
+  30000
+);
+
+
+/* OFFLINE WHEN PAGE CLOSE */
+
+window.addEventListener(
+  "beforeunload",
+  ()=>{
+
+    if(!currentUser) return;
+
+    updateDoc(
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      ),
+      {
+        online:false,
+        lastSeen:
+          serverTimestamp()
+      }
+    ).catch(()=>{});
+
+  }
+);
+
+
+/* LOGOUT */
+
+window.addEventListener(
+  "keydown",
+  async e=>{
+
+    if(
+      e.key === "Escape"
+    ){
+
+      attachmentSheet.style.display =
+        "none";
+
+      emojiPanel.style.display =
+        "none";
+
+      document
+        .getElementById(
+          "chatMenu"
+        )
+        .style.display =
         "none";
 
     }
