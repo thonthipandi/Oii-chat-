@@ -84,6 +84,11 @@ input{
   font-weight:600;
 }
 
+.googleBtn:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+}
+
 /* APP */
 
 #chatApp{
@@ -449,18 +454,9 @@ input{
   flex-shrink:0;
 }
 
-.emojiButton{
-  background:#f1f2f6;
-}
-
-.attachButton{
-  background:#f1f2f6;
-}
-
-.cameraButton{
-  background:#f1f2f6;
-}
-
+.emojiButton,
+.attachButton,
+.cameraButton,
 .voiceButton{
   background:#f1f2f6;
 }
@@ -539,6 +535,7 @@ input{
 .emojiItem{
   font-size:24px;
   text-align:center;
+  background:transparent;
 }
 
 /* MODALS */
@@ -647,6 +644,36 @@ input{
 .offlineDot{
   color:#aaa;
 }
+
+/* LOGIN LOADING */
+
+#loginLoading{
+  position:fixed;
+  inset:0;
+  background:#fff;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+
+.loadingLogo{
+  font-size:30px;
+  font-weight:700;
+}
+
+.loadingText{
+  margin-top:8px;
+  color:#777;
+  font-size:13px;
+}
+
+.loadingDot{
+  margin-top:12px;
+  font-size:20px;
+  letter-spacing:4px;
+}
 </style>
 </head>
 
@@ -656,13 +683,40 @@ input{
 
 <div id="loginScreen">
   <div class="loginBox">
-    <div class="logo">Oii Chat 💬</div>
-    <p>Chat with your friends</p>
 
-    <button id="googleLoginBtn" class="googleBtn">
+    <div class="logo">
+      Oii Chat 💬
+    </div>
+
+    <p>
+      Chat with your friends
+    </p>
+
+    <button id="googleLoginBtn"
+            class="googleBtn">
       🔵 Continue with Google
     </button>
+
   </div>
+</div>
+
+
+<!-- LOGIN LOADING -->
+
+<div id="loginLoading">
+
+  <div class="loadingLogo">
+    Oii Chat 💬
+  </div>
+
+  <div class="loadingText">
+    Opening Oii Chat...
+  </div>
+
+  <div class="loadingDot">
+    • • •
+  </div>
+
 </div>
 
 
@@ -677,12 +731,22 @@ input{
     </div>
 
     <div class="headerRight">
-      <button id="newChatBtn" class="iconBtn">＋</button>
-      <button id="blockedBtn" class="iconBtn">🚫</button>
+
+      <button id="newChatBtn"
+              class="iconBtn">
+        ＋
+      </button>
+
+      <button id="blockedBtn"
+              class="iconBtn">
+        🚫
+      </button>
+
       <img id="myProfileImg"
            class="profileMini"
            src=""
            alt="">
+
     </div>
 
   </header>
@@ -691,57 +755,93 @@ input{
   <main id="homeScreen">
 
     <section class="storySection">
-      <div class="storyTitle">My Story</div>
+
+      <div class="storyTitle">
+        My Story
+      </div>
 
       <div class="storyRow">
 
         <div class="story">
-          <div class="storyAdd">＋</div>
-          <div>My Story</div>
+
+          <div class="storyAdd">
+            ＋
+          </div>
+
+          <div>
+            My Story
+          </div>
+
         </div>
 
         <div class="story">
+
           <img src="https://ui-avatars.com/api/?name=Sobiya">
-          <div>Sobiya ❤️</div>
+
+          <div>
+            Sobiya ❤️
+          </div>
+
         </div>
 
         <div class="story">
+
           <img src="https://ui-avatars.com/api/?name=Kavi">
-          <div>Kavi 😎</div>
+
+          <div>
+            Kavi 😎
+          </div>
+
         </div>
 
         <div class="story">
+
           <img src="https://ui-avatars.com/api/?name=Vijay">
-          <div>Vijay 🔥</div>
+
+          <div>
+            Vijay 🔥
+          </div>
+
         </div>
 
       </div>
+
     </section>
 
 
     <div class="chatTabs">
-      <button class="chatTab active" data-tab="all">
-        All Chats <span id="allCount"></span>
+
+      <button class="chatTab active"
+              data-tab="all">
+        All Chats
+        <span id="allCount"></span>
       </button>
 
-      <button class="chatTab" data-tab="unread">
-        Unread <span id="unreadCount"></span>
+      <button class="chatTab"
+              data-tab="unread">
+        Unread
+        <span id="unreadCount"></span>
       </button>
 
-      <button class="chatTab" data-tab="groups">
+      <button class="chatTab"
+              data-tab="groups">
         Groups
       </button>
 
-      <button class="chatTab" data-tab="channels">
+      <button class="chatTab"
+              data-tab="channels">
         Channels
       </button>
+
     </div>
 
 
     <div id="chatList">
+
       <div class="empty">
         No chats yet 💬
       </div>
+
     </div>
 
   </main>
@@ -750,23 +850,32 @@ input{
   <nav class="bottomNav">
 
     <button class="navBtn active">
+
       <span>💬</span>
       Chats
+
     </button>
 
-    <button class="navBtn" id="peopleNav">
+    <button class="navBtn"
+            id="peopleNav">
+
       <span>👥</span>
       People
+
     </button>
 
     <button class="navBtn">
+
       <span>📞</span>
       Calls
+
     </button>
 
     <button class="navBtn">
+
       <span>⚙️</span>
       Settings
+
     </button>
 
   </nav>
@@ -776,11 +885,13 @@ input{
 
 <!-- NEW CHAT MODAL -->
 
-<div id="newChatModal" class="modalOverlay">
+<div id="newChatModal"
+     class="modalOverlay">
 
   <div class="modalBox">
 
-    <button class="closeModal" id="closeNewChat">
+    <button class="closeModal"
+            id="closeNewChat">
       ✕
     </button>
 
@@ -808,11 +919,13 @@ input{
 
 <!-- BLOCKED MODAL -->
 
-<div id="blockedModal" class="modalOverlay">
+<div id="blockedModal"
+     class="modalOverlay">
 
   <div class="modalBox">
 
-    <button class="closeModal" id="closeBlocked">
+    <button class="closeModal"
+            id="closeBlocked">
       ✕
     </button>
 
@@ -833,7 +946,8 @@ input{
 
   <header class="chatHeader">
 
-    <button id="backBtn" class="backBtn">
+    <button id="backBtn"
+            class="backBtn">
       ‹
     </button>
 
@@ -844,17 +958,20 @@ input{
 
     <div class="chatUserInfo">
 
-      <div id="chatName" class="chatUserName">
+      <div id="chatName"
+           class="chatUserName">
         User
       </div>
 
-      <div id="chatStatus" class="chatStatus">
+      <div id="chatStatus"
+           class="chatStatus">
         Offline
       </div>
 
     </div>
 
-    <button id="chatMenuBtn" class="chatHeaderMenu">
+    <button id="chatMenuBtn"
+            class="chatHeaderMenu">
       ⋮
     </button>
 
@@ -864,7 +981,7 @@ input{
   <div id="messages"></div>
 
 
-  <!-- ATTACHMENT SHEET -->
+  <!-- ATTACHMENT -->
 
   <div id="attachmentSheet">
 
@@ -872,26 +989,46 @@ input{
 
       <button id="galleryOption"
               class="attachOption">
-        <div class="attachIcon">🖼️</div>
+
+        <div class="attachIcon">
+          🖼️
+        </div>
+
         Gallery
+
       </button>
 
       <button id="documentOption"
               class="attachOption">
-        <div class="attachIcon">📄</div>
+
+        <div class="attachIcon">
+          📄
+        </div>
+
         Document
+
       </button>
 
       <button id="locationOption"
               class="attachOption">
-        <div class="attachIcon">📍</div>
+
+        <div class="attachIcon">
+          📍
+        </div>
+
         Location
+
       </button>
 
       <button id="contactOption"
               class="attachOption">
-        <div class="attachIcon">👤</div>
+
+        <div class="attachIcon">
+          👤
+        </div>
+
         Contact
+
       </button>
 
     </div>
@@ -970,7 +1107,7 @@ input{
 </div>
 
 
-<!-- HIDDEN FILE INPUTS -->
+<!-- FILE INPUTS -->
 
 <input id="galleryInput"
        type="file"
@@ -1001,8 +1138,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
-  onAuthStateChanged,
-  signOut
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
@@ -1022,6 +1158,8 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
+
+/* FIREBASE CONFIG */
 
 const firebaseConfig = {
 
@@ -1048,13 +1186,17 @@ const firebaseConfig = {
 };
 
 
-const app = initializeApp(firebaseConfig);
+const app =
+  initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+const auth =
+  getAuth(app);
 
-const db = getFirestore(app);
+const db =
+  getFirestore(app);
 
-const provider = new GoogleAuthProvider();
+const provider =
+  new GoogleAuthProvider();
 
 
 /* VARIABLES */
@@ -1073,6 +1215,9 @@ let blockedUsers = [];
 
 const loginScreen =
   document.getElementById("loginScreen");
+
+const loginLoading =
+  document.getElementById("loginLoading");
 
 const chatApp =
   document.getElementById("chatApp");
@@ -1132,22 +1277,83 @@ const contactOption =
   document.getElementById("contactOption");
 
 
-/* LOGIN */
+/* =====================================================
+   GOOGLE LOGIN
+   ===================================================== */
 
 googleLoginBtn.addEventListener(
   "click",
-  async ()=>{
+  async()=>{
 
     try{
+
+      googleLoginBtn.disabled =
+        true;
+
+      googleLoginBtn.textContent =
+        "Opening Oii Chat...";
+
+
+      /*
+       * Login screen-ஐ உடனே மறைக்கிறோம்.
+       * Authentication முடியும் வரை white
+       * loading screen மட்டும் வரும்.
+       */
+
+      loginScreen.style.display =
+        "none";
+
+      loginLoading.style.display =
+        "flex";
+
 
       await signInWithPopup(
         auth,
         provider
       );
 
+
     }catch(error){
 
-      console.error(error);
+      console.error(
+        "Google login:",
+        error
+      );
+
+
+      /*
+       * Login fail ஆனால்
+       * மீண்டும் login screen.
+       */
+
+      loginLoading.style.display =
+        "none";
+
+      loginScreen.style.display =
+        "flex";
+
+
+      googleLoginBtn.disabled =
+        false;
+
+      googleLoginBtn.textContent =
+        "🔵 Continue with Google";
+
+
+      /*
+       * Popup closed என்றால்
+       * unnecessary alert வேண்டாம்.
+       */
+
+      if(
+        error.code ===
+        "auth/popup-closed-by-user"
+      ){
+
+        return;
+
+      }
+
 
       alert(
         "Google login failed.\n\n" +
@@ -1160,7 +1366,9 @@ googleLoginBtn.addEventListener(
 );
 
 
-/* AUTH */
+/* =====================================================
+   AUTH STATE
+   ===================================================== */
 
 onAuthStateChanged(
   auth,
@@ -1168,27 +1376,108 @@ onAuthStateChanged(
 
     if(user){
 
-      currentUser = user;
+      currentUser =
+        user;
+
+
+      /*
+       * IMPORTANT
+       * Login screen / loading இரண்டையும்
+       * உடனே hide செய்கிறோம்.
+       */
 
       loginScreen.style.display =
         "none";
 
+      loginLoading.style.display =
+        "none";
+
+
+      /*
+       * Oii Chat home உடனே open.
+       */
+
       chatApp.style.display =
         "flex";
+
+      chatScreen.style.display =
+        "none";
+
+      homeScreen.style.display =
+        "block";
+
+
+      /*
+       * Profile
+       */
 
       myProfileImg.src =
         user.photoURL ||
         "https://ui-avatars.com/api/?name=User";
 
-      await saveUser();
 
-      await loadBlockedUsers();
+      /*
+       * Google button reset
+       */
+
+      googleLoginBtn.disabled =
+        false;
+
+      googleLoginBtn.textContent =
+        "🔵 Continue with Google";
+
+
+      /*
+       * User save
+       */
+
+      try{
+
+        await saveUser();
+
+      }catch(error){
+
+        console.error(
+          "Save user:",
+          error
+        );
+
+      }
+
+
+      /*
+       * Blocked users
+       */
+
+      try{
+
+        await loadBlockedUsers();
+
+      }catch(error){
+
+        console.error(
+          "Blocked users:",
+          error
+        );
+
+      }
+
+
+      /*
+       * Chats
+       */
 
       loadMyChats();
 
+
     }else{
 
-      currentUser = null;
+      currentUser =
+        null;
+
+
+      loginLoading.style.display =
+        "none";
 
       loginScreen.style.display =
         "flex";
@@ -1198,6 +1487,13 @@ onAuthStateChanged(
 
       chatScreen.style.display =
         "none";
+
+
+      googleLoginBtn.disabled =
+        false;
+
+      googleLoginBtn.textContent =
+        "🔵 Continue with Google";
 
     }
 
@@ -1221,16 +1517,26 @@ async function saveUser(){
   await setDoc(
     userRef,
     {
-      uid: currentUser.uid,
+      uid:
+        currentUser.uid,
+
       name:
         currentUser.displayName ||
         "User",
+
       email:
-        currentUser.email || "",
+        currentUser.email ||
+        "",
+
       photoURL:
-        currentUser.photoURL || "",
-      online: true,
-      lastSeen: serverTimestamp()
+        currentUser.photoURL ||
+        "",
+
+      online:true,
+
+      lastSeen:
+        serverTimestamp()
+
     },
     {
       merge:true
@@ -1242,7 +1548,10 @@ async function saveUser(){
 
 /* CHAT ID */
 
-function makeChatId(uid1,uid2){
+function makeChatId(
+  uid1,
+  uid2
+){
 
   return [
     uid1,
@@ -1256,8 +1565,10 @@ function makeChatId(uid1,uid2){
 
 function escapeHTML(text){
 
-  if(text === undefined ||
-     text === null){
+  if(
+    text === undefined ||
+    text === null
+  ){
 
     return "";
 
@@ -1277,7 +1588,8 @@ function escapeHTML(text){
 
 function formatTime(timestamp){
 
-  if(!timestamp) return "";
+  if(!timestamp)
+    return "";
 
   try{
 
@@ -1307,7 +1619,8 @@ function formatTime(timestamp){
 
 async function loadBlockedUsers(){
 
-  if(!currentUser) return;
+  if(!currentUser)
+    return;
 
   try{
 
@@ -1352,10 +1665,14 @@ function isBlocked(uid){
 
 function loadMyChats(){
 
-  if(!currentUser) return;
+  if(!currentUser)
+    return;
 
   const chatsRef =
-    collection(db,"chats");
+    collection(
+      db,
+      "chats"
+    );
 
   const q =
     query(
@@ -1367,9 +1684,13 @@ function loadMyChats(){
       )
     );
 
+
   if(unsubscribeChats){
+
     unsubscribeChats();
+
   }
+
 
   unsubscribeChats =
     onSnapshot(
@@ -1399,7 +1720,10 @@ function loadMyChats(){
 async function renderAllChats(docs){
 
   const chatList =
-    document.getElementById("chatList");
+    document.getElementById(
+      "chatList"
+    );
+
 
   if(!docs.length){
 
@@ -1412,21 +1736,32 @@ async function renderAllChats(docs){
 
   }
 
+
   const chats = [];
 
-  for(const item of docs){
+
+  for(
+    const item of docs
+  ){
 
     const data =
       item.data();
 
+
     const otherId =
       data.members.find(
-        id=>id !== currentUser.uid
+        id =>
+          id !== currentUser.uid
       );
 
-    if(!otherId) continue;
 
-    if(isBlocked(otherId)) continue;
+    if(!otherId)
+      continue;
+
+
+    if(isBlocked(otherId))
+      continue;
+
 
     const userSnap =
       await getDoc(
@@ -1437,24 +1772,34 @@ async function renderAllChats(docs){
         )
       );
 
-    if(!userSnap.exists()) continue;
+
+    if(!userSnap.exists())
+      continue;
+
 
     chats.push({
+
       id:item.id,
+
       data,
+
       user:userSnap.data()
+
     });
 
   }
+
 
   chats.sort(
     (a,b)=>{
 
       const ta =
-        a.data.updatedAt?.seconds || 0;
+        a.data.updatedAt?.seconds ||
+        0;
 
       const tb =
-        b.data.updatedAt?.seconds || 0;
+        b.data.updatedAt?.seconds ||
+        0;
 
       return tb-ta;
 
@@ -1475,73 +1820,81 @@ async function renderAllChats(docs){
 
 
   chatList.innerHTML =
-    chats.map(chat=>{
+    chats.map(
+      chat=>{
 
-      const user =
-        chat.user;
+        const user =
+          chat.user;
 
-      return `
-        <div class="chatItem"
-             data-chat-id="${chat.id}"
-             data-user-id="${user.uid}">
 
-          <img class="chatAvatar"
-               src="${escapeHTML(
-                 user.photoURL ||
-                 "https://ui-avatars.com/api/?name="+
-                 encodeURIComponent(user.name || "User")
-               )}">
+        return `
+          <div class="chatItem"
+               data-chat-id="${chat.id}"
+               data-user-id="${user.uid}">
 
-          <div class="chatInfo">
+            <img class="chatAvatar"
+                 src="${escapeHTML(
+                   user.photoURL ||
+                   "https://ui-avatars.com/api/?name="+
+                   encodeURIComponent(
+                     user.name || "User"
+                   )
+                 )}">
 
-            <div class="chatTop">
+            <div class="chatInfo">
 
-              <div class="chatName">
+              <div class="chatTop">
+
+                <div class="chatName">
+                  ${escapeHTML(
+                    user.name || "User"
+                  )}
+                </div>
+
+                <div class="chatTime">
+                  ${formatTime(
+                    chat.data.updatedAt
+                  )}
+                </div>
+
+              </div>
+
+              <div class="chatLast">
                 ${escapeHTML(
-                  user.name || "User"
+                  chat.data.lastMessage ||
+                  ""
                 )}
               </div>
 
-              <div class="chatTime">
-                ${formatTime(
-                  chat.data.updatedAt
-                )}
-              </div>
-
-            </div>
-
-            <div class="chatLast">
-              ${escapeHTML(
-                chat.data.lastMessage ||
-                ""
-              )}
             </div>
 
           </div>
+        `;
 
-        </div>
-      `;
-
-    }).join("");
+      }
+    ).join("");
 
 
   document
-    .querySelectorAll(".chatItem")
-    .forEach(item=>{
+    .querySelectorAll(
+      ".chatItem"
+    )
+    .forEach(
+      item=>{
 
-      item.addEventListener(
-        "click",
-        async()=>{
+        item.addEventListener(
+          "click",
+          async()=>{
 
-          const uid =
-            item.dataset.userId;
+            await openChat(
+              item.dataset.userId
+            );
 
-          await openChat(uid);
+          }
+        );
 
-        }
-      );
-
-    });
+      }
+    );
 
 }
 
@@ -1551,12 +1904,16 @@ async function renderAllChats(docs){
 async function loadUsers(){
 
   const userList =
-    document.getElementById("userList");
+    document.getElementById(
+      "userList"
+    );
+
 
   userList.innerHTML =
     `<div class="empty">
       Loading users...
     </div>`;
+
 
   try{
 
@@ -1568,20 +1925,26 @@ async function loadUsers(){
         )
       );
 
+
     const users =
       snap.docs
-        .map(d=>d.data())
+        .map(
+          d=>d.data()
+        )
         .filter(
           u=>
             u.uid !== currentUser.uid &&
             !isBlocked(u.uid)
         );
 
+
     renderUsers(users);
+
 
   }catch(error){
 
     console.error(error);
+
 
     userList.innerHTML =
       `<div class="empty">
@@ -1598,7 +1961,10 @@ async function loadUsers(){
 function renderUsers(users){
 
   const userList =
-    document.getElementById("userList");
+    document.getElementById(
+      "userList"
+    );
+
 
   if(!users.length){
 
@@ -1611,61 +1977,72 @@ function renderUsers(users){
 
   }
 
+
   userList.innerHTML =
-    users.map(user=>`
+    users.map(
+      user=>`
 
-      <div class="userItem"
-           data-uid="${user.uid}">
+        <div class="userItem"
+             data-uid="${user.uid}">
 
-        <img src="${escapeHTML(
-          user.photoURL ||
-          "https://ui-avatars.com/api/?name="+
-          encodeURIComponent(user.name || "User")
-        )}">
-
-        <div class="userInfo">
-
-          <div class="userName">
-            ${escapeHTML(
+          <img src="${escapeHTML(
+            user.photoURL ||
+            "https://ui-avatars.com/api/?name="+
+            encodeURIComponent(
               user.name || "User"
-            )}
-          </div>
+            )
+          )}">
 
-          <div class="userEmail">
-            ${escapeHTML(
-              user.email || ""
-            )}
+          <div class="userInfo">
+
+            <div class="userName">
+              ${escapeHTML(
+                user.name || "User"
+              )}
+            </div>
+
+            <div class="userEmail">
+              ${escapeHTML(
+                user.email || ""
+              )}
+            </div>
+
           </div>
 
         </div>
 
-      </div>
-
-    `).join("");
+      `
+    ).join("");
 
 
   document
-    .querySelectorAll(".userItem")
-    .forEach(item=>{
+    .querySelectorAll(
+      ".userItem"
+    )
+    .forEach(
+      item=>{
 
-      item.addEventListener(
-        "click",
-        async()=>{
+        item.addEventListener(
+          "click",
+          async()=>{
 
-          await openChat(
-            item.dataset.uid
-          );
+            await openChat(
+              item.dataset.uid
+            );
 
-          document
-            .getElementById(
-              "newChatModal"
-            )
-            .style.display="none";
 
-        }
-      );
+            document
+              .getElementById(
+                "newChatModal"
+              )
+              .style.display =
+              "none";
 
-    });
+          }
+        );
+
+      }
+    );
 
 }
 
@@ -1674,7 +2051,9 @@ function renderUsers(users){
 
 async function openChat(uid){
 
-  if(!currentUser) return;
+  if(!currentUser)
+    return;
+
 
   if(isBlocked(uid)){
 
@@ -1686,6 +2065,7 @@ async function openChat(uid){
 
   }
 
+
   const snap =
     await getDoc(
       doc(
@@ -1694,6 +2074,7 @@ async function openChat(uid){
         uid
       )
     );
+
 
   if(!snap.exists()){
 
@@ -1705,8 +2086,10 @@ async function openChat(uid){
 
   }
 
+
   currentChatUser =
     snap.data();
+
 
   currentChatId =
     makeChatId(
@@ -1728,7 +2111,8 @@ async function openChat(uid){
     currentChatUser.photoURL ||
     "https://ui-avatars.com/api/?name="+
     encodeURIComponent(
-      currentChatUser.name || "User"
+      currentChatUser.name ||
+      "User"
     );
 
 
@@ -1748,6 +2132,7 @@ async function openChat(uid){
   emojiPanel.style.display =
     "none";
 
+
   document.getElementById(
     "chatMenu"
   ).style.display =
@@ -1763,22 +2148,29 @@ async function openChat(uid){
 
 async function updateChatStatus(){
 
-  if(!currentChatUser) return;
+  if(!currentChatUser)
+    return;
+
 
   const status =
     document.getElementById(
       "chatStatus"
     );
 
+
   if(currentChatUser.online){
 
     status.innerHTML =
-      `<span class="onlineDot">●</span> Online`;
+      `<span class="onlineDot">
+        ●
+      </span> Online`;
 
   }else{
 
     status.innerHTML =
-      `<span class="offlineDot">●</span> Offline`;
+      `<span class="offlineDot">
+        ●
+      </span> Offline`;
 
   }
 
@@ -1789,13 +2181,16 @@ async function updateChatStatus(){
 
 function loadMessages(){
 
-  if(!currentChatId) return;
+  if(!currentChatId)
+    return;
+
 
   if(unsubscribeMessages){
 
     unsubscribeMessages();
 
   }
+
 
   const ref =
     collection(
@@ -1804,6 +2199,7 @@ function loadMessages(){
       currentChatId,
       "messages"
     );
+
 
   const q =
     query(
@@ -1814,12 +2210,15 @@ function loadMessages(){
       )
     );
 
+
   unsubscribeMessages =
     onSnapshot(
       q,
       snapshot=>{
 
-        messages.innerHTML="";
+        messages.innerHTML =
+          "";
+
 
         snapshot.docs.forEach(
           d=>{
@@ -1831,10 +2230,13 @@ function loadMessages(){
           }
         );
 
+
         setTimeout(
           ()=>{
+
             messages.scrollTop =
               messages.scrollHeight;
+
           },
           50
         );
@@ -1861,10 +2263,12 @@ function renderMessage(data){
     data.senderId ===
     currentUser.uid;
 
+
   const row =
     document.createElement(
       "div"
     );
+
 
   row.className =
     "messageRow " +
@@ -1876,6 +2280,7 @@ function renderMessage(data){
       "div"
     );
 
+
   bubble.className =
     "messageBubble";
 
@@ -1885,8 +2290,10 @@ function renderMessage(data){
       "div"
     );
 
+
   text.className =
     "messageText";
+
 
   text.textContent =
     data.text || "";
@@ -1897,8 +2304,10 @@ function renderMessage(data){
       "div"
     );
 
+
   meta.className =
     "messageMeta";
+
 
   meta.textContent =
     formatTime(
@@ -1911,21 +2320,34 @@ function renderMessage(data){
     let tick =
       "✓";
 
-    if(data.status === "delivered"){
 
-      tick = "✓✓";
+    if(
+      data.status ===
+      "delivered"
+    ){
+
+      tick =
+        "✓✓";
 
     }
 
-    if(data.status === "read"){
 
-      tick = "✓✓";
+    if(
+      data.status ===
+      "read"
+    ){
+
+      tick =
+        "✓✓";
 
     }
+
 
     meta.innerHTML =
       escapeHTML(
-        formatTime(data.createdAt)
+        formatTime(
+          data.createdAt
+        )
       ) +
       ` <span class="statusTicks">
         ${tick}
@@ -1934,12 +2356,21 @@ function renderMessage(data){
   }
 
 
-  bubble.appendChild(text);
-  bubble.appendChild(meta);
+  bubble.appendChild(
+    text
+  );
 
-  row.appendChild(bubble);
+  bubble.appendChild(
+    meta
+  );
 
-  messages.appendChild(row);
+  row.appendChild(
+    bubble
+  );
+
+  messages.appendChild(
+    row
+  );
 
 }
 
@@ -1948,18 +2379,23 @@ function renderMessage(data){
 
 async function sendMessage(){
 
-  if(!currentUser ||
-     !currentChatUser ||
-     !currentChatId){
+  if(
+    !currentUser ||
+    !currentChatUser ||
+    !currentChatId
+  ){
 
     return;
 
   }
 
+
   const text =
     messageInput.value.trim();
 
-  if(!text) return;
+
+  if(!text)
+    return;
 
 
   if(
@@ -1977,7 +2413,8 @@ async function sendMessage(){
   }
 
 
-  messageInput.value="";
+  messageInput.value =
+    "";
 
 
   try{
@@ -1997,9 +2434,13 @@ async function sendMessage(){
           currentUser.uid,
           currentChatUser.uid
         ],
-        lastMessage:text,
+
+        lastMessage:
+          text,
+
         updatedAt:
           serverTimestamp()
+
       },
       {
         merge:true
@@ -2021,21 +2462,26 @@ async function sendMessage(){
         receiverId:
           currentChatUser.uid,
 
-        text:text,
+        text:
+          text,
 
         createdAt:
           serverTimestamp(),
 
-        status:"sent"
+        status:
+          "sent"
+
       }
     );
+
 
   }catch(error){
 
     console.error(error);
 
+
     alert(
-      "Message send failed.\n\n"+
+      "Message send failed.\n\n" +
       error.message
     );
 
@@ -2066,7 +2512,7 @@ messageInput.addEventListener(
 );
 
 
-/* ATTACHMENT OPEN */
+/* ATTACHMENT */
 
 attachBtn.addEventListener(
   "click",
@@ -2074,6 +2520,7 @@ attachBtn.addEventListener(
 
     emojiPanel.style.display =
       "none";
+
 
     attachmentSheet.style.display =
       attachmentSheet.style.display ===
@@ -2094,6 +2541,7 @@ galleryOption.addEventListener(
     attachmentSheet.style.display =
       "none";
 
+
     document
       .getElementById(
         "galleryInput"
@@ -2111,6 +2559,7 @@ document
   .addEventListener(
     "change",
     ()=>{
+
       if(
         document.getElementById(
           "galleryInput"
@@ -2137,6 +2586,7 @@ documentOption.addEventListener(
     attachmentSheet.style.display =
       "none";
 
+
     document
       .getElementById(
         "documentInput"
@@ -2154,6 +2604,7 @@ document
   .addEventListener(
     "change",
     ()=>{
+
       if(
         document.getElementById(
           "documentInput"
@@ -2179,6 +2630,7 @@ locationOption.addEventListener(
 
     attachmentSheet.style.display =
       "none";
+
 
     if(!navigator.geolocation){
 
@@ -2227,10 +2679,7 @@ locationOption.addEventListener(
 );
 
 
-/* =====================================================
-   CONTACT
-   REAL ANDROID CONTACT PICKER
-   ===================================================== */
+/* CONTACT */
 
 contactOption.addEventListener(
   "click",
@@ -2239,11 +2688,6 @@ contactOption.addEventListener(
     attachmentSheet.style.display =
       "none";
 
-
-    /*
-      Android Chrome / supported browsers
-      மட்டும் Contact Picker support பண்ணும்.
-    */
 
     if(
       !navigator.contacts ||
@@ -2306,7 +2750,8 @@ contactOption.addEventListener(
       ){
 
         name =
-          contact.name[0] || "";
+          contact.name[0] ||
+          "";
 
       }
 
@@ -2317,7 +2762,8 @@ contactOption.addEventListener(
       ){
 
         phone =
-          contact.tel[0] || "";
+          contact.tel[0] ||
+          "";
 
       }
 
@@ -2328,7 +2774,8 @@ contactOption.addEventListener(
       ){
 
         email =
-          contact.email[0] || "";
+          contact.email[0] ||
+          "";
 
       }
 
@@ -2425,6 +2872,7 @@ document
   .addEventListener(
     "change",
     ()=>{
+
       if(
         document.getElementById(
           "cameraInput"
@@ -2444,16 +2892,22 @@ document
 
 /* VOICE */
 
-let mediaRecorder = null;
-let audioChunks = [];
+let mediaRecorder =
+  null;
+
+let audioChunks =
+  [];
 
 
 voiceBtn.addEventListener(
   "click",
   async()=>{
 
-    if(mediaRecorder &&
-       mediaRecorder.state === "recording"){
+    if(
+      mediaRecorder &&
+      mediaRecorder.state ===
+      "recording"
+    ){
 
       mediaRecorder.stop();
 
@@ -2476,7 +2930,9 @@ voiceBtn.addEventListener(
           stream
         );
 
-      audioChunks=[];
+
+      audioChunks =
+        [];
 
 
       mediaRecorder.ondataavailable =
@@ -2499,9 +2955,13 @@ voiceBtn.addEventListener(
           stream
             .getTracks()
             .forEach(
-              track=>
+              track =>
                 track.stop()
             );
+
+
+          voiceBtn.textContent =
+            "🎙️";
 
 
           alert(
@@ -2513,6 +2973,7 @@ voiceBtn.addEventListener(
 
 
       mediaRecorder.start();
+
 
       voiceBtn.textContent =
         "⏹️";
@@ -2533,6 +2994,7 @@ voiceBtn.addEventListener(
 /* EMOJI */
 
 const emojis = [
+
   "😀","😃","😄","😁","😆","😅","😂","🤣",
   "😊","😇","🙂","🙃","😉","😌","😍","🥰",
   "😘","😗","😙","😚","😋","😛","😝","😜",
@@ -2540,12 +3002,13 @@ const emojis = [
   "😢","😭","😤","😡","🤬","😱","😳","🤗",
   "❤️","🧡","💛","💚","💙","💜","🖤","🤍",
   "👍","👎","👏","🙏","🔥","💯","🎉","🥰"
+
 ];
 
 
 emojiGrid.innerHTML =
   emojis.map(
-    emoji=>
+    emoji =>
       `<button class="emojiItem"
                data-emoji="${emoji}">
         ${emoji}
@@ -2554,22 +3017,26 @@ emojiGrid.innerHTML =
 
 
 document
-  .querySelectorAll(".emojiItem")
-  .forEach(btn=>{
+  .querySelectorAll(
+    ".emojiItem"
+  )
+  .forEach(
+    btn=>{
 
-    btn.addEventListener(
-      "click",
-      ()=>{
+      btn.addEventListener(
+        "click",
+        ()=>{
 
-        messageInput.value +=
-          btn.dataset.emoji;
+          messageInput.value +=
+            btn.dataset.emoji;
 
-        messageInput.focus();
+          messageInput.focus();
 
-      }
-    );
+        }
+      );
 
-  });
+    }
+  );
 
 
 emojiBtn.addEventListener(
@@ -2578,6 +3045,7 @@ emojiBtn.addEventListener(
 
     attachmentSheet.style.display =
       "none";
+
 
     emojiPanel.style.display =
       emojiPanel.style.display ===
@@ -2608,17 +3076,20 @@ document
 
       }
 
+
       currentChatUser =
         null;
 
       currentChatId =
         null;
 
+
       chatScreen.style.display =
         "none";
 
       homeScreen.style.display =
         "block";
+
 
       attachmentSheet.style.display =
         "none";
@@ -2646,6 +3117,7 @@ document
         )
         .style.display =
         "flex";
+
 
       loadUsers();
 
@@ -2704,12 +3176,16 @@ document
           )
           .filter(
             u=>
-              u.uid !== currentUser.uid &&
+              u.uid !==
+              currentUser.uid &&
+
               !isBlocked(u.uid) &&
+
               (
                 (u.name || "")
                   .toLowerCase()
                   .includes(text) ||
+
                 (u.email || "")
                   .toLowerCase()
                   .includes(text)
@@ -2736,6 +3212,7 @@ document
       await loadBlockedUsers();
 
       renderBlockedUsers();
+
 
       document
         .getElementById(
@@ -2795,7 +3272,7 @@ async function renderBlockedUsers(){
     </div>`;
 
 
-  const users=[];
+  const users = [];
 
 
   for(
@@ -2810,6 +3287,7 @@ async function renderBlockedUsers(){
           uid
         )
       );
+
 
     if(snap.exists()){
 
@@ -2832,7 +3310,8 @@ async function renderBlockedUsers(){
             user.photoURL ||
             "https://ui-avatars.com/api/?name="+
             encodeURIComponent(
-              user.name || "User"
+              user.name ||
+              "User"
             )
           )}">
 
@@ -2840,7 +3319,8 @@ async function renderBlockedUsers(){
 
             <div class="userName">
               ${escapeHTML(
-                user.name || "User"
+                user.name ||
+                "User"
               )}
             </div>
 
@@ -2869,22 +3349,24 @@ async function renderBlockedUsers(){
     .querySelectorAll(
       ".unblockFromList"
     )
-    .forEach(btn=>{
+    .forEach(
+      btn=>{
 
-      btn.addEventListener(
-        "click",
-        async()=>{
+        btn.addEventListener(
+          "click",
+          async()=>{
 
-          await unblockUser(
-            btn.dataset.uid
-          );
+            await unblockUser(
+              btn.dataset.uid
+            );
 
-          renderBlockedUsers();
+            renderBlockedUsers();
 
-        }
-      );
+          }
+        );
 
-    });
+      }
+    );
 
 }
 
@@ -2893,7 +3375,11 @@ async function renderBlockedUsers(){
 
 async function blockUser(uid){
 
-  if(!currentUser || !uid) return;
+  if(
+    !currentUser ||
+    !uid
+  )
+    return;
 
 
   try{
@@ -2913,7 +3399,13 @@ async function blockUser(uid){
     );
 
 
-    blockedUsers.push(uid);
+    if(
+      !blockedUsers.includes(uid)
+    ){
+
+      blockedUsers.push(uid);
+
+    }
 
 
     if(
@@ -2925,6 +3417,7 @@ async function blockUser(uid){
         "User blocked 🚫"
       );
 
+
       document
         .getElementById(
           "backBtn"
@@ -2933,12 +3426,14 @@ async function blockUser(uid){
 
     }
 
+
   }catch(error){
 
     console.error(error);
 
+
     alert(
-      "Block failed.\n\n"+
+      "Block failed.\n\n" +
       error.message
     );
 
@@ -2951,7 +3446,11 @@ async function blockUser(uid){
 
 async function unblockUser(uid){
 
-  if(!currentUser || !uid) return;
+  if(
+    !currentUser ||
+    !uid
+  )
+    return;
 
 
   try{
@@ -2969,7 +3468,8 @@ async function unblockUser(uid){
 
     blockedUsers =
       blockedUsers.filter(
-        id=>id !== uid
+        id =>
+          id !== uid
       );
 
 
@@ -2977,12 +3477,14 @@ async function unblockUser(uid){
       "User unblocked ✅"
     );
 
+
   }catch(error){
 
     console.error(error);
 
+
     alert(
-      "Unblock failed.\n\n"+
+      "Unblock failed.\n\n" +
       error.message
     );
 
@@ -3005,6 +3507,7 @@ document
         document.getElementById(
           "chatMenu"
         );
+
 
       if(
         menu.style.display ===
@@ -3036,6 +3539,7 @@ document
           .style.display =
           "none";
 
+
         document
           .getElementById(
             "unblockUserBtn"
@@ -3052,6 +3556,7 @@ document
           .style.display =
           "block";
 
+
         document
           .getElementById(
             "unblockUserBtn"
@@ -3065,6 +3570,8 @@ document
   );
 
 
+/* BLOCK */
+
 document
   .getElementById(
     "blockUserBtn"
@@ -3073,7 +3580,9 @@ document
     "click",
     async()=>{
 
-      if(!currentChatUser) return;
+      if(!currentChatUser)
+        return;
+
 
       document
         .getElementById(
@@ -3081,6 +3590,7 @@ document
         )
         .style.display =
         "none";
+
 
       await blockUser(
         currentChatUser.uid
@@ -3090,6 +3600,8 @@ document
   );
 
 
+/* UNBLOCK */
+
 document
   .getElementById(
     "unblockUserBtn"
@@ -3098,7 +3610,9 @@ document
     "click",
     async()=>{
 
-      if(!currentChatUser) return;
+      if(!currentChatUser)
+        return;
+
 
       document
         .getElementById(
@@ -3106,6 +3620,7 @@ document
         )
         .style.display =
         "none";
+
 
       await unblockUser(
         currentChatUser.uid
@@ -3125,7 +3640,8 @@ document
     "click",
     async()=>{
 
-      if(!currentChatId) return;
+      if(!currentChatId)
+        return;
 
 
       const ok =
@@ -3134,7 +3650,8 @@ document
         );
 
 
-      if(!ok) return;
+      if(!ok)
+        return;
 
 
       try{
@@ -3146,7 +3663,7 @@ document
             currentChatId
           ),
           {
-            deletedFor: [
+            deletedFor:[
               currentUser.uid
             ]
           }
@@ -3177,8 +3694,9 @@ document
 
         console.error(error);
 
+
         alert(
-          "Delete failed.\n\n"+
+          "Delete failed.\n\n" +
           error.message
         );
 
@@ -3251,7 +3769,9 @@ document.addEventListener(
 setInterval(
   async()=>{
 
-    if(!currentUser) return;
+    if(!currentUser)
+      return;
+
 
     try{
 
@@ -3263,6 +3783,7 @@ setInterval(
         ),
         {
           online:true,
+
           lastSeen:
             serverTimestamp()
         }
@@ -3279,13 +3800,15 @@ setInterval(
 );
 
 
-/* OFFLINE WHEN PAGE CLOSE */
+/* OFFLINE */
 
 window.addEventListener(
   "beforeunload",
   ()=>{
 
-    if(!currentUser) return;
+    if(!currentUser)
+      return;
+
 
     updateDoc(
       doc(
@@ -3295,20 +3818,23 @@ window.addEventListener(
       ),
       {
         online:false,
+
         lastSeen:
           serverTimestamp()
       }
-    ).catch(()=>{});
+    ).catch(
+      ()=>{}
+    );
 
   }
 );
 
 
-/* LOGOUT */
+/* ESCAPE */
 
 window.addEventListener(
   "keydown",
-  async e=>{
+  e=>{
 
     if(
       e.key === "Escape"
