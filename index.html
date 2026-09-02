@@ -682,6 +682,7 @@ input{
 <!-- LOGIN -->
 
 <div id="loginScreen">
+
   <div class="loginBox">
 
     <div class="logo">
@@ -698,6 +699,7 @@ input{
     </button>
 
   </div>
+
 </div>
 
 
@@ -1128,7 +1130,9 @@ input{
 
 <script type="module">
 
-/* FIREBASE */
+/* =====================================================
+   FIREBASE
+   ===================================================== */
 
 import {
   initializeApp
@@ -1137,8 +1141,11 @@ import {
 import {
   getAuth,
   GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged
+  signInWithRedirect,
+  getRedirectResult,
+  onAuthStateChanged,
+  setPersistence,
+  browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
@@ -1159,7 +1166,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-/* FIREBASE CONFIG */
+/* =====================================================
+   FIREBASE CONFIG
+   ===================================================== */
 
 const firebaseConfig = {
 
@@ -1199,7 +1208,9 @@ const provider =
   new GoogleAuthProvider();
 
 
-/* VARIABLES */
+/* =====================================================
+   VARIABLES
+   ===================================================== */
 
 let currentUser = null;
 let currentChatUser = null;
@@ -1211,7 +1222,9 @@ let unsubscribeChats = null;
 let blockedUsers = [];
 
 
-/* ELEMENTS */
+/* =====================================================
+   ELEMENTS
+   ===================================================== */
 
 const loginScreen =
   document.getElementById("loginScreen");
@@ -1278,7 +1291,29 @@ const contactOption =
 
 
 /* =====================================================
+   AUTH PERSISTENCE
+   ===================================================== */
+
+try{
+
+  await setPersistence(
+    auth,
+    browserLocalPersistence
+  );
+
+}catch(error){
+
+  console.error(
+    "Auth persistence:",
+    error
+  );
+
+}
+
+
+/* =====================================================
    GOOGLE LOGIN
+   MOBILE + GITHUB PAGES
    ===================================================== */
 
 googleLoginBtn.addEventListener(
@@ -1293,13 +1328,6 @@ googleLoginBtn.addEventListener(
       googleLoginBtn.textContent =
         "Opening Oii Chat...";
 
-
-      /*
-       * Login screen-ஐ உடனே மறைக்கிறோம்.
-       * Authentication முடியும் வரை white
-       * loading screen மட்டும் வரும்.
-       */
-
       loginScreen.style.display =
         "none";
 
@@ -1307,11 +1335,10 @@ googleLoginBtn.addEventListener(
         "flex";
 
 
-      await signInWithPopup(
+      await signInWithRedirect(
         auth,
         provider
       );
-
 
     }catch(error){
 
@@ -1320,39 +1347,17 @@ googleLoginBtn.addEventListener(
         error
       );
 
-
-      /*
-       * Login fail ஆனால்
-       * மீண்டும் login screen.
-       */
-
       loginLoading.style.display =
         "none";
 
       loginScreen.style.display =
         "flex";
 
-
       googleLoginBtn.disabled =
         false;
 
       googleLoginBtn.textContent =
         "🔵 Continue with Google";
-
-
-      /*
-       * Popup closed என்றால்
-       * unnecessary alert வேண்டாம்.
-       */
-
-      if(
-        error.code ===
-        "auth/popup-closed-by-user"
-      ){
-
-        return;
-
-      }
 
 
       alert(
@@ -1364,6 +1369,36 @@ googleLoginBtn.addEventListener(
 
   }
 );
+
+
+/* =====================================================
+   REDIRECT RESULT
+   ===================================================== */
+
+try{
+
+  await getRedirectResult(auth);
+
+}catch(error){
+
+  console.error(
+    "Google redirect result:",
+    error
+  );
+
+  loginLoading.style.display =
+    "none";
+
+  loginScreen.style.display =
+    "flex";
+
+  googleLoginBtn.disabled =
+    false;
+
+  googleLoginBtn.textContent =
+    "🔵 Continue with Google";
+
+}
 
 
 /* =====================================================
@@ -1380,22 +1415,11 @@ onAuthStateChanged(
         user;
 
 
-      /*
-       * IMPORTANT
-       * Login screen / loading இரண்டையும்
-       * உடனே hide செய்கிறோம்.
-       */
-
       loginScreen.style.display =
         "none";
 
       loginLoading.style.display =
         "none";
-
-
-      /*
-       * Oii Chat home உடனே open.
-       */
 
       chatApp.style.display =
         "flex";
@@ -1407,18 +1431,10 @@ onAuthStateChanged(
         "block";
 
 
-      /*
-       * Profile
-       */
-
       myProfileImg.src =
         user.photoURL ||
         "https://ui-avatars.com/api/?name=User";
 
-
-      /*
-       * Google button reset
-       */
 
       googleLoginBtn.disabled =
         false;
@@ -1426,10 +1442,6 @@ onAuthStateChanged(
       googleLoginBtn.textContent =
         "🔵 Continue with Google";
 
-
-      /*
-       * User save
-       */
 
       try{
 
@@ -1445,10 +1457,6 @@ onAuthStateChanged(
       }
 
 
-      /*
-       * Blocked users
-       */
-
       try{
 
         await loadBlockedUsers();
@@ -1463,18 +1471,12 @@ onAuthStateChanged(
       }
 
 
-      /*
-       * Chats
-       */
-
       loadMyChats();
-
 
     }else{
 
       currentUser =
         null;
-
 
       loginLoading.style.display =
         "none";
@@ -1488,7 +1490,6 @@ onAuthStateChanged(
       chatScreen.style.display =
         "none";
 
-
       googleLoginBtn.disabled =
         false;
 
@@ -1501,11 +1502,14 @@ onAuthStateChanged(
 );
 
 
-/* SAVE USER */
+/* =====================================================
+   SAVE USER
+   ===================================================== */
 
 async function saveUser(){
 
-  if(!currentUser) return;
+  if(!currentUser)
+    return;
 
   const userRef =
     doc(
@@ -1517,6 +1521,7 @@ async function saveUser(){
   await setDoc(
     userRef,
     {
+
       uid:
         currentUser.uid,
 
@@ -1546,7 +1551,9 @@ async function saveUser(){
 }
 
 
-/* CHAT ID */
+/* =====================================================
+   CHAT ID
+   ===================================================== */
 
 function makeChatId(
   uid1,
@@ -1561,7 +1568,9 @@ function makeChatId(
 }
 
 
-/* ESCAPE HTML */
+/* =====================================================
+   ESCAPE HTML
+   ===================================================== */
 
 function escapeHTML(text){
 
@@ -1584,7 +1593,9 @@ function escapeHTML(text){
 }
 
 
-/* TIME */
+/* =====================================================
+   TIME
+   ===================================================== */
 
 function formatTime(timestamp){
 
@@ -1615,7 +1626,9 @@ function formatTime(timestamp){
 }
 
 
-/* LOAD BLOCKED */
+/* =====================================================
+   LOAD BLOCKED
+   ===================================================== */
 
 async function loadBlockedUsers(){
 
@@ -1652,7 +1665,9 @@ async function loadBlockedUsers(){
 }
 
 
-/* IS BLOCKED */
+/* =====================================================
+   IS BLOCKED
+   ===================================================== */
 
 function isBlocked(uid){
 
@@ -1661,7 +1676,9 @@ function isBlocked(uid){
 }
 
 
-/* LOAD CHATS */
+/* =====================================================
+   LOAD CHATS
+   ===================================================== */
 
 function loadMyChats(){
 
@@ -1715,7 +1732,9 @@ function loadMyChats(){
 }
 
 
-/* RENDER CHATS */
+/* =====================================================
+   RENDER CHATS
+   ===================================================== */
 
 async function renderAllChats(docs){
 
@@ -1829,8 +1848,8 @@ async function renderAllChats(docs){
 
         return `
           <div class="chatItem"
-               data-chat-id="${chat.id}"
-               data-user-id="${user.uid}">
+               data-chat-id="${escapeHTML(chat.id)}"
+               data-user-id="${escapeHTML(user.uid)}">
 
             <img class="chatAvatar"
                  src="${escapeHTML(
@@ -1899,7 +1918,9 @@ async function renderAllChats(docs){
 }
 
 
-/* LOAD USERS */
+/* =====================================================
+   LOAD USERS
+   ===================================================== */
 
 async function loadUsers(){
 
@@ -1940,11 +1961,9 @@ async function loadUsers(){
 
     renderUsers(users);
 
-
   }catch(error){
 
     console.error(error);
-
 
     userList.innerHTML =
       `<div class="empty">
@@ -1956,7 +1975,9 @@ async function loadUsers(){
 }
 
 
-/* RENDER USERS */
+/* =====================================================
+   RENDER USERS
+   ===================================================== */
 
 function renderUsers(users){
 
@@ -1983,7 +2004,7 @@ function renderUsers(users){
       user=>`
 
         <div class="userItem"
-             data-uid="${user.uid}">
+             data-uid="${escapeHTML(user.uid)}">
 
           <img src="${escapeHTML(
             user.photoURL ||
@@ -2030,7 +2051,6 @@ function renderUsers(users){
               item.dataset.uid
             );
 
-
             document
               .getElementById(
                 "newChatModal"
@@ -2047,7 +2067,9 @@ function renderUsers(users){
 }
 
 
-/* OPEN CHAT */
+/* =====================================================
+   OPEN CHAT
+   ===================================================== */
 
 async function openChat(uid){
 
@@ -2132,7 +2154,6 @@ async function openChat(uid){
   emojiPanel.style.display =
     "none";
 
-
   document.getElementById(
     "chatMenu"
   ).style.display =
@@ -2144,9 +2165,11 @@ async function openChat(uid){
 }
 
 
-/* CHAT STATUS */
+/* =====================================================
+   CHAT STATUS
+   ===================================================== */
 
-async function updateChatStatus(){
+function updateChatStatus(){
 
   if(!currentChatUser)
     return;
@@ -2177,7 +2200,9 @@ async function updateChatStatus(){
 }
 
 
-/* LOAD MESSAGES */
+/* =====================================================
+   LOAD MESSAGES
+   ===================================================== */
 
 function loadMessages(){
 
@@ -2255,7 +2280,9 @@ function loadMessages(){
 }
 
 
-/* RENDER MESSAGE */
+/* =====================================================
+   RENDER MESSAGE
+   ===================================================== */
 
 function renderMessage(data){
 
@@ -2309,12 +2336,6 @@ function renderMessage(data){
     "messageMeta";
 
 
-  meta.textContent =
-    formatTime(
-      data.createdAt
-    );
-
-
   if(mine){
 
     let tick =
@@ -2353,6 +2374,13 @@ function renderMessage(data){
         ${tick}
       </span>`;
 
+  }else{
+
+    meta.textContent =
+      formatTime(
+        data.createdAt
+      );
+
   }
 
 
@@ -2375,7 +2403,9 @@ function renderMessage(data){
 }
 
 
-/* SEND MESSAGE */
+/* =====================================================
+   SEND MESSAGE
+   ===================================================== */
 
 async function sendMessage(){
 
@@ -2430,6 +2460,7 @@ async function sendMessage(){
     await setDoc(
       chatRef,
       {
+
         members:[
           currentUser.uid,
           currentChatUser.uid
@@ -2456,6 +2487,7 @@ async function sendMessage(){
         "messages"
       ),
       {
+
         senderId:
           currentUser.uid,
 
@@ -2474,11 +2506,9 @@ async function sendMessage(){
       }
     );
 
-
   }catch(error){
 
     console.error(error);
-
 
     alert(
       "Message send failed.\n\n" +
@@ -2512,7 +2542,9 @@ messageInput.addEventListener(
 );
 
 
-/* ATTACHMENT */
+/* =====================================================
+   ATTACHMENT
+   ===================================================== */
 
 attachBtn.addEventListener(
   "click",
@@ -2520,7 +2552,6 @@ attachBtn.addEventListener(
 
     emojiPanel.style.display =
       "none";
-
 
     attachmentSheet.style.display =
       attachmentSheet.style.display ===
@@ -2532,7 +2563,9 @@ attachBtn.addEventListener(
 );
 
 
-/* GALLERY */
+/* =====================================================
+   GALLERY
+   ===================================================== */
 
 galleryOption.addEventListener(
   "click",
@@ -2540,7 +2573,6 @@ galleryOption.addEventListener(
 
     attachmentSheet.style.display =
       "none";
-
 
     document
       .getElementById(
@@ -2577,7 +2609,9 @@ document
   );
 
 
-/* DOCUMENT */
+/* =====================================================
+   DOCUMENT
+   ===================================================== */
 
 documentOption.addEventListener(
   "click",
@@ -2585,7 +2619,6 @@ documentOption.addEventListener(
 
     attachmentSheet.style.display =
       "none";
-
 
     document
       .getElementById(
@@ -2622,7 +2655,9 @@ document
   );
 
 
-/* LOCATION */
+/* =====================================================
+   LOCATION
+   ===================================================== */
 
 locationOption.addEventListener(
   "click",
@@ -2679,7 +2714,9 @@ locationOption.addEventListener(
 );
 
 
-/* CONTACT */
+/* =====================================================
+   CONTACT
+   ===================================================== */
 
 contactOption.addEventListener(
   "click",
@@ -2816,7 +2853,6 @@ contactOption.addEventListener(
       messageInput.value =
         contactText.trim();
 
-
       messageInput.focus();
 
 
@@ -2849,7 +2885,9 @@ contactOption.addEventListener(
 );
 
 
-/* CAMERA */
+/* =====================================================
+   CAMERA
+   ===================================================== */
 
 cameraBtn.addEventListener(
   "click",
@@ -2890,7 +2928,9 @@ document
   );
 
 
-/* VOICE */
+/* =====================================================
+   VOICE
+   ===================================================== */
 
 let mediaRecorder =
   null;
@@ -2974,7 +3014,6 @@ voiceBtn.addEventListener(
 
       mediaRecorder.start();
 
-
       voiceBtn.textContent =
         "⏹️";
 
@@ -2991,7 +3030,9 @@ voiceBtn.addEventListener(
 );
 
 
-/* EMOJI */
+/* =====================================================
+   EMOJI
+   ===================================================== */
 
 const emojis = [
 
@@ -3046,7 +3087,6 @@ emojiBtn.addEventListener(
     attachmentSheet.style.display =
       "none";
 
-
     emojiPanel.style.display =
       emojiPanel.style.display ===
       "block"
@@ -3057,7 +3097,9 @@ emojiBtn.addEventListener(
 );
 
 
-/* BACK */
+/* =====================================================
+   BACK
+   ===================================================== */
 
 document
   .getElementById(
@@ -3101,7 +3143,9 @@ document
   );
 
 
-/* NEW CHAT */
+/* =====================================================
+   NEW CHAT
+   ===================================================== */
 
 document
   .getElementById(
@@ -3144,7 +3188,9 @@ document
   );
 
 
-/* SEARCH USERS */
+/* =====================================================
+   SEARCH USERS
+   ===================================================== */
 
 document
   .getElementById(
@@ -3199,7 +3245,9 @@ document
   );
 
 
-/* BLOCKED MODAL */
+/* =====================================================
+   BLOCKED MODAL
+   ===================================================== */
 
 document
   .getElementById(
@@ -3244,7 +3292,9 @@ document
   );
 
 
-/* RENDER BLOCKED */
+/* =====================================================
+   RENDER BLOCKED USERS
+   ===================================================== */
 
 async function renderBlockedUsers(){
 
@@ -3328,7 +3378,7 @@ async function renderBlockedUsers(){
 
           <button
             class="unblockFromList"
-            data-uid="${user.uid}"
+            data-uid="${escapeHTML(user.uid)}"
             style="
               background:#6c63ff;
               color:white;
@@ -3371,7 +3421,9 @@ async function renderBlockedUsers(){
 }
 
 
-/* BLOCK USER */
+/* =====================================================
+   BLOCK USER
+   ===================================================== */
 
 async function blockUser(uid){
 
@@ -3431,7 +3483,6 @@ async function blockUser(uid){
 
     console.error(error);
 
-
     alert(
       "Block failed.\n\n" +
       error.message
@@ -3442,7 +3493,9 @@ async function blockUser(uid){
 }
 
 
-/* UNBLOCK USER */
+/* =====================================================
+   UNBLOCK USER
+   ===================================================== */
 
 async function unblockUser(uid){
 
@@ -3482,7 +3535,6 @@ async function unblockUser(uid){
 
     console.error(error);
 
-
     alert(
       "Unblock failed.\n\n" +
       error.message
@@ -3493,7 +3545,9 @@ async function unblockUser(uid){
 }
 
 
-/* CHAT MENU */
+/* =====================================================
+   CHAT MENU
+   ===================================================== */
 
 document
   .getElementById(
@@ -3570,7 +3624,9 @@ document
   );
 
 
-/* BLOCK */
+/* =====================================================
+   BLOCK
+   ===================================================== */
 
 document
   .getElementById(
@@ -3600,7 +3656,9 @@ document
   );
 
 
-/* UNBLOCK */
+/* =====================================================
+   UNBLOCK
+   ===================================================== */
 
 document
   .getElementById(
@@ -3630,7 +3688,9 @@ document
   );
 
 
-/* DELETE CHAT */
+/* =====================================================
+   DELETE CHAT
+   ===================================================== */
 
 document
   .getElementById(
@@ -3694,7 +3754,6 @@ document
 
         console.error(error);
 
-
         alert(
           "Delete failed.\n\n" +
           error.message
@@ -3706,7 +3765,9 @@ document
   );
 
 
-/* OUTSIDE CLICK */
+/* =====================================================
+   OUTSIDE CLICK
+   ===================================================== */
 
 document.addEventListener(
   "click",
@@ -3764,7 +3825,9 @@ document.addEventListener(
 );
 
 
-/* ONLINE HEARTBEAT */
+/* =====================================================
+   ONLINE HEARTBEAT
+   ===================================================== */
 
 setInterval(
   async()=>{
@@ -3782,10 +3845,12 @@ setInterval(
           currentUser.uid
         ),
         {
+
           online:true,
 
           lastSeen:
             serverTimestamp()
+
         }
       );
 
@@ -3800,7 +3865,9 @@ setInterval(
 );
 
 
-/* OFFLINE */
+/* =====================================================
+   OFFLINE
+   ===================================================== */
 
 window.addEventListener(
   "beforeunload",
@@ -3817,10 +3884,12 @@ window.addEventListener(
         currentUser.uid
       ),
       {
+
         online:false,
 
         lastSeen:
           serverTimestamp()
+
       }
     ).catch(
       ()=>{}
@@ -3830,7 +3899,9 @@ window.addEventListener(
 );
 
 
-/* ESCAPE */
+/* =====================================================
+   ESCAPE
+   ===================================================== */
 
 window.addEventListener(
   "keydown",
